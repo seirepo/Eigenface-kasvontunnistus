@@ -2,6 +2,7 @@ import numpy as np
 from matplotlib import pyplot as plot
 from pathlib import Path
 import os
+from individual import Individual
 
 def main():
     abspath = os.path.abspath(__file__)
@@ -21,13 +22,16 @@ def main():
         individuals.append(images[np.where(images_target==0)])
 
 
-    fig = plot.figure(figsize=(5, 5))
-    columns = 5
-    rows = 2
-    for i in range(1, columns*rows +1):
-        fig.add_subplot(rows, columns, i)
-        plot.imshow(individuals[0][i-1], cmap="Greys_r")
-    plot.show()
+    #fig = plot.figure(figsize=(5, 5))
+    #columns = 5
+    #rows = 2
+    #for i in range(1, columns*rows +1):
+    #    fig.add_subplot(rows, columns, i)
+    #    plot.imshow(individuals[0][i-1], cmap="Greys_r")
+    #plot.show()
+
+    test_individual = Individual(individuals[0])
+    test_individual.show()
 
 
 
