@@ -31,7 +31,8 @@ def main():
     #plot.show()
 
     test_individual = Individual(individuals[0])
-    test_individual.show()
+    print(type(individuals[0])) # numpy.ndarray
+    #test_individual.show()
 
 
 
