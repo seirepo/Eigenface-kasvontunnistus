@@ -12,14 +12,17 @@ class TestIndividual(unittest.TestCase):
                             [ 16, 17, 18]])
         self.m4 = np.array( [[ 19, 20],
                             [ 21, 22]])
-        
-        #arr = np.array( [[ 1, 2, 3],
-        #                [ 4, 2, 5]] )
+        self.empty = np.array([[]])
 
-    def test_matrix_to_vectors_returns_correct_number_of_vectors(self):
+
+    def test_matrix2d_to_column_vector_returns_array_of_right_shape(self):
+        pass
+
+    def test_matrix2d_to_column_vector_returns_correct_vector(self):
+        pass
+
+    def test_matrix_to_vectors_returns_matrix_with(self):
         test_matrix = np.array([ [self.m1, self.m2, self.m3] ])
         result = Individual.matrix_to_vectors(test_matrix)
         # should be "np.array( [[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12],
         #                      [13, 14, 15, 16, 17, 18]] )"
-        #self.assertEqual(result[0], np.array([1, 2, 3, 4, 5, 6]))
-        self.assertEqual(result[0].tolist(), np.array([1, 2, 3, 4, 5, 6]).tolist())
