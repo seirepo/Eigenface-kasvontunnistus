@@ -32,12 +32,15 @@ class TestIndividual(unittest.TestCase):
         self.assertTrue((result2 == np.array([[19, 20, 21, 22]]).T).all())
         self.assertTrue((result3 == np.array([[1]])).all())
 
-    def test_matrix_to_vectors_returns_matrix_with(self):
-        test_matrix = np.array([ [self.m1, self.m2, self.m3] ])
-        result = Individual.matrix_to_vectors(test_matrix)
-        # should be "np.array( [[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12],
-        #                      [13, 14, 15, 16, 17, 18]] )"
+    def test_matrix_submatrices_to_colums_returns_matrix_with_correct_size(self):
+        test_matrix = np.array([ self.m1, self.m2, self.m3 ])
+        result = Individual.matrix3d_submatrices_to_colums(test_matrix)
         self.assertEqual(result.shape, (6, 3))
-        self.assertEqual(result[0].tolist(), np.array([[1, 2, 3, 4, 5, 6]]).tolist())
-        self.assertEqual(result[1].tolist(), np.array([[7, 8, 9, 10, 11, 12]]).tolist())
-        self.assertEqual(result[2].tolist(), np.array([[13, 14, 15, 16, 17, 18]]).tolist())
+
+    def test_matrix_submatrices_to_colums_returns_matrix_with_submatrices_as_columns(self):
+        test_matrix = np.array([ self.m1, self.m2, self.m3 ])
+        result = Individual.matrix3d_submatrices_to_colums(test_matrix)
+        should_be = np.array([[1,2,3,4,5,6],[7,8,9,10,11,12],[13,14,15,16,17,18]]).T
+
+        self.assertEqual(result.shape, should_be.shape)
+        self.assertTrue((result == should_be).all())
