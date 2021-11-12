@@ -6,12 +6,12 @@ class Individual:
         self.images_set = self.matrix_to_vectors(im_set_matrix)
 
     @staticmethod
-    def matrix_to_vectors(im_set_matrix):
+    def matrix_submatrices_to_colums(im_set_matrix):
         return np.array([[0]])
 
     @staticmethod
     def matrix2d_to_column_vector(im_matrix):
-        return np.array([[0]])
+        return np.array([im_matrix.flatten()]).T
 
     """
     def show(self):
