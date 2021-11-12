@@ -1,12 +1,5 @@
 from matplotlib import pyplot as plot
 import numpy as np
-    """Class for a person and their images
-
-    Raises:
-        ValueError: if needed
-
-    Returns nothing
-    """
 
 class Individual:
     """
