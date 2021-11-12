@@ -9,10 +9,10 @@ class Individual:
     def matrix3d_submatrices_to_colums(im_set_matrix):
         if im_set_matrix.ndim != 3:
             raise ValueError("invalid shape: " + str(im_set_matrix.shape))
-        (n, r, c) = im_set_matrix.shape
-        result = np.empty((r*c, n))
+        (count, row, col) = im_set_matrix.shape
+        result = np.empty((row*col, count))
 
-        for i in range(0, n):
+        for i in range(0, count):
             result[:,i] = im_set_matrix[i].flatten()
 
         return result
@@ -27,18 +27,16 @@ class Individual:
         rows = 2
         print(self.images_set[:,0])
         for i in range(self.images_set.shape[1]):
-            #print(i)
             fig.add_subplot(rows, columns, i+1)
-            im = self.images_set[:,i]
-            im_r = im.reshape((64, 64))
-            plot.imshow(im_r, cmap="Greys_r")
+            im_vector = self.images_set[:,i]
+            im_matrix = im_vector.reshape((64, 64))
+            plot.imshow(im_matrix, cmap="Greys_r")
         plot.show()
-        """
-        fig = plot.figure(figsize=(5, 5))
-        columns = 5
-        rows = 2
-        for i in range(1, columns*rows +1):
-            fig.add_subplot(rows, columns, i)
-            plot.imshow(self.im_matrix_array[i-1], cmap="Greys_r")
-        plot.show()
-        """
+
+        #fig = plot.figure(figsize=(5, 5))
+        #columns = 5
+        #rows = 2
+        #for i in range(1, columns*rows +1):
+        #    fig.add_subplot(rows, columns, i)
+        #    plot.imshow(self.im_matrix_array[i-1], cmap="Greys_r")
+        #plot.show()
