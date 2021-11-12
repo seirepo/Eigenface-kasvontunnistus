@@ -21,18 +21,11 @@ def main():
     for i in range(0,40):
         individuals.append(images[np.where(images_target==0)])
 
-
-    #fig = plot.figure(figsize=(5, 5))
-    #columns = 5
-    #rows = 2
-    #for i in range(1, columns*rows +1):
-    #    fig.add_subplot(rows, columns, i)
-    #    plot.imshow(individuals[0][i-1], cmap="Greys_r")
-    #plot.show()
-
+    print(individuals[0].shape)
     test_individual = Individual(individuals[0])
     print(type(individuals[0])) # numpy.ndarray
-    #test_individual.show()
+    print(test_individual.images_set.shape)
+    test_individual.show_images()
 
 
 
