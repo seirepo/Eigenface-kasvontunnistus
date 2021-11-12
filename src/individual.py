@@ -3,11 +3,19 @@ import numpy as np
 
 class Individual:
     def __init__(self, im_set_matrix):
-        self.images_set = self.matrix_to_vectors(im_set_matrix)
+        self.images_set = Individual.matrix3d_submatrices_to_colums(im_set_matrix)
 
     @staticmethod
-    def matrix_submatrices_to_colums(im_set_matrix):
-        return np.array([[0]])
+    def matrix3d_submatrices_to_colums(im_set_matrix):
+        if im_set_matrix.ndim != 3:
+            raise ValueError("invalid shape: " + str(im_set_matrix.shape))
+        (n, r, c) = im_set_matrix.shape
+        result = np.empty((r*c, n))
+
+        for i in range(0, n):
+            result[:,i] = im_set_matrix[i].flatten()
+
+        return result
 
     @staticmethod
     def matrix2d_to_column_vector(im_matrix):
