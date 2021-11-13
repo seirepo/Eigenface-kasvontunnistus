@@ -21,11 +21,18 @@ def main():
     for i in range(0,40):
         individuals.append(images[np.where(images_target==0)])
 
-    print(individuals[0].shape)
+    #print(individuals[0].shape)
     test_individual = Individual(individuals[0])
-    print(type(individuals[0])) # numpy.ndarray
-    print(test_individual.images_set.shape)
-    test_individual.show_images()
+    #print(type(individuals[0])) # numpy.ndarray
+    #print("testihenkilön image set: ", test_individual.images_set.shape)
+    #Individual.show_images(test_individual.images_set)
+
+    print("testi ja training set")
+    #test_individual.calculate_eigenfaces()
+    #print(test_individual.images_set.shape)
+    #Individual.show_images(test_individual.training_set)
+    #Individual.show_images(test_individual.test_set)
+    test_individual.calculate_eigenfaces()
 
 
 
