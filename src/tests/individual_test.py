@@ -30,7 +30,7 @@ class TestIndividual(unittest.TestCase):
         self.assertTrue((result1 == np.array([[1, 2, 3, 4, 5, 6]]).T).all())
         self.assertFalse((result1 == np.array([[1, 2, 3, 4, 5, 6]])).all())
         self.assertTrue((result2 == np.array([[19, 20, 21, 22]]).T).all())
-        self.assertTrue((result3 == np.array([[1,2]])).all())
+        self.assertTrue((result3 == np.array([[1]])).all())
 
     def test_matrix_submatrices_to_colums_returns_matrix_with_correct_size(self):
         test_matrix = np.array([ self.mat1, self.mat2, self.mat3 ])
