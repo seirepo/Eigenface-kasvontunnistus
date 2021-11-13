@@ -14,6 +14,9 @@ class Individual:
             of the person as np.arrays
         """
         self.images_set = Individual.matrix3d_submatrices_to_colums(im_set_matrix)
+        self.training_set = None
+        self.test_set = None
+        self.average_face = None
 
     @staticmethod
     def matrix3d_submatrices_to_colums(im_set_matrix):
@@ -53,17 +56,31 @@ class Individual:
         """
         return np.array([im_matrix.flatten()]).T
 
-    def show_images(self):
+    def calculate_eigenfaces(self):
+        self.training_set = self.images_set[:,:8]
+        self.test_set = self.images_set[:,8:10]
+
+        self.average_face = np.mean(self.training_set, axis=1).reshape((-1, 1))
+        print("keskiarvo: ", self.average_face, self.average_face.shape)
+        Individual.show_images(self.average_face)
+
+        faces_minus_average = np.subtract(self.training_set, self.average_face)
+        print("kasvot joista vähennetty keskiarvo: ", faces_minus_average.shape)
+        Individual.show_images(faces_minus_average)
+
+    @staticmethod
+    def show_images(images):
         """
         Function to plot images
         """
+        #(rows, columns) = images.shape
         fig = plot.figure(figsize=(5, 5))
         columns = 5
         rows = 2
-        print(self.images_set[:,0])
-        for i in range(self.images_set.shape[1]):
+        print(images[:,0])
+        for i in range(images.shape[1]):
             fig.add_subplot(rows, columns, i+1)
-            im_vector = self.images_set[:,i]
+            im_vector = images[:,i]
             im_matrix = im_vector.reshape((64, 64))
             plot.imshow(im_matrix, cmap="Greys_r")
         plot.show()
