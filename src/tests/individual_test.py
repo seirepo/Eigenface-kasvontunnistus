@@ -12,13 +12,13 @@ class TestIndividual(unittest.TestCase):
                             [ 16, 17, 18]])
         self.mat4 = np.array( [[ 19, 20],
                             [ 21, 22]])
-        self.empty = np.array([[1]])
+        self.mat5 = np.array([[1]])
 
 
     def test_matrix2d_to_column_vector_returns_array_of_right_shape(self):
         result1 = Individual.matrix2d_to_column_vector(self.mat1)
         result2 = Individual.matrix2d_to_column_vector(self.mat4)
-        result3 = Individual.matrix2d_to_column_vector(self.empty)
+        result3 = Individual.matrix2d_to_column_vector(self.mat5)
         self.assertEqual(result1.shape, (6, 1))
         self.assertEqual(result2.shape, (4, 1))
         self.assertEqual(result3.shape, (1, 1))
@@ -26,7 +26,7 @@ class TestIndividual(unittest.TestCase):
     def test_matrix2d_to_column_vector_returns_correct_vector(self):
         result1 = Individual.matrix2d_to_column_vector(self.mat1)
         result2 = Individual.matrix2d_to_column_vector(self.mat4)
-        result3 = Individual.matrix2d_to_column_vector(self.empty)
+        result3 = Individual.matrix2d_to_column_vector(self.mat5)
         self.assertTrue((result1 == np.array([[1, 2, 3, 4, 5, 6]]).T).all())
         self.assertFalse((result1 == np.array([[1, 2, 3, 4, 5, 6]])).all())
         self.assertTrue((result2 == np.array([[19, 20, 21, 22]]).T).all())
