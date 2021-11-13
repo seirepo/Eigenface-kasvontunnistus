@@ -13,7 +13,7 @@ Tehty alustava luokka yhden henkilön kuvia varten. Asennettu numpy ja matplotli
 Jatkettu funktioiden toteutusta yksilöluokkaan ja tehty niistä toistaiseksi staattisia sekä muokattu eilen tehtyjä testejä.
 
 ## 13.11. lauantai
-Luotu yksilöluokkaan metodi calculate_eigenface ja aloitettu sen toteuttaminen: toistaiseksi se tuottaa vain kuvamatriisin, jossa jokaisesta harjoitusdata kuvasta on vähennetty niiden keskiarvo.
+Luotu yksilöluokkaan metodi calculate_eigenface ja aloitettu sen toteuttaminen: toistaiseksi se tuottaa vain kuvamatriisin, jossa jokaisesta harjoitusdata kuvasta on vähennetty niiden keskiarvo. Lisätty README:n badget testeistä ja testikattavuudesta.
 
 ## Ajankäyttö
 Aikaa kului yhteensä noin 18 h.
