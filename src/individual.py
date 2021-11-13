@@ -42,7 +42,8 @@ class Individual:
 
     @staticmethod
     def matrix2d_to_column_vector(im_matrix):
-        """Static function to turn 2-dim np.arrays to a vector
+        """Static function to turn 2-dim np.arrays to a vector.
+        Probably not necessary
 
         Args:
             im_matrix (np.array): 2-dim np.array
