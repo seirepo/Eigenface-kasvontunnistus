@@ -57,16 +57,31 @@ class Individual:
         return np.array([im_matrix.flatten()]).T
 
     def calculate_eigenfaces(self):
+        # valitse kuvat training settiin
         self.training_set = self.images_set[:,:8]
         self.test_set = self.images_set[:,8:10]
 
+        # laske kuvien keskiarvo ja vähennä se niistä
         self.average_face = np.mean(self.training_set, axis=1).reshape((-1, 1))
-        print("keskiarvo: ", self.average_face, self.average_face.shape)
-        Individual.show_images(self.average_face)
+        #print("keskiarvo: ", self.average_face, self.average_face.shape)
+        #Individual.show_images(self.average_face)
 
         faces_minus_average = np.subtract(self.training_set, self.average_face)
-        print("kasvot joista vähennetty keskiarvo: ", faces_minus_average.shape)
-        Individual.show_images(faces_minus_average)
+        #print("kasvot joista vähennetty keskiarvo: ", faces_minus_average.shape)
+        #Individual.show_images(faces_minus_average)
+
+        # laske apumatriisi ja sen ominaisvektorit
+        L = np.matmul(faces_minus_average.T, faces_minus_average)
+        v = np.linalg.eig(L)[1]
+
+        # laske apumatriisin ominaisvektorien avulla kuvamatriisin ominaisvektorit
+        eigenfaces = np.zeros((4096, 8))
+        M = 8
+        for i in range(0, M):
+            for j in range(0, M):
+                eigenfaces[:,i] += v[i][j] * faces_minus_average[:,j]
+
+        self.show_images(eigenfaces)
 
     @staticmethod
     def show_images(images):
