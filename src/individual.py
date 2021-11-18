@@ -14,7 +14,7 @@ class Individual:
             im_set_matrix (np.array): np.array containing images
             of the person as np.arrays
         """
-        self.images_set = images #op.matrix3d_submatrices_to_colums(im_set_matrix)
+        self.images_set = images
         self.eigenfaces = eigenfaces
         self.id = id
         #self.training_set = None
