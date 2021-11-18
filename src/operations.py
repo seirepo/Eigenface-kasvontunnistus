@@ -28,7 +28,7 @@ def matrix3d_submatrices_to_columns(im_set_matrix):
 
     return result
 
-def calculate_eigenfaces(training_images, k):
+def calculate_eigenfaces(training_images): #k):
     """Calculates and returns k eigenfaces with the largest eigenvalue of a
     given image set
 
@@ -39,4 +39,41 @@ def calculate_eigenfaces(training_images, k):
     Returns:
         np.array: k eigenfaces in an array
     """
-    return training_images
+    # laske kuvien keskiarvo ja vähennä se niistä
+    average_face = np.mean(training_images, axis=1).reshape((-1, 1))
+    #print("keskiarvo: ", self.average_face, self.average_face.shape)
+    #Individual.show_images(self.average_face)
+
+    faces_minus_average = np.subtract(training_images, average_face)
+    #print("kasvot joista vähennetty keskiarvo: ", faces_minus_average.shape)
+    #Individual.show_images(faces_minus_average)
+
+    # laske apumatriisi ja sen ominaisvektorit
+    L = np.matmul(faces_minus_average.T, faces_minus_average)
+    vals, vects = np.linalg.eig(L)
+
+    # joku tarkistus sille että k on järkevä (0 < k < len(vects))
+    #if k > len(vals) - 1:
+    #    raise Exception(f"calculate_eigenfaces: illegal argument {k}")
+
+    # järjestä ominaisarvot laskevaan järjestykseen
+    indx = vals.argsort()[::-1]
+    # tallenna vektorit muuttujaan eig_vectors suurimman ominaisarvon
+    # mukaisessa järjestyksessä
+    eig_vectors = vects
+
+    # laske apumatriisin ominaisvektorien avulla kuvamatriisin ominaisvektorit
+    eigenfaces = np.zeros((4096, 10))
+    M = 10
+    for i in range(0, M):
+        for j in range(0, M):
+            eigenfaces[:,i] += eig_vectors[i][j] * faces_minus_average[:,j]
+
+    # valitse lasketuista ominaiskasvoista k suurinta ominaisarvoa vastaavat
+    # eigenfaces = eigenfaces[:k] # ???
+
+    #return training_images
+    return eigenfaces[:,indx]
+
+def get_images_with_mean_subtracted(images):
+    pass
