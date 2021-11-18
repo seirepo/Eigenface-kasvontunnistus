@@ -14,14 +14,14 @@ class TestOperations(unittest.TestCase):
                             [ 21, 22]])
         self.mat5 = np.array([[1]])
 
-    def test_matrix_submatrices_to_colums_returns_matrix_with_correct_size(self):
+    def test_matrix_submatrices_to_columns_returns_matrix_with_correct_size(self):
         test_matrix = np.array([ self.mat1, self.mat2, self.mat3 ])
-        result = op.matrix3d_submatrices_to_colums(test_matrix)
+        result = op.matrix3d_submatrices_to_columns(test_matrix)
         self.assertEqual(result.shape, (6, 3))
 
-    def test_matrix_submatrices_to_colums_returns_matrix_with_submatrices_as_columns(self):
+    def test_matrix_submatrices_to_columns_returns_matrix_with_submatrices_as_columns(self):
         test_matrix = np.array([ self.mat1, self.mat2, self.mat3 ])
-        result = op.matrix3d_submatrices_to_colums(test_matrix)
+        result = op.matrix3d_submatrices_to_columns(test_matrix)
         should_be = np.array([[1,2,3,4,5,6],[7,8,9,10,11,12],[13,14,15,16,17,18]]).T
 
         self.assertEqual(result.shape, should_be.shape)

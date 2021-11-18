@@ -3,7 +3,7 @@ import numpy as np
 def sum_matrices(a, b):
     return a + b
 
-def matrix3d_submatrices_to_colums(im_set_matrix):
+def matrix3d_submatrices_to_columns(im_set_matrix):
     """
     Function to turn n*n matrices in an matrix
     to column vectors of length n*n
