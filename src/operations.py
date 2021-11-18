@@ -26,15 +26,3 @@ def matrix3d_submatrices_to_colums(im_set_matrix):
         result[:,i] = im_set_matrix[i].flatten()
 
     return result
-
-def matrix2d_to_column_vector(im_matrix):
-    """Static function to turn 2-dim np.arrays to a vector.
-    Probably not necessary
-
-    Args:
-        im_matrix (np.array): 2-dim np.array
-
-    Returns:
-        np.array: given arg as a column vector
-    """
-    return np.array([im_matrix.flatten()]).T
