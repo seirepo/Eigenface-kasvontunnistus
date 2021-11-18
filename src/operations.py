@@ -44,20 +44,12 @@ def calculate_eigenfaces(training_images, k):
 
     # laske kuvien keskiarvo ja vähennä se niistä
     average_face = np.mean(training_images, axis=1).reshape((-1, 1))
-    #print("keskiarvo: ", self.average_face, self.average_face.shape)
-    #Individual.show_images(self.average_face)
 
     faces_minus_average = np.subtract(training_images, average_face)
-    #print("kasvot joista vähennetty keskiarvo: ", faces_minus_average.shape)
-    #Individual.show_images(faces_minus_average)
 
     # laske apumatriisi ja sen ominaisvektorit
     L = np.matmul(faces_minus_average.T, faces_minus_average)
     vals, eig_vectors = np.linalg.eig(L)
-
-    # joku tarkistus sille että k on järkevä (0 < k < len(vects))
-    #if k > len(vals) - 1:
-    #    raise Exception(f"calculate_eigenfaces: illegal argument {k}")
 
     # järjestä ominaisarvot laskevaan järjestykseen
     indx = vals.argsort()[::-1]
