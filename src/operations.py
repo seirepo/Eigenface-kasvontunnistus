@@ -1,6 +1,6 @@
 import numpy as np
 
-def matrix3d_submatrices_to_columns(im_set_matrix):
+def images_to_vectors(im_set_matrix):
     """
     If the image set is given as a matrix containing k images as nxm matrices,
     this function returns a 2-dimensional (nxm)xk-matrix containing the images

@@ -16,11 +16,11 @@ class TestOperations(unittest.TestCase):
         self.test_matrix = np.array([ self.mat1, self.mat2, self.mat3 ])
 
     def test_matrix_submatrices_to_columns_returns_matrix_with_correct_size(self):
-        result = op.matrix3d_submatrices_to_columns(self.test_matrix)
+        result = op.images_to_vectors(self.test_matrix)
         self.assertEqual(result.shape, (6, 3))
 
     def test_matrix_submatrices_to_columns_returns_matrix_with_submatrices_as_columns(self):
-        result = op.matrix3d_submatrices_to_columns(self.test_matrix)
+        result = op.images_to_vectors(self.test_matrix)
         should_be = np.array([[1,2,3,4,5,6],[7,8,9,10,11,12],[13,14,15,16,17,18]]).T
 
         self.assertEqual(result.shape, should_be.shape)
@@ -28,9 +28,9 @@ class TestOperations(unittest.TestCase):
 
     def test_matrix_submatrices_to_columns_raises_error(self):
         self.assertRaises(ValueError,
-            op.matrix3d_submatrices_to_columns, self.mat1)
+            op.images_to_vectors, self.mat1)
         self.assertRaises(ValueError,
-            op.matrix3d_submatrices_to_columns, np.array([self.test_matrix]))
+            op.images_to_vectors, np.array([self.test_matrix]))
 
     def test_calculate_eigenface_returns_eigenface_matrix_of_correct_shape(self):
         result1 = op.calculate_eigenfaces(self.mat1)

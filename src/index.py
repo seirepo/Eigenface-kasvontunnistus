@@ -35,7 +35,7 @@ def main():
     #Individual.show_images(test_individual.test_set)
     #test_individual.calculate_eigenfaces()
 
-    images = op.matrix3d_submatrices_to_columns(individuals[0])
+    images = op.images_to_vectors(individuals[0])
     eigenfaces = op.calculate_eigenfaces(images)
 
     show_images(images)
