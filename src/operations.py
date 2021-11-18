@@ -27,3 +27,16 @@ def matrix3d_submatrices_to_columns(im_set_matrix):
         result[:,i] = im_set_matrix[i].flatten()
 
     return result
+
+def calculate_eigenfaces(training_images, k):
+    """Calculates and returns k eigenfaces with the largest eigenvalue of a
+    given image set
+
+    Args:
+        training_images (np.array): training set images
+        k (int): number of eigenfaces to return
+
+    Returns:
+        np.array: k eigenfaces in an array
+    """
+    return training_images
