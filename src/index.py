@@ -36,7 +36,7 @@ def main():
     #test_individual.calculate_eigenfaces()
 
     images = op.matrix3d_submatrices_to_columns(individuals[0])
-    eigenfaces = op.calculate_eigenfaces(images,5)
+    eigenfaces = op.calculate_eigenfaces(images)
 
     show_images(images)
     print(eigenfaces.shape)
@@ -47,6 +47,9 @@ def main():
 
     show_images(asd)
 
+    test = np.array([[1, 1], [2, 0]])
+    res = op.calculate_eigenfaces(test, 2)
+    print(res)
 
 def show_images(images):
     """
