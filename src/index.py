@@ -1,7 +1,7 @@
-import numpy as np
-from matplotlib import pyplot as plot
 from pathlib import Path
 import os
+import numpy as np
+from matplotlib import pyplot as plot
 from individual import Individual
 import operations as op
 
