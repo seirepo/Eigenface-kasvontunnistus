@@ -5,14 +5,15 @@ def sum_matrices(a, b):
 
 def matrix3d_submatrices_to_columns(im_set_matrix):
     """
-    Function to turn n*n matrices in an matrix
-    to column vectors of length n*n
+    If the image set is given as a matrix containing k images as nxm matrices,
+    this function returns a 2-dimensional (nxm)xk-matrix containing the images
+    flattened as column vectors
 
     Args:
-        im_set_matrix (np.array): 3-dim np.array containing images as np.array
+        im_set_matrix (np.array): 3-dim np.array containing images as np.arrays
 
     Raises:
-        ValueError: if arg is not a 3-dim np.array
+        ValueError: if given arg is not a 3-dim np.array
 
     Returns:
         np.array: array containing images as column vectors
