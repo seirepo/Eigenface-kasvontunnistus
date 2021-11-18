@@ -3,6 +3,7 @@ from matplotlib import pyplot as plot
 from pathlib import Path
 import os
 from individual import Individual
+import operations as op
 
 def main():
     abspath = os.path.abspath(__file__)
@@ -34,7 +35,11 @@ def main():
     #Individual.show_images(test_individual.test_set)
     test_individual.calculate_eigenfaces()
 
+    a = np.array([1,2,3])
+    b = np.array([1,1,1])
 
+    sum = op.sum_matrices(a, b)
+    print(sum)
 
 if __name__ == "__main__":
     main()
