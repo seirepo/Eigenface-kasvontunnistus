@@ -1,8 +1,5 @@
 import numpy as np
 
-def sum_matrices(a, b):
-    return a + b
-
 def matrix3d_submatrices_to_columns(im_set_matrix):
     """
     If the image set is given as a matrix containing k images as nxm matrices,
