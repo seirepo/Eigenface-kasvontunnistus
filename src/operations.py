@@ -50,7 +50,7 @@ def calculate_eigenfaces(training_images): #k):
 
     # laske apumatriisi ja sen ominaisvektorit
     L = np.matmul(faces_minus_average.T, faces_minus_average)
-    vals, vects = np.linalg.eig(L)
+    vals, eig_vectors = np.linalg.eig(L)
 
     # joku tarkistus sille että k on järkevä (0 < k < len(vects))
     #if k > len(vals) - 1:
@@ -58,9 +58,6 @@ def calculate_eigenfaces(training_images): #k):
 
     # järjestä ominaisarvot laskevaan järjestykseen
     indx = vals.argsort()[::-1]
-    # tallenna vektorit muuttujaan eig_vectors suurimman ominaisarvon
-    # mukaisessa järjestyksessä
-    eig_vectors = vects
 
     # laske apumatriisin ominaisvektorien avulla kuvamatriisin ominaisvektorit
     eigenfaces = np.zeros((4096, 10))
