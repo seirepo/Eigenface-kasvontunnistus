@@ -42,9 +42,10 @@ def main():
     #print(sum)
 
     images = op.matrix3d_submatrices_to_columns(individuals[0])
-    eigenfaces = op.calculate_eigenfaces(images)
+    eigenfaces = op.calculate_eigenfaces(images,5)
 
     show_images(images)
+    print(eigenfaces.shape)
     show_images(eigenfaces)
 
     test = Individual(images)
@@ -57,7 +58,6 @@ def show_images(images):
     """
     Function to plot images
     """
-    #(rows, columns) = images.shape
     fig = plot.figure(figsize=(5, 5))
     columns = 5
     rows = 2
