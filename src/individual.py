@@ -7,19 +7,21 @@ class Individual:
     Class for one individual and their images as column vectors
     in matrix images_set
     """
-    def __init__(self, im_set_matrix):
+    def __init__(self, images, eigenfaces=None, id=None):
         """Constructor
 
         Args:
             im_set_matrix (np.array): np.array containing images
             of the person as np.arrays
         """
-        self.images_set = op.matrix3d_submatrices_to_colums(im_set_matrix)
-        self.training_set = None
-        self.test_set = None
-        self.average_face = None
+        self.images_set = images #op.matrix3d_submatrices_to_colums(im_set_matrix)
+        self.eigenfaces = eigenfaces
+        self.id = id
+        #self.training_set = None
+        #self.test_set = None
+        #self.average_face = None
 
-    def calculate_eigenfaces(self):
+    def calculate_eigenfaces1(self):
         # valitse kuvat training settiin
         self.training_set = self.images_set[:,:8]
         self.test_set = self.images_set[:,8:10]
@@ -43,30 +45,20 @@ class Individual:
         for i in range(0, M):
             for j in range(0, M):
                 eigenfaces[:,i] += v[i][j] * faces_minus_average[:,j]
+        
+        return eigenfaces
+        #self.show_images(eigenfaces)
 
-        self.show_images(eigenfaces)
+    def calculate_eigenfaces(self):
+        self.average_face = np.mean(self.images_set, axis=1).reshape((-1, 1))
+        faces_minus_average = np.subtract(self.images_set, self.average_face)
 
-    @staticmethod
-    def show_images(images):
-        """
-        Function to plot images
-        """
-        #(rows, columns) = images.shape
-        fig = plot.figure(figsize=(5, 5))
-        columns = 5
-        rows = 2
-        print(images[:,0])
-        for i in range(images.shape[1]):
-            fig.add_subplot(rows, columns, i+1)
-            im_vector = images[:,i]
-            im_matrix = im_vector.reshape((64, 64))
-            plot.imshow(im_matrix, cmap="Greys_r")
-        plot.show()
+        L = np.matmul(faces_minus_average.T, faces_minus_average)
+        v = np.linalg.eig(L)[1]
+        eigenfaces = np.zeros((4096, 10))
+        M = 10
+        for i in range(0, M):
+            for j in range(0, M):
+                eigenfaces[:,i] += v[i][j] * faces_minus_average[:,j]
 
-        #fig = plot.figure(figsize=(5, 5))
-        #columns = 5
-        #rows = 2
-        #for i in range(1, columns*rows +1):
-        #    fig.add_subplot(rows, columns, i)
-        #    plot.imshow(self.im_matrix_array[i-1], cmap="Greys_r")
-        #plot.show()
+        return eigenfaces
