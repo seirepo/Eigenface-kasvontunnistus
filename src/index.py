@@ -35,12 +35,6 @@ def main():
     #Individual.show_images(test_individual.test_set)
     #test_individual.calculate_eigenfaces()
 
-    a = np.array([1,2,3])
-    b = np.array([1,1,1])
-
-    sum = op.sum_matrices(a, b)
-    #print(sum)
-
     images = op.matrix3d_submatrices_to_columns(individuals[0])
     eigenfaces = op.calculate_eigenfaces(images,5)
 
