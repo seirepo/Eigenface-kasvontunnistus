@@ -39,8 +39,11 @@ def calculate_eigenfaces(training_images, k):
     Returns:
         np.array: k eigenfaces in an array
     """
-    if k > training_images.shape[1] - 1:
-        raise Exception(f"Cannot return more eigenfaces than images: {k} > {training_images.shape[1]}")
+
+    im_count = training_images.shape[1]
+
+    if k > im_count - 1:
+        raise Exception(f"Cannot return more eigenfaces than images: {k} > {im_count}")
 
     # laske kuvien keskiarvo ja vähennä se niistä
     average_face = np.mean(training_images, axis=1).reshape((-1, 1))
@@ -48,17 +51,17 @@ def calculate_eigenfaces(training_images, k):
     faces_minus_average = np.subtract(training_images, average_face)
 
     # laske apumatriisi ja sen ominaisvektorit
-    L = np.matmul(faces_minus_average.T, faces_minus_average)
-    vals, eig_vectors = np.linalg.eig(L)
+    ATA = np.matmul(faces_minus_average.T, faces_minus_average)
+    vals, eig_vectors = np.linalg.eig(ATA)
 
     # järjestä ominaisarvot laskevaan järjestykseen
     indx = vals.argsort()[::-1]
 
     # laske apumatriisin ominaisvektorien avulla kuvamatriisin ominaisvektorit
-    eigenfaces = np.zeros((4096, 10))
-    M = 10
-    for i in range(0, M):
-        for j in range(0, M):
+    eigenfaces = np.zeros((4096, im_count))
+
+    for i in range(0, im_count):
+        for j in range(0, im_count):
             eigenfaces[:,i] += eig_vectors[i][j] * faces_minus_average[:,j]
 
     # valitse lasketuista ominaiskasvoista k suurinta ominaisarvoa vastaavat
