@@ -25,9 +25,9 @@ def matrix3d_submatrices_to_columns(im_set_matrix):
 
     return result
 
-def calculate_eigenfaces(training_images, k):
+def calculate_eigenfaces(training_images, k=-1):
     """Calculates and returns k eigenfaces with the largest eigenvalue of a
-    given image set
+    given image set. If k is not given, every eigenface is returned
 
     Args:
         training_images (np.array): training set images
@@ -41,6 +41,9 @@ def calculate_eigenfaces(training_images, k):
 
     if k > im_count - 1:
         raise Exception(f"Cannot return more eigenfaces than images: {k} > {im_count}")
+
+    if k < 0:
+        k = im_count
 
     # laske kuvien keskiarvo ja vähennä se niistä
     average_face = np.mean(training_images, axis=1).reshape((-1, 1))
