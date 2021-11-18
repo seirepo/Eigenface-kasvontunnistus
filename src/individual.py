@@ -1,5 +1,6 @@
 from matplotlib import pyplot as plot
 import numpy as np
+import operations as op
 
 class Individual:
     """
@@ -13,48 +14,10 @@ class Individual:
             im_set_matrix (np.array): np.array containing images
             of the person as np.arrays
         """
-        self.images_set = Individual.matrix3d_submatrices_to_colums(im_set_matrix)
+        self.images_set = op.matrix3d_submatrices_to_colums(im_set_matrix)
         self.training_set = None
         self.test_set = None
         self.average_face = None
-
-    @staticmethod
-    def matrix3d_submatrices_to_colums(im_set_matrix):
-        """
-        Static function to turn n*n image np.arrays in an np.array
-        to column vectors of length n*n
-
-        Args:
-            im_set_matrix (np.array): 3-dim np.array containing images as np.array
-
-        Raises:
-            ValueError: if arg is not a 3-dim np.array
-
-        Returns:
-            np.array: array containing images as column vectors
-        """
-        if im_set_matrix.ndim != 3:
-            raise ValueError("invalid shape: " + str(im_set_matrix.shape))
-        (count, row, col) = im_set_matrix.shape
-        result = np.empty((row*col, count))
-
-        for i in range(0, count):
-            result[:,i] = im_set_matrix[i].flatten()
-
-        return result
-
-    @staticmethod
-    def matrix2d_to_column_vector(im_matrix):
-        """Static function to turn 2-dim np.arrays to a vector.
-        Probably not necessary
-
-        Args:
-            im_matrix (np.array): 2-dim np.array
-
-        Returns:
-            np.array: given arg as a column vector
-        """
-        return np.array([im_matrix.flatten()]).T
 
     def calculate_eigenfaces(self):
         # valitse kuvat training settiin
