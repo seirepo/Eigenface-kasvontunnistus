@@ -37,12 +37,12 @@ def calculate_eigenfaces(training_images, k=-1):
         np.array: k eigenfaces in an array
     """
 
-    im_count = training_images.shape[1]
+    im_len, im_count = training_images.shape
 
-    if k > im_count - 1:
+    if k > im_count:
         raise Exception(f"Cannot return more eigenfaces than images: {k} > {im_count}")
 
-    if k < 0:
+    if k <= 0:
         k = im_count
 
     # laske kuvien keskiarvo ja vähennä se niistä
@@ -58,7 +58,7 @@ def calculate_eigenfaces(training_images, k=-1):
     indx = vals.argsort()[::-1]
 
     # laske apumatriisin ominaisvektorien avulla kuvamatriisin ominaisvektorit
-    eigenfaces = np.zeros((4096, im_count))
+    eigenfaces = np.zeros((im_len, im_count))
 
     for i in range(0, im_count):
         for j in range(0, im_count):
