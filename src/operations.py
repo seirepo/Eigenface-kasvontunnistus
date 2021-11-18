@@ -66,6 +66,3 @@ def calculate_eigenfaces(training_images, k=-1):
 
     # valitse lasketuista ominaiskasvoista k suurinta ominaisarvoa vastaavat
     return eigenfaces[:,indx][:,:k]
-
-def get_images_with_mean_subtracted(images):
-    pass
