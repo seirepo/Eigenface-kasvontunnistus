@@ -1,6 +1,4 @@
-from matplotlib import pyplot as plot
 import numpy as np
-import operations as op
 
 class Individual:
     """
@@ -20,8 +18,8 @@ class Individual:
 
     # for testing only
     def calculate_eigenfaces(self):
-        self.average_face = np.mean(self.images_set, axis=1).reshape((-1, 1))
-        faces_minus_average = np.subtract(self.images_set, self.average_face)
+        average_face = np.mean(self.images_set, axis=1).reshape((-1, 1))
+        faces_minus_average = np.subtract(self.images_set, average_face)
 
         L = np.matmul(faces_minus_average.T, faces_minus_average)
         v = np.linalg.eig(L)[1]
