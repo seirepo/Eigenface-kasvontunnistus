@@ -1,11 +1,13 @@
 from pathlib import Path
 import os
+import random
 import numpy as np
 from matplotlib import pyplot as plot
 from individual import Individual
 import operations as op
 
 def main():
+    # ladataan aineisto
     abspath = os.path.abspath(__file__)
     path = Path(abspath)
     #print(list(path.parents))
@@ -15,41 +17,21 @@ def main():
 
     images_target = np.load(target_path)
     images = np.load(im_path)
-    #plot.imshow(images[1], cmap="Greys_r")
-    #plot.show()
 
+    # tallennetaan data individuals-listaan, toistaiseksi vain henkilö jonka
+    # target = 0
     individuals = []
     for i in range(0,40):
-        individuals.append(images[np.where(images_target==0)])
+        individuals.append(images[np.where(images_target==i)])
 
-    #print(individuals[0].shape)
-    #test_individual = Individual(individuals[0])
-    #print(type(individuals[0])) # numpy.ndarray
-    #print("testihenkilön image set: ", test_individual.images_set.shape)
-    #Individual.show_images(test_individual.images_set)
-
-    #print("testi ja training set")
-    #test_individual.calculate_eigenfaces()
-    #print(test_individual.images_set.shape)
-    #Individual.show_images(test_individual.training_set)
-    #Individual.show_images(test_individual.test_set)
-    #test_individual.calculate_eigenfaces()
-
+    # tallennetaan ensimmäisen henkilöt kuvat ja lasketaan niistä eigenfacet
     images = op.images_to_vectors(individuals[0])
-    eigenfaces = op.calculate_eigenfaces(images)
 
-    show_images(images)
-    print(eigenfaces.shape)
-    show_images(eigenfaces)
+    print(len(individuals))
+    #test1(images)
 
-    test = Individual(images)
-    asd = test.calculate_eigenfaces()
+    random.seed(2)
 
-    show_images(asd)
-
-    test = np.array([[1, 1], [2, 0]])
-    res = op.calculate_eigenfaces(test, 2)
-    print(res)
 
 def show_images(images):
     """
@@ -58,7 +40,7 @@ def show_images(images):
     fig = plot.figure(figsize=(5, 5))
     columns = 5
     rows = 2
-    print(images[:,0])
+    #print(images[:,0])
     for i in range(images.shape[1]):
         fig.add_subplot(rows, columns, i+1)
         im_vector = images[:,i]
@@ -74,6 +56,54 @@ def show_images(images):
     #    plot.imshow(self.im_matrix_array[i-1], cmap="Greys_r")
     #plot.show()
 
+def test1(images):
+    random.seed(10)
+
+    #valitaan kuvista 80 % training settiin ja lasketaan niille eigenfacet
+    idx = range(len(images.T))
+    indices = random.sample(idx, 8)
+    training_images = images[:,indices]
+    #print("valitut indeksit: ", indices)
+    im_count = len(training_images.T)
+    #print("kuvia: ", im_count)
+    training1 = training_images[:,:im_count//2]
+    training2 = training_images[:,im_count//2:]
+    
+    # alkeellinen testi että onnistui
+    print(training1.shape, training2.shape)
+    print((training1 == training_images[:,:4]).all())
+    print((training2 == training_images[:,4:]).all())
+
+    eigenfaces1 = op.calculate_eigenfaces(training1, 2)
+    mean1 = op.get_average_face(training1)
+    eigenfaces2 = op.calculate_eigenfaces(training2, 2)
+    mean2 = op.get_average_face(training2)
+
+    # projisoidaan joku training setin kuva noille
+    sel = training2[:,2].reshape((-1,1))
+    eig1 = eigenfaces2[:,0]
+    eig2 = eigenfaces2[:,1]
+    print("eigit: ", eig1.shape, eig2.shape)
+    print("valittu & mean: ", sel.shape, mean2.shape)
+    diff = np.subtract(sel, mean2)
+    print("erotus: ", diff.shape, diff[:5])
+    a = np.matmul(eig1, diff)
+    b = np.matmul(eig2, diff)
+    print(a, b)
+    coeffs = np.array([a,b])
+    res = a*eig1 + b*eig2
+    res = res.reshape((-1,1))
+    print(res.shape)
+    #test = np.array([a1, b1]).T
+    #print(test[:5,:], a1[:5], b1[:5])
+    final = mean2 + res
+    print(f"{final[3]} = {mean2[3]} + {res[3]}")
+
+    # näytetään tulos
+    #show_images(eigenfaces1)
+    #show_images(np.concatenate((eigenfaces1, training1), axis=1))
+    show_images(eigenfaces2)
+    show_images(np.concatenate((eigenfaces2, training2, res, final), axis=1))
 
 if __name__ == "__main__":
     main()
