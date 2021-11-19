@@ -66,3 +66,6 @@ def calculate_eigenfaces(training_images, k=-1):
 
     # valitse lasketuista ominaiskasvoista k suurinta ominaisarvoa vastaavat
     return eigenfaces[:,indx][:,:k]
+
+def get_average_face(training_images):
+    return np.mean(training_images, axis=1).reshape((-1,1))
