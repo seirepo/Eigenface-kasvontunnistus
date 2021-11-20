@@ -6,7 +6,7 @@ class Individual:
     Class for one individual and their images as column vectors
     in matrix images_set
     """
-    def __init__(self, images, id=None, eigenfaces=None):
+    def __init__(self, id, images):
         """Constructor
 
         Args:
@@ -14,9 +14,12 @@ class Individual:
             of the person as np.arrays
         """
         self.images = images
-        #self.training_set = ...
-        #self.eigenfaces = op.calculate_eigenfaces(self.images)
+        self.training_set = np.array([]) # len = 0 jos ei alustettu
+        self.eigenfaces = np.array([]) # len = 0
         self.id = id
+
+    def get_images(self):
+        return self.images
 
     # for testing only
     def calculate_eigenfaces(self):
