@@ -1,6 +1,3 @@
-import numpy as np
-import operations as op
-
 class Individual:
     """
     Class for one individual and their images as column vectors
