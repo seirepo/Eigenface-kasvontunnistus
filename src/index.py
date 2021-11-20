@@ -44,8 +44,7 @@ def show_images(images):
     im_count = images.shape[1]
     fig = plot.figure(figsize=(5,5))
     columns = 10
-    rows = im_count//10
-    #print(images[:,0])
+    rows = im_count//10+1
     for i in range(images.shape[1]):
         fig.add_subplot(rows, columns, i+1)
         im_vector = images[:,i]
