@@ -25,7 +25,11 @@ def main():
         individuals.append(images[np.where(images_target==i)])
 
     # tallennetaan ensimmäisen henkilöt kuvat ja lasketaan niistä eigenfacet
-    images = op.images_to_vectors(individuals[0])
+    #images = op.images_to_vectors(individuals[0])
+    people = []
+
+    for i in individuals:
+        people.append(i)
 
     print(len(individuals))
     #test1(images)
@@ -98,6 +102,7 @@ def test1(images):
     #print(test[:5,:], a1[:5], b1[:5])
     final = mean2 + res
     print(f"{final[3]} = {mean2[3]} + {res[3]}")
+    #print("dot product: ", np.dot(eig1, eig2))
 
     # näytetään tulos
     #show_images(eigenfaces1)
