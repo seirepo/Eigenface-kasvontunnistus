@@ -21,20 +21,20 @@ def main():
     # tallennetaan data individuals-listaan individual-olioina
     individuals = []
     for id in range(0,40):
-        #individuals.append(images[np.where(images_target==i)])
         ims = op.images_to_vectors(images[np.where(images_target==id)])
         individuals.append(Individual(id, ims))
 
+    # kerätään kaikkien kuvat yhteen matriisiin niin ne voi printtaa jos haluaa
     all_images = individuals[0].get_images()
     for i in range(1,len(individuals)):
         all_images = np.concatenate([all_images, individuals[i].get_images()], axis=1)
 
-    eigenfaces = op.calculate_eigenfaces(all_images, 10)
+    # kerätään training- ja testisetti joissa on kaikkien training- ja testikuvat
+    training_images, test_images = op.get_all_training_and_test_images(individuals)
 
-    print(eigenfaces.shape)
-    show_images(eigenfaces)
-
-    random.seed(2)
+    # laskeaan training-setistä keskiarvo ja eigenfacet
+    average_face = op.get_average_face(training_images)
+    eigenfaces = op.calculate_eigenfaces(training_images)
 
 
 def show_images(images):
