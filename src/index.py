@@ -67,6 +67,15 @@ def show_images(images):
 def test1(images):
     random.seed(10)
 
+    # tallennetaan data individuals-listaan, toistaiseksi vain henkilö jonka
+    # target = 0
+    #individuals = []
+    #for i in range(0,40):
+        #individuals.append(images[np.where(images_target==0)])
+
+    # tallennetaan ensimmäisen henkilöt kuvat ja lasketaan niistä eigenfacet
+    #images = op.images_to_vectors(individuals[0])
+
     #valitaan kuvista 80 % training settiin ja lasketaan niille eigenfacet
     idx = range(len(images.T))
     indices = random.sample(idx, 8)
