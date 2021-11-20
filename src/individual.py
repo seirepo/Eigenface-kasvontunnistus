@@ -1,19 +1,21 @@
 import numpy as np
+import operations as op
 
 class Individual:
     """
     Class for one individual and their images as column vectors
     in matrix images_set
     """
-    def __init__(self, images, eigenfaces=None, id=None):
+    def __init__(self, images, id=None, eigenfaces=None):
         """Constructor
 
         Args:
             im_set_matrix (np.array): np.array containing images
             of the person as np.arrays
         """
-        self.images_set = images
-        self.eigenfaces = eigenfaces
+        self.images = images
+        #self.training_set = ...
+        #self.eigenfaces = op.calculate_eigenfaces(self.images)
         self.id = id
 
     # for testing only
