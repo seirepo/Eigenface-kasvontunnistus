@@ -18,21 +18,21 @@ def main():
     images_target = np.load(target_path)
     images = np.load(im_path)
 
-    # tallennetaan data individuals-listaan, toistaiseksi vain henkilö jonka
-    # target = 0
+    # tallennetaan data individuals-listaan individual-olioina
     individuals = []
-    for i in range(0,40):
-        individuals.append(images[np.where(images_target==i)])
+    for id in range(0,40):
+        #individuals.append(images[np.where(images_target==i)])
+        ims = op.images_to_vectors(images[np.where(images_target==id)])
+        individuals.append(Individual(id, ims))
 
-    # tallennetaan ensimmäisen henkilöt kuvat ja lasketaan niistä eigenfacet
-    #images = op.images_to_vectors(individuals[0])
-    people = []
+    all_images = individuals[0].get_images()
+    for i in range(1,len(individuals)):
+        all_images = np.concatenate([all_images, individuals[i].get_images()], axis=1)
 
-    for i in individuals:
-        people.append(i)
+    eigenfaces = op.calculate_eigenfaces(all_images, 10)
 
-    print(len(individuals))
-    #test1(images)
+    print(eigenfaces.shape)
+    show_images(eigenfaces)
 
     random.seed(2)
 
