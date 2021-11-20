@@ -41,15 +41,19 @@ def show_images(images):
     """
     Function to plot images
     """
-    fig = plot.figure(figsize=(5, 5))
-    columns = 5
-    rows = 2
+    im_count = images.shape[1]
+    fig = plot.figure(figsize=(5,5))
+    columns = 10
+    rows = im_count//10
     #print(images[:,0])
     for i in range(images.shape[1]):
         fig.add_subplot(rows, columns, i+1)
         im_vector = images[:,i]
         im_matrix = im_vector.reshape((64, 64))
         plot.imshow(im_matrix, cmap="Greys_r")
+        plot.axis('off')
+
+    fig.tight_layout()
     plot.show()
 
     #fig = plot.figure(figsize=(5, 5))
