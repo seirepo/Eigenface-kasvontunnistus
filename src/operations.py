@@ -42,11 +42,10 @@ def calculate_eigenfaces(training_images, k=-1):
     if k > im_count:
         raise Exception(f"Cannot return more eigenfaces than images: {k} > {im_count}")
 
-    if k <= 0:
-        k = im_count
 
     # laske kuvien keskiarvo ja vähennä se niistä
-    average_face = np.mean(training_images, axis=1).reshape((-1, 1))
+    #average_face = np.mean(training_images, axis=1).reshape((-1, 1))
+    average_face = get_average_face(training_images)
 
     faces_minus_average = np.subtract(training_images, average_face)
 
