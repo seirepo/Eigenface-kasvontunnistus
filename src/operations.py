@@ -27,7 +27,8 @@ def images_to_vectors(im_set_matrix):
 
 def calculate_eigenfaces(training_images, k=-1):
     """Calculates and returns k eigenfaces with the largest eigenvalue of a
-    given image set. If k is not given, every eigenface is returned
+    given image set. If k is not given, then the number of eigenfaces
+    needed to represent 80 % of the total variance is returned
 
     Args:
         training_images (np.array): training set images
@@ -62,6 +63,18 @@ def calculate_eigenfaces(training_images, k=-1):
     for i in range(0, im_count):
         for j in range(0, im_count):
             eigenfaces[:,i] += eig_vectors[i][j] * faces_minus_average[:,j]
+
+    if k <= 0:
+        eigvals = sorted(vals.tolist())[::-1]
+        count = len(eigvals)
+        eigsum = sum(eigvals)
+        csum = 0
+        for i in range(0,count):
+            csum = csum + eigvals[i]
+            total_variance = csum / eigsum
+            if total_variance > 0.80:
+                k = i
+                break
 
     # valitse lasketuista ominaiskasvoista k suurinta ominaisarvoa vastaavat
     return eigenfaces[:,indx][:,:k]
