@@ -25,6 +25,16 @@ def images_to_vectors(im_set_matrix):
 
     return result
 
+def get_all_training_and_test_images(individuals):
+    training_images = individuals[0].get_training_images()
+    test_images = individuals[0].get_test_images()
+
+    for i in range(1, len(individuals)):
+        training_images = np.concatenate([training_images, individuals[i].get_training_images()], axis=1)
+        test_images = np.concatenate([test_images, individuals[i].get_test_images()], axis=1)
+
+    return (training_images, test_images)
+
 def calculate_eigenfaces(training_images, k=-1):
     """Calculates and returns k eigenfaces with the largest eigenvalue of a
     given image set. If k is not given, then the number of eigenfaces
