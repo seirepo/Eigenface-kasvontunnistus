@@ -14,12 +14,21 @@ class Individual:
             of the person as np.arrays
         """
         self.images = images
-        self.training_set = np.array([]) # len = 0 jos ei alustettu
+        self.training_images, self.test_images = self.train_test_split() #np.array([]) # len = 0 jos ei alustettu
         self.eigenfaces = np.array([]) # len = 0
         self.id = id
 
     def get_images(self):
         return self.images
+
+    def train_test_split(self):
+        return (self.images[:,:8], self.images[:,8:])
+
+    def get_training_images(self):
+        return self.training_images
+
+    def get_test_images(self):
+        return self.test_images
 
     # for testing only
     def calculate_eigenfaces(self):
