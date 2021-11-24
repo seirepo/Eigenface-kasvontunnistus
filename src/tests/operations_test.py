@@ -34,9 +34,9 @@ class TestOperations(unittest.TestCase):
 
     def test_calculate_eigenface_returns_eigenface_matrix_of_correct_shape(self):
         #result1 = op.calculate_eigenfaces(self.mat1)
-        result2 = op.calculate_eigenvectors(self.mat1, 1)
+        result2 = op.calculate_eigenfaces(self.mat1, 1)
         #result3 = op.calculate_eigenfaces(self.mat1, 0)
-        result4 = op.calculate_eigenvectors(self.mat4, 2)
+        result4 = op.calculate_eigenfaces(self.mat4, 2)
         #result5 = op.calculate_eigenfaces(self.mat5)
         #result6 = op.calculate_eigenfaces(self.mat5, -5)
 
@@ -49,9 +49,9 @@ class TestOperations(unittest.TestCase):
 
     def test_calculate_eigenfaces_throws_exception(self):
         self.assertRaises(Exception,
-            op.calculate_eigenvectors, self.mat1, 15)
+            op.calculate_eigenfaces, self.mat1, 15)
         self.assertRaises(Exception,
-            op.calculate_eigenvectors, self.mat4, 3)
+            op.calculate_eigenfaces, self.mat4, 3)
 
     def test_get_average_face_returns_average_correctly(self):
         res = op.get_average_face(self.mat1)

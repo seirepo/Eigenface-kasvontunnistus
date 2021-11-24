@@ -34,7 +34,7 @@ def main():
 
     # laskeaan training-setistä keskiarvo ja eigenfacet
     average_face = op.get_average_face(training_images)
-    eigenfaces = op.calculate_eigenvectors(training_images)
+    eigenfaces = op.calculate_eigenfaces(training_images)
 
 
 def show_images(images):
@@ -90,9 +90,9 @@ def test1(images):
     print((training1 == training_images[:,:4]).all())
     print((training2 == training_images[:,4:]).all())
 
-    eigenfaces1 = op.calculate_eigenvectors(training1, 2)
+    eigenfaces1 = op.calculate_eigenfaces(training1, 2)
     mean1 = op.get_average_face(training1)
-    eigenfaces2 = op.calculate_eigenvectors(training2, 2)
+    eigenfaces2 = op.calculate_eigenfaces(training2, 2)
     mean2 = op.get_average_face(training2)
 
     # projisoidaan joku training setin kuva noille
