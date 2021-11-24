@@ -34,9 +34,9 @@ def main():
 
     # laskeaan training-setistä keskiarvo ja eigenfacet
     average_face = op.get_average_face(training_images)
-    eigenfaces = op.calculate_eigenfaces(training_images, 5)
-    print(eigenfaces[:10,:3])
-    show_images(eigenfaces)
+    eigenfaces = op.calculate_eigenfaces(training_images)
+    print(eigenfaces.shape)
+    show_images(eigenfaces[:,:20])
 
     # testi form_eigenfaces varten
     rows, cols = eigenfaces.shape
