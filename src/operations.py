@@ -87,7 +87,13 @@ def calculate_eigenfaces(training_images, k=-1):
                 break
 
     # valitse lasketuista ominaiskasvoista k suurinta ominaisarvoa vastaavat
-    return eigenfaces[:,indx][:,:k]
+    selected = eigenfaces[:,indx][:,:k]
+    final_eigenfaces = form_eigenfaces(training_images, selected)
+    return final_eigenfaces
+    #return eigenfaces[:,indx][:,:k]
 
 def get_average_face(training_images):
     return np.mean(training_images, axis=1).reshape((-1,1))
+
+def form_eigenfaces(training_images, eigenvectors):
+    pass
