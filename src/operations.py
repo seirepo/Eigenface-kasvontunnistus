@@ -67,12 +67,7 @@ def calculate_eigenfaces(training_images, k=-1):
     # järjestä ominaisarvot laskevaan järjestykseen
     indx = vals.argsort()[::-1]
 
-    # laske apumatriisin ominaisvektorien avulla kuvamatriisin ominaisvektorit
-    eigenfaces = np.zeros((im_len, im_count))
-
-    for i in range(0, im_count):
-        for j in range(0, im_count):
-            eigenfaces[:,i] += eig_vectors[i][j] * faces_minus_average[:,j]
+    eigenfaces = get_eigenfaces(faces_minus_average, eig_vectors)
 
     if k <= 0:
         eigvals = sorted(vals.tolist())[::-1]
@@ -87,13 +82,16 @@ def calculate_eigenfaces(training_images, k=-1):
                 break
 
     # valitse lasketuista ominaiskasvoista k suurinta ominaisarvoa vastaavat
-    selected = eigenfaces[:,indx][:,:k]
-    final_eigenfaces = form_eigenfaces(training_images, selected)
-    return final_eigenfaces
-    #return eigenfaces[:,indx][:,:k]
+    return eigenfaces[:,indx][:,:k]
 
 def get_average_face(training_images):
     return np.mean(training_images, axis=1).reshape((-1,1))
 
-def form_eigenfaces(training_images, eigenvectors):
-    pass
+def get_eigenfaces(images, eigvecs):
+    eigenfaces = np.zeros(images.shape)
+    for i in range(0, images.shape[1]):
+        eigvec = eigvecs[:,i]
+        for j in range(0, images.shape[1]):
+            eigenfaces[:,i] += eigvec[j] * images[:,j]
+            #print(f"{i}, {j}: \t{eigvec[j]} * {images[:,j]} = {eigenfaces[:,i]}")
+    return eigenfaces
