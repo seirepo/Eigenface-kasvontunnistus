@@ -84,6 +84,15 @@ def show_images(images):
     #    plot.imshow(self.im_matrix_array[i-1], cmap="Greys_r")
     #plot.show()
 
+def calculate_eigfaces_using_cov_mat(training_images, average_face):
+    pass
+    # calculate eigenfaces using covariance matrix
+    #A = np.subtract(training_images, average_face)
+    #S = np.cov(A)
+    #vals, d = np.linalg.eig(S)
+    #ind = vals.argsort()[::-1]
+    #print(d.shape)
+
 def test1(images):
     random.seed(10)
 
