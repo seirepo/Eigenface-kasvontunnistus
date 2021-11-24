@@ -35,7 +35,7 @@ def get_all_training_and_test_images(individuals):
 
     return (training, test)
 
-def calculate_eigenfaces(training_images, k=-1):
+def calculate_eigenvectors(training_images, k=-1):
     """Calculates and returns k eigenfaces with the largest eigenvalue of a
     given image set. If k is not given, then the number of eigenfaces
     needed to represent 80 % of the total variance is returned
