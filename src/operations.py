@@ -94,3 +94,6 @@ def get_eigenfaces(images, eigvecs):
             eigenfaces[:,i] += eigvec[j] * images[:,j]
             #print(f"{i}, {j}: \t{eigvec[j]} * {images[:,j]} = {eigenfaces[:,i]}")
     return eigenfaces
+
+def get_coordinates_in_given_base(im, space):
+    pass
