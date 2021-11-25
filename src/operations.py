@@ -96,4 +96,8 @@ def get_eigenfaces(images, eigvecs):
     return eigenfaces
 
 def get_coordinates_in_given_base(im, space):
-    pass
+    ims = space.shape[1]
+    weights = np.zeros(ims)
+    for i in range(ims):
+        weights[i] = np.matmul(space[:,i], im)
+    return weights
