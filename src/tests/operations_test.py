@@ -66,3 +66,11 @@ class TestOperations(unittest.TestCase):
 
         self.assertEqual(result.shape, (3, 3))
         self.assertTrue((result == should_be).all())
+
+    def test_get_coordinates_in_given_base_returns_correct_coordinates(self):
+        im = np.array([3,0,-2])
+        space = np.array([[1,0,0],[0,1,0],[0,0,1]])
+        result = op.get_coordinates_in_given_base(im, space)
+        should_be = np.array([3,0,-2])
+
+        self.assertTrue((result == should_be).all())
