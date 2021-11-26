@@ -1,6 +1,5 @@
 from pathlib import Path
 import os
-import random
 import numpy as np
 from matplotlib import pyplot as plot, scale
 from individual import Individual
