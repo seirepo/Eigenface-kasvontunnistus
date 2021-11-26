@@ -64,6 +64,9 @@ def calculate_eigenfaces(training_images, k=-1):
     ATA = np.matmul(difference_faces.T, difference_faces)
     vals, eig_vectors = np.linalg.eig(ATA)
 
+    #if not (vals > 0).all():
+    #    raise Exception(f"A^TA of the given matrix \n {training_images} \n has eigenvalues <= 0: {vals}")
+
     # järjestä ominaisarvot laskevaan järjestykseen
     indx = vals.argsort()[::-1]
 
@@ -83,8 +86,13 @@ def calculate_eigenfaces(training_images, k=-1):
 
     # valitse lasketuista ominaiskasvoista k suurinta ominaisarvoa vastaavat
     selected = eigenfaces[:,indx][:,:k]
+
     # skaalaus välille 0..1
     scaled = np.interp(selected, (selected.min(), selected.max()), (0, 1))
+    #try:
+    #    scaled = np.interp(selected, (selected.min(), selected.max()), (0, 1))
+    #except ValueError:
+    #        print(f"skaalaus ei onnistunut, skaalattava matriisi {selected} on tyhjä (ei varmasti oo)")
     # ortonormalisointi
     result = np.linalg.qr(scaled)[0]
 
