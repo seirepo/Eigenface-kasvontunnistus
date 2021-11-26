@@ -13,6 +13,7 @@ class Individual:
         self.images = images
         self.training_images, self.test_images = self.train_test_split()
         self.id = id
+        self.projected_images = None
 
     def get_images(self):
         return self.images
@@ -25,3 +26,6 @@ class Individual:
 
     def get_test_images(self):
         return self.test_images
+
+    def set_projected_images(self, images):
+        self.projected_images = images
