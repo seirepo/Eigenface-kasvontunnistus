@@ -2,7 +2,7 @@ from pathlib import Path
 import os
 import random
 import numpy as np
-from matplotlib import pyplot as plot
+from matplotlib import pyplot as plot, scale
 from individual import Individual
 import operations as op
 
@@ -70,42 +70,6 @@ def main():
     plot.imshow(test_im_coord.reshape((64,64)), cmap="Greys_r")
     plot.show()
 
-    #print(test_im_coord[:10])
-    #plot.imshow(test_im_coord.reshape((64,64)), cmap="Greys_r")
-
-    #print(omega)
-
-    #test = np.zeros((4096,ims))
-
-    #for i in range(ims):
-    #    test[:,i] = omega[i] * scaled_eigenfaces[:,i]
-
-    #test = np.sum(test, axis=1)
-    #plot.imshow(test.reshape((64,64)), cmap="Greys_r")
-    #print(np.add(test, average_face.reshape((4096,))).shape)
-    #plot.imshow(np.add(test, average_face).reshape((64,64)), cmap="Greys_r")
-    #plot.show()
-
-    #projected = np.zeros(4096, ims)
-
-
-    # projisoidun kuvan näyttäminen
-    #test_im_p = np.zeros((4096,1))
-    #phases = np.zeros((4096,ims))
-    #print("phases koko: ", phases.shape)
-    #print("average_facen koko: ", average_face.reshape((4096,)).shape)
-    #average_face = average_face.reshape((4096,))
-    #plot.imshow(test_im_p.reshape((64,64)), cmap="Greys_r")
-    #for i in range(ims):
-    #    temp = weights[i] * scaled_eigenfaces[:,i] + average_face
-    #    phases[:,i] = temp
-
-    #plot.imshow(np.sum(phases, axis=1).reshape(64,64), cmap="Greys_r")
-    #plot.imshow(test_im_p.reshape((64,64)), cmap="Greys_r")
-    #plot.axis('off')
-    #plot.show()
-    #show_images(np.concatenate([test_im.reshape((4096,1)), test_im_p.reshape((4096,1))], axis=1))
-
 
 def show_images(images):
     """
@@ -119,19 +83,11 @@ def show_images(images):
         fig.add_subplot(rows, columns, i+1)
         im_vector = images[:,i]
         im_matrix = im_vector.reshape((64, 64))
-        plot.imshow(im_matrix, cmap="Greys_r")
+        plot.imshow(im_matrix, cmap="Greys_r")#, vmin=0, vmax=1.0)
         plot.axis('off')
 
     fig.tight_layout()
     plot.show()
-
-    #fig = plot.figure(figsize=(5, 5))
-    #columns = 5
-    #rows = 2
-    #for i in range(1, columns*rows +1):
-    #    fig.add_subplot(rows, columns, i)
-    #    plot.imshow(self.im_matrix_array[i-1], cmap="Greys_r")
-    #plot.show()
 
 def calculate_eigfaces_using_cov_mat(training_images, average_face):
     pass
