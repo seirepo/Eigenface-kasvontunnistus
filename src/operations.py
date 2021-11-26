@@ -37,8 +37,9 @@ def get_all_training_and_test_images(individuals):
 
 def calculate_eigenfaces(training_images, k=-1):
     """Calculates and returns k eigenfaces with the largest eigenvalue of a
-    given image set. If k is not given, then the number of eigenfaces
-    needed to represent 80 % of the total variance is returned
+    given image set, forming an orthonormal base.
+    If k is not given, then the number of eigenfaces needed to represent
+    97.5 % of the total variance is returned
 
     Args:
         training_images (np.array): training set images
@@ -81,7 +82,14 @@ def calculate_eigenfaces(training_images, k=-1):
                 break
 
     # valitse lasketuista ominaiskasvoista k suurinta ominaisarvoa vastaavat
-    return eigenfaces[:,indx][:,:k]
+    selected = eigenfaces[:,indx][:,:k]
+    # skaalaus välille 0..1
+    scaled = np.interp(selected, (selected.min(), selected.max()), (0, 1))
+    # ortonormalisointi
+    result = np.linalg.qr(scaled)[0]
+
+    return result
+
 
 def get_average_face(training_images):
     return np.mean(training_images, axis=1).reshape((-1,1))
