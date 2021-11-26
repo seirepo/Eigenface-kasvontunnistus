@@ -76,7 +76,7 @@ def calculate_eigenfaces(training_images, k=-1):
         for i in range(0,count):
             csum = csum + eigvals[i]
             total_variance = csum / eigsum
-            if total_variance > 0.80:
+            if total_variance > 0.975:
                 k = i
                 break
 
