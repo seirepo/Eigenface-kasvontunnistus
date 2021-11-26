@@ -33,25 +33,13 @@ def main():
     training_images, test_images = op.get_all_training_and_test_images(individuals)
 
     # laskeaan training-setistä keskiarvo ja eigenfacet
-    average_face = op.get_average_face(training_images)
     eigenfaces = op.calculate_eigenfaces(training_images)
-
-    scaled_eigenfaces = np.array(eigenfaces)
-
-    scaled_eigenfaces = np.interp(eigenfaces,(eigenfaces.min(), eigenfaces.max()), (0,1))
 
     # kuva joka projisoidaan
     test_im = training_images[:,0].reshape((4096,1))
 
     ims = eigenfaces.shape[1]
-    print(ims)
-
-    diff = np.subtract(test_im, average_face)
-    weights = op.get_coordinates_in_given_base(diff, scaled_eigenfaces)
-
-    weights = weights.reshape((-1,1))
-
-    test_eigenfaces = np.linalg.qr(scaled_eigenfaces)[0]
+    test_eigenfaces = eigenfaces
 
     test_im = training_images[:,74]
 
@@ -61,7 +49,6 @@ def main():
         mult = np.dot(test_im, test_eigenfaces[:,i])
         test_im_coord[:,i] = mult * test_eigenfaces[:,i]
 
-    print(test_im_coord[:10,:5])
     test_im_coord = np.sum(test_im_coord, axis=1)
     print(test_im_coord[:10])
 
