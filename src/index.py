@@ -35,12 +35,76 @@ def main():
     # laskeaan training-setistä keskiarvo ja eigenfacet
     average_face = op.get_average_face(training_images)
     eigenfaces = op.calculate_eigenfaces(training_images)
-    #print(eigenfaces.shape)
-    #show_images(eigenfaces[:,:20])
 
-    # kuvan projisointi
-    test_im = training_images[:,19].reshape((4096,1))
-    print(test_im.shape)
+    scaled_eigenfaces = np.array(eigenfaces)
+
+    scaled_eigenfaces = np.interp(eigenfaces,(eigenfaces.min(), eigenfaces.max()), (0,1))
+
+    # kuva joka projisoidaan
+    test_im = training_images[:,0].reshape((4096,1))
+
+    ims = eigenfaces.shape[1]
+    print(ims)
+
+    diff = np.subtract(test_im, average_face)
+    weights = op.get_coordinates_in_given_base(diff, scaled_eigenfaces)
+
+    weights = weights.reshape((-1,1))
+
+    test_eigenfaces = np.linalg.qr(scaled_eigenfaces)[0]
+
+    test_im = training_images[:,74]
+
+    test_im_coord = np.zeros((4096,ims))
+
+    for i in range(ims):
+        mult = np.dot(test_im, test_eigenfaces[:,i])
+        test_im_coord[:,i] = mult * test_eigenfaces[:,i]
+
+    print(test_im_coord[:10,:5])
+    test_im_coord = np.sum(test_im_coord, axis=1)
+    print(test_im_coord[:10])
+
+    plot.imshow(test_im.reshape((64,64)), cmap="Greys_r")
+    plot.show()
+    plot.imshow(test_im_coord.reshape((64,64)), cmap="Greys_r")
+    plot.show()
+
+    #print(test_im_coord[:10])
+    #plot.imshow(test_im_coord.reshape((64,64)), cmap="Greys_r")
+
+    #print(omega)
+
+    #test = np.zeros((4096,ims))
+
+    #for i in range(ims):
+    #    test[:,i] = omega[i] * scaled_eigenfaces[:,i]
+
+    #test = np.sum(test, axis=1)
+    #plot.imshow(test.reshape((64,64)), cmap="Greys_r")
+    #print(np.add(test, average_face.reshape((4096,))).shape)
+    #plot.imshow(np.add(test, average_face).reshape((64,64)), cmap="Greys_r")
+    #plot.show()
+
+    #projected = np.zeros(4096, ims)
+
+
+    # projisoidun kuvan näyttäminen
+    #test_im_p = np.zeros((4096,1))
+    #phases = np.zeros((4096,ims))
+    #print("phases koko: ", phases.shape)
+    #print("average_facen koko: ", average_face.reshape((4096,)).shape)
+    #average_face = average_face.reshape((4096,))
+    #plot.imshow(test_im_p.reshape((64,64)), cmap="Greys_r")
+    #for i in range(ims):
+    #    temp = weights[i] * scaled_eigenfaces[:,i] + average_face
+    #    phases[:,i] = temp
+
+    #plot.imshow(np.sum(phases, axis=1).reshape(64,64), cmap="Greys_r")
+    #plot.imshow(test_im_p.reshape((64,64)), cmap="Greys_r")
+    #plot.axis('off')
+    #plot.show()
+    #show_images(np.concatenate([test_im.reshape((4096,1)), test_im_p.reshape((4096,1))], axis=1))
 
 
 def show_images(images):
