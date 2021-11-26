@@ -33,17 +33,17 @@ def main():
     training_images, test_images = op.get_all_training_and_test_images(individuals)
 
     # laskeaan training-setistä keskiarvo ja eigenfacet
-    eigenfaces = op.calculate_eigenfaces(training_images)
+    eigenfaces = op.calculate_eigenfaces(training_images, 320)
 
     # kuva joka projisoidaan
     test_im = training_images[:,0].reshape((4096,1))
 
-    ims = eigenfaces.shape[1]
+    size, ims = eigenfaces.shape
     test_eigenfaces = eigenfaces
 
     test_im = training_images[:,74]
 
-    test_im_coord = np.zeros((4096,ims))
+    test_im_coord = np.zeros((size,ims))
 
     for i in range(ims):
         mult = np.dot(test_im, test_eigenfaces[:,i])
@@ -51,6 +51,9 @@ def main():
 
     test_im_coord = np.sum(test_im_coord, axis=1)
     print(test_im_coord[:10])
+    test2 = op.get_coordinates(test_im, eigenfaces)
+    print(test2[:10])
+    print(test_im[:10])
 
     plot.imshow(test_im.reshape((64,64)), cmap="Greys_r")
     plot.show()
