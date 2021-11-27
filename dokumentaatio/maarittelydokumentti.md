@@ -14,4 +14,5 @@ Projekti toteutetaan Pythonilla. Voin vertaisarvioda Javalla tehtyjä projekteja
 
 ## Lähteet
 M. Turk; A. Pentland (1991). "Eigenfaces for recognition" (PDF). Journal of Cognitive Neuroscience. 3 (1): 71–86. http://dx.doi.org/10.1162/jocn.1991.3.1.71
+
 Kuva-aineisto: 1992-1994, AT&T Laboratories Cambridge
