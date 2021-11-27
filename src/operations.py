@@ -54,20 +54,16 @@ def calculate_eigenfaces(training_images, k=-1):
     if k > im_count:
         raise Exception(f"Cannot return more eigenfaces than images: {k} > {im_count}")
 
-
-    # laske kuvien keskiarvo ja vähennä se niistä
     #average_face = np.mean(training_images, axis=1).reshape((-1, 1))
     average_face = get_average_face(training_images)
     difference_faces = np.subtract(training_images, average_face)
 
-    # laske apumatriisi ja sen ominaisvektorit
     ATA = np.matmul(difference_faces.T, difference_faces)
     vals, eig_vectors = np.linalg.eig(ATA)
 
     #if not (vals > 0).all():
     #    raise Exception(f"A^TA of the given matrix \n {training_images} \n has eigenvalues <= 0: {vals}")
 
-    # järjestä ominaisarvot laskevaan järjestykseen
     indx = vals.argsort()[::-1]
 
     eigenfaces = get_eigenfaces(difference_faces, eig_vectors)
@@ -84,16 +80,13 @@ def calculate_eigenfaces(training_images, k=-1):
                 k = i
                 break
 
-    # valitse lasketuista ominaiskasvoista k suurinta ominaisarvoa vastaavat
     selected = eigenfaces[:,indx][:,:k]
 
-    # skaalaus välille 0..1
     scaled = np.interp(selected, (selected.min(), selected.max()), (0, 1))
     #try:
     #    scaled = np.interp(selected, (selected.min(), selected.max()), (0, 1))
     #except ValueError:
     #        print(f"skaalaus ei onnistunut, skaalattava matriisi {selected} on tyhjä")
-    # ortonormalisointi
     result = np.linalg.qr(scaled)[0]
 
     return result
@@ -108,7 +101,6 @@ def get_eigenfaces(images, eigvecs):
         eigvec = eigvecs[:,i]
         for j in range(0, images.shape[1]):
             eigenfaces[:,i] += eigvec[j] * images[:,j]
-            #print(f"{i}, {j}: \t{eigvec[j]} * {images[:,j]} = {eigenfaces[:,i]}")
     return eigenfaces
 
 def get_coordinates(image, space):
