@@ -49,7 +49,7 @@ def calculate_eigenfaces(training_images, k=-1):
         np.array: k eigenfaces in an array
     """
 
-    im_len, im_count = training_images.shape
+    im_count = training_images.shape[1]
 
     if k > im_count:
         raise Exception(f"Cannot return more eigenfaces than images: {k} > {im_count}")
@@ -92,7 +92,7 @@ def calculate_eigenfaces(training_images, k=-1):
     #try:
     #    scaled = np.interp(selected, (selected.min(), selected.max()), (0, 1))
     #except ValueError:
-    #        print(f"skaalaus ei onnistunut, skaalattava matriisi {selected} on tyhjä (ei varmasti oo)")
+    #        print(f"skaalaus ei onnistunut, skaalattava matriisi {selected} on tyhjä")
     # ortonormalisointi
     result = np.linalg.qr(scaled)[0]
 
