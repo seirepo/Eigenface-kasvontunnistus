@@ -4,18 +4,25 @@ import numpy as np
 from matplotlib import pyplot as plot, scale
 from individual import Individual
 import operations as op
+from sklearn import datasets
 
 def main():
     # ladataan aineisto
     abspath = os.path.abspath(__file__)
     path = Path(abspath)
     #print(list(path.parents))
-    im_path = path.parents[1]/"data"/"olivetti_faces"/"olivetti_faces.npy"
-    target_path = im_path.parents[0]/"olivetti_faces_target.npy"
+    #im_path = path.parents[1]/"data"/"olivetti_faces"/"olivetti_faces.npy"
+    #target_path = im_path.parents[0]/"olivetti_faces_target.npy"
     #print(target_path)
+    data_path = path.parents[1]/"data"
 
-    images_target = np.load(target_path)
-    images = np.load(im_path)
+    #images_target = np.load(target_path)
+    #images = np.load(im_path)
+
+    test = datasets.fetch_olivetti_faces(data_home=data_path)
+
+    images_target = test.target
+    images = test.images
 
     # tallennetaan data individuals-listaan individual-olioina
     individuals = []
