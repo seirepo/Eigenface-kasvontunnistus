@@ -111,11 +111,11 @@ def get_eigenfaces(images, eigvecs):
             #print(f"{i}, {j}: \t{eigvec[j]} * {images[:,j]} = {eigenfaces[:,i]}")
     return eigenfaces
 
-def get_coordinates(im, space):
+def get_coordinates(image, space):
     size, ims = space.shape
     weights = np.zeros((size, ims))
     for i in range(ims):
-        mult = np.dot(im, space[:,i])
+        mult = np.dot(image, space[:,i])
         weights[:,i] = mult * space[:,i]
     weights = np.sum(weights, axis=1)
     return weights
