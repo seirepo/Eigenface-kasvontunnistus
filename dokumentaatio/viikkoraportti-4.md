@@ -9,3 +9,6 @@ Muokattu calculate_eigenfaces-metodi palauttamaan ortonormalisoidut ominaiskasvo
 
 ## 26.11.2021 pe
 Datan saakin käyttöön suoraan scikit learn-kirjaston kautta. Lisätty se riippuvuudeksi, ja nyt ohjelma lataa kuva-aineiston data-kansioon.
+
+## Ajankäyttö
+11 h
