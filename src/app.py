@@ -9,7 +9,7 @@ from sklearn import datasets
 class App:
 
     def __init__(self):
-        self.images, self.images_target = self.load_images()
+        self.individuals = []
 
     def load_images(self):
         """load images
@@ -32,20 +32,25 @@ class App:
 
         return data.images, data.target
 
-    def suorita(self):
+    def create_individuals(self):
         # tallennetaan data individuals-listaan individual-olioina
-        individuals = []
+        images, images_target = self.load_images()
         for id in range(0,40):
-            ims = op.images_to_vectors(self.images[np.where(self.images_target==id)])
-            individuals.append(Individual(id, ims))
+            ims = op.images_to_vectors(images[np.where(images_target==id)])
+            self.individuals.append(Individual(id, ims))
+
+    def suorita(self):
+
+        self.create_individuals()
+
 
         # kerätään kaikkien kuvat yhteen matriisiin niin ne voi printtaa jos haluaa
-        all_images = individuals[0].get_images()
-        for i in range(1,len(individuals)):
-            all_images = np.concatenate([all_images, individuals[i].get_images()], axis=1)
+        all_images = self.individuals[0].get_images()
+        for i in range(1,len(self.individuals)):
+            all_images = np.concatenate([all_images, self.individuals[i].get_images()], axis=1)
 
         # kerätään training- ja testisetti joissa on kaikkien training- ja testikuvat
-        training_images, test_images = op.get_all_training_and_test_images(individuals)
+        training_images, test_images = op.get_all_training_and_test_images(self.individuals)
 
         # laskeaan training-setistä keskiarvo ja eigenfacet
         eigenfaces = op.calculate_eigenfaces(training_images, 320)
