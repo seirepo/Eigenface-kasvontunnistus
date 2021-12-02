@@ -4,7 +4,6 @@ from ui.ui import UI
 
 def main():
     app = App()
-    #app.suorita()
     window = Tk()
     window.title("test")
 
