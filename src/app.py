@@ -9,10 +9,14 @@ from sklearn import datasets
 class App:
 
     def __init__(self):
-        pass
+        self.images, self.images_target = self.load_images()
 
-    def suorita(self):
-        # ladataan aineisto
+    def load_images(self):
+        """load images
+
+        Returns:
+            tuple: images and the images target
+        """
         abspath = os.path.abspath(__file__)
         path = Path(abspath)
         #print(list(path.parents))
@@ -24,15 +28,15 @@ class App:
         #images_target = np.load(target_path)
         #images = np.load(im_path)
 
-        test = datasets.fetch_olivetti_faces(data_home=data_path)
+        data = datasets.fetch_olivetti_faces(data_home=data_path)
 
-        images_target = test.target
-        images = test.images
+        return data.images, data.target
 
+    def suorita(self):
         # tallennetaan data individuals-listaan individual-olioina
         individuals = []
         for id in range(0,40):
-            ims = op.images_to_vectors(images[np.where(images_target==id)])
+            ims = op.images_to_vectors(self.images[np.where(self.images_target==id)])
             individuals.append(Individual(id, ims))
 
         # kerätään kaikkien kuvat yhteen matriisiin niin ne voi printtaa jos haluaa
