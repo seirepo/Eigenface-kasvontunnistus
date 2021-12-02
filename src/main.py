@@ -8,7 +8,7 @@ def main():
     window = Tk()
     window.title("test")
 
-    ui = UI(window)
+    ui = UI(window, app)
     ui.start()
 
     window.mainloop()
