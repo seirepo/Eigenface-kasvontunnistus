@@ -47,6 +47,11 @@ class App:
     def get_all_images(self):
         return self.all_images
 
+    def get_random_image(self):
+        im = self.all_images[:,19].reshape((64,64))
+        im = np.uint8(im*255)
+        return im
+
     def suorita(self):
         self.create_individuals()
         self.calculate()
