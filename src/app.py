@@ -44,6 +44,9 @@ class App:
             self.training_images, self.test_images = op.get_all_training_and_test_images(self.individuals)
             self.eigenfaces = op.calculate_eigenfaces(self.training_images, 320)
 
+    def get_all_images(self):
+        return self.all_images
+
     def suorita(self):
         self.create_individuals()
         self.calculate()
