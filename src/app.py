@@ -10,38 +10,44 @@ class App:
 
     def __init__(self):
         self.individuals = []
+        self.data = self.load_data()
+        self.all_images = self.data.data
+        self.eigenfaces = None
+        self.training_images = None
+        self.test_images = None
 
-    def load_images(self):
+    def load_data(self):
         """load images
 
         Returns:
-            tuple: images and the images target
+            sklearn.utils.Bunch: bunch that contains images, image array and target
         """
         abspath = os.path.abspath(__file__)
         path = Path(abspath)
         data_path = path.parents[1]/"data"
 
-        data = datasets.fetch_olivetti_faces(data_home=data_path)
+        faces = datasets.fetch_olivetti_faces(data_home=data_path)
 
-        return data.images, data.target
+        return faces
 
     def create_individuals(self):
-        # tallennetaan data individuals-listaan individual-olioina
-        images, images_target = self.load_images()
+        images = self.data.images
+        images_target = self.data.target
         for id in range(0,40):
             ims = op.images_to_vectors(images[np.where(images_target==id)])
             self.individuals.append(Individual(id, ims))
 
-    def suorita(self):
-
-        self.create_individuals()
-
-
-        # kerätään kaikkien kuvat yhteen matriisiin niin ne voi printtaa jos haluaa
+    def get_all_images(self):
         all_images = self.individuals[0].get_images()
         for i in range(1,len(self.individuals)):
             all_images = np.concatenate([all_images, self.individuals[i].get_images()], axis=1)
 
+    def calculate(self):
+        pass
+
+    def suorita(self):
+
+        self.create_individuals()
         # kerätään training- ja testisetti joissa on kaikkien training- ja testikuvat
         training_images, test_images = op.get_all_training_and_test_images(self.individuals)
 
