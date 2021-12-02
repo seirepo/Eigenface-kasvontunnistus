@@ -1,7 +1,7 @@
 from pathlib import Path
 import os
 import numpy as np
-from matplotlib import pyplot as plot
+from matplotlib import pyplot as plot, cm
 from individual import Individual
 import operations as op
 from sklearn import datasets
