@@ -19,14 +19,7 @@ class App:
         """
         abspath = os.path.abspath(__file__)
         path = Path(abspath)
-        #print(list(path.parents))
-        #im_path = path.parents[1]/"data"/"olivetti_faces"/"olivetti_faces.npy"
-        #target_path = im_path.parents[0]/"olivetti_faces_target.npy"
-        #print(target_path)
         data_path = path.parents[1]/"data"
-
-        #images_target = np.load(target_path)
-        #images = np.load(im_path)
 
         data = datasets.fetch_olivetti_faces(data_home=data_path)
 
