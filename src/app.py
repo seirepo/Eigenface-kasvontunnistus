@@ -11,7 +11,7 @@ class App:
     def __init__(self):
         self.individuals = []
         self.data = self.load_data()
-        self.all_images = self.data.data
+        self.all_images = self.data.data.T
         self.eigenfaces = None
         self.training_images = None
         self.test_images = None
