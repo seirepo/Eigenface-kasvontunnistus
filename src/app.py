@@ -38,24 +38,23 @@ class App:
             self.individuals.append(Individual(id, ims))
 
     def calculate(self):
-        pass
+        """Collect a set of training and test images, and calculate eigenfaces based on them
+        """
+        if self.eigenfaces is None:
+            self.training_images, self.test_images = op.get_all_training_and_test_images(self.individuals)
+            self.eigenfaces = op.calculate_eigenfaces(self.training_images, 320)
 
     def suorita(self):
         self.create_individuals()
-
-        # kerätään training- ja testisetti joissa on kaikkien training- ja testikuvat
-        training_images, test_images = op.get_all_training_and_test_images(self.individuals)
-
-        # laskeaan training-setistä keskiarvo ja eigenfacet
-        eigenfaces = op.calculate_eigenfaces(training_images, 320)
+        self.calculate()
 
         # kuva joka projisoidaan
-        test_im = training_images[:,0].reshape((4096,1))
+        test_im = self.training_images[:,0].reshape((4096,1))
 
-        size, ims = eigenfaces.shape
-        test_eigenfaces = eigenfaces
+        size, ims = self.eigenfaces.shape
+        test_eigenfaces = self.eigenfaces
 
-        test_im = training_images[:,74]
+        test_im = self.training_images[:,74]
 
         test_im_coord = np.zeros((size,ims))
 
@@ -65,7 +64,7 @@ class App:
 
         test_im_coord = np.sum(test_im_coord, axis=1)
         print(test_im_coord[:10])
-        test2 = op.get_coordinates(test_im, eigenfaces)
+        test2 = op.get_coordinates(test_im, self.eigenfaces)
         print(test2[:10])
         print(test_im[:10])
 
