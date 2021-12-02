@@ -37,17 +37,12 @@ class App:
             ims = op.images_to_vectors(images[np.where(images_target==id)])
             self.individuals.append(Individual(id, ims))
 
-    def get_all_images(self):
-        all_images = self.individuals[0].get_images()
-        for i in range(1,len(self.individuals)):
-            all_images = np.concatenate([all_images, self.individuals[i].get_images()], axis=1)
-
     def calculate(self):
         pass
 
     def suorita(self):
-
         self.create_individuals()
+
         # kerätään training- ja testisetti joissa on kaikkien training- ja testikuvat
         training_images, test_images = op.get_all_training_and_test_images(self.individuals)
 
