@@ -43,8 +43,9 @@ class UI:
         self.app.suorita()
 
     def show_images(self):
-        print("näytetään kuva")
-        im = self.app.get_random_image()
-        image = ImageTk.PhotoImage(image=Image.fromarray(im))
-        self.im.append(image)
-        self.canvas.create_image(20, 20, anchor="nw", image=image)
+        pass
+        #print("näytetään kuva")
+        #im = self.app.get_random_image()
+        #image = ImageTk.PhotoImage(image=Image.fromarray(im))
+        #self.im.append(image)
+        #self.canvas.create_image(20, 20, anchor="nw", image=image)
