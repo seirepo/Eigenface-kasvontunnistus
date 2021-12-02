@@ -65,7 +65,7 @@ class App:
         return np.uint8(people*255)
 
     def suorita(self):
-        self.create_individuals()
+        #self.create_individuals()
         self.calculate()
 
         # kuva joka projisoidaan
