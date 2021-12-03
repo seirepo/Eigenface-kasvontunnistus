@@ -15,6 +15,7 @@ class App:
         self.eigenfaces = None
         self.training_images = None
         self.test_images = None
+        self.projected_images = None
 
     def load_data(self):
         """load images
@@ -46,6 +47,7 @@ class App:
         if self.eigenfaces is None:
             self.training_images, self.test_images = self.get_training_test_images()
             self.eigenfaces = op.calculate_eigenfaces(self.training_images, 320)
+            self.init_projected_images()
 
     def get_training_test_images(self):
         training = []
@@ -81,6 +83,22 @@ class App:
             i += 1
         return images
 
+    def project_individuals(self):
+        projected_images = []
+        for individual in self.individuals:
+            projected = []
+            average_images = individual.get_average_images()
+            for image in average_images.T:
+                proj_im = self.project_image(image)
+                projected.append(proj_im)
+                projected_images.append(proj_im)
+            individual.set_projected_images(np.array(projected).T)
+        return np.array(projected_images).T
+
+    def init_projected_images(self):
+        if self.projected_images is None:
+            self.projected_images = self.project_individuals()
+
     def suorita(self):
         #self.create_individuals()
         self.calculate()
@@ -99,17 +117,28 @@ class App:
             mult = np.dot(test_im, test_eigenfaces[:,i])
             test_im_coord[:,i] = mult * test_eigenfaces[:,i]
 
-        test_im_coord = np.sum(test_im_coord, axis=1)
-        print(test_im_coord[:10])
-        test2 = op.get_coordinates(test_im, self.eigenfaces)
-        print(test2[:10])
-        print(test_im[:10])
+        #test_im_coord = np.sum(test_im_coord, axis=1)
+        #print(test_im_coord[:10])
+        #test2 = self.project_image(test_im)
+        #print(test2[:10])
+        #print(test_im[:10])
 
-        plot.imshow(test_im.reshape((64,64)), cmap="Greys_r")
-        plot.show()
-        plot.imshow(test_im_coord.reshape((64,64)), cmap="Greys_r")
-        plot.show()
+        #plot.imshow(test_im.reshape((64,64)), cmap="Greys_r")
+        #plot.show()
+        #plot.imshow(test_im_coord.reshape((64,64)), cmap="Greys_r")
+        #plot.show()
 
+    def project_image(self, im):
+        """Project given image to eigenface space
+
+        Args:
+            im (np.array): image to be projected
+
+        Returns:
+            np.array: coordinates in eigenface space
+        """
+        coordinates = op.get_coordinates(im, self.eigenfaces)
+        return coordinates
 
     def show_images(self, images):
         """
