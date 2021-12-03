@@ -55,7 +55,7 @@ class App:
         im = np.uint8(im*255)
         return im
 
-    def get_images_of_people(self):
+    def get_image_of_everyone(self):
         people = np.zeros((40,64,64))
         i = 0
         for individual in self.individuals:

@@ -19,7 +19,7 @@ class UI:
         label_people.grid(row=0, column=0, columnspan=4)
 
         self.app.create_individuals()
-        ppl = self.app.get_images_of_people()
+        ppl = self.app.get_image_of_everyone()
         x = 1
         y = 0
         im = 1
