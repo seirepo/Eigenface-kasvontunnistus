@@ -47,6 +47,7 @@ class App:
         if self.eigenfaces is None:
             self.training_images, self.test_images = self.get_training_test_images()
             self.eigenfaces = op.calculate_eigenfaces(self.training_images, 320)
+            self.init_projected_images()
 
     def get_training_test_images(self):
         training = []
