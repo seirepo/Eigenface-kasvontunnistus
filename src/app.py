@@ -15,6 +15,7 @@ class App:
         self.eigenfaces = None
         self.training_images = None
         self.test_images = None
+        self.projected_images = None
 
     def load_data(self):
         """load images
@@ -82,7 +83,20 @@ class App:
         return images
 
     def project_individuals(self):
-        pass
+        projected_images = []
+        for individual in self.individuals:
+            projected = []
+            average_images = individual.get_average_images()
+            for image in average_images.T:
+                proj_im = self.project_image(image)
+                projected.append(proj_im)
+                projected_images.append(proj_im)
+            individual.set_projected_images(np.array(projected).T)
+        return np.array(projected_images).T
+
+    def init_projected_images(self):
+        if self.projected_images is None:
+            self.projected_images = self.project_individuals()
 
     def suorita(self):
         #self.create_individuals()
