@@ -56,13 +56,14 @@ class App:
         return im
 
     def get_image_of_everyone(self):
-        people = np.zeros((40,64,64))
+        images = []
         i = 0
         for individual in self.individuals:
             im = individual.get_training_images()[:,0].reshape((64,64))
-            people[i,:,:] = im
+            id = individual.get_id()
+            images.append((id, im))
             i += 1
-        return np.uint8(people*255)
+        return images
 
     def suorita(self):
         #self.create_individuals()
