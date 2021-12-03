@@ -47,5 +47,8 @@ class Individual:
     def get_test_images(self):
         return self.test_images
 
+    def get_average_images(self):
+        return self.average_images
+
     def set_projected_images(self, images):
         self.projected_images = images
