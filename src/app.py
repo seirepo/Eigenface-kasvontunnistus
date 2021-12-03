@@ -101,7 +101,7 @@ class App:
 
         test_im_coord = np.sum(test_im_coord, axis=1)
         print(test_im_coord[:10])
-        test2 = op.get_coordinates(test_im, self.eigenfaces)
+        test2 = self.project_image(test_im)
         print(test2[:10])
         print(test_im[:10])
 
@@ -110,6 +110,17 @@ class App:
         plot.imshow(test_im_coord.reshape((64,64)), cmap="Greys_r")
         plot.show()
 
+    def project_image(self, im):
+        """Project given image to eigenface space
+
+        Args:
+            im (np.array): image to be projected
+
+        Returns:
+            np.array: coordinates in eigenface space
+        """
+        coordinates = op.get_coordinates(im, self.eigenfaces)
+        return coordinates
 
     def show_images(self, images):
         """
