@@ -32,14 +32,16 @@ class App:
         return faces
 
     def create_individuals(self):
-        images = self.data.images
-        images_target = self.data.target
-        for id in range(0,40):
-            ims = op.images_to_vectors(images[np.where(images_target==id)])
-            self.individuals.append(Individual(id, ims))
+        if len(self.individuals) == 0:
+            images = self.data.images
+            images_target = self.data.target
+            for id in range(0,40):
+                ims = op.images_to_vectors(images[np.where(images_target==id)])
+                self.individuals.append(Individual(id, ims))
 
     def alusta(self):
-        self.create_individuals()
+        if len(self.individuals) == 0:
+            self.create_individuals()
 
     def calculate(self):
         """Collect a set of training and test images, and calculate eigenfaces based on them
