@@ -99,16 +99,16 @@ class App:
             mult = np.dot(test_im, test_eigenfaces[:,i])
             test_im_coord[:,i] = mult * test_eigenfaces[:,i]
 
-        test_im_coord = np.sum(test_im_coord, axis=1)
-        print(test_im_coord[:10])
-        test2 = self.project_image(test_im)
-        print(test2[:10])
-        print(test_im[:10])
+        #test_im_coord = np.sum(test_im_coord, axis=1)
+        #print(test_im_coord[:10])
+        #test2 = self.project_image(test_im)
+        #print(test2[:10])
+        #print(test_im[:10])
 
-        plot.imshow(test_im.reshape((64,64)), cmap="Greys_r")
-        plot.show()
-        plot.imshow(test_im_coord.reshape((64,64)), cmap="Greys_r")
-        plot.show()
+        #plot.imshow(test_im.reshape((64,64)), cmap="Greys_r")
+        #plot.show()
+        #plot.imshow(test_im_coord.reshape((64,64)), cmap="Greys_r")
+        #plot.show()
 
     def project_image(self, im):
         """Project given image to eigenface space
