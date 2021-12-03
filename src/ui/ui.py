@@ -18,7 +18,7 @@ class UI:
         self.left_pane.pack(anchor="sw")
         label_people = ttk.Label(master=self.left_pane, text="People")
         label_people.grid(row=0, column=0, columnspan=4)
-
+        print("asd")
         self.app.create_individuals()
         ppl = self.app.get_image_of_everyone()
         x = 1
