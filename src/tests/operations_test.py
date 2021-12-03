@@ -65,3 +65,17 @@ class TestOperations(unittest.TestCase):
         should_be = np.array([3,0,-2])
 
         self.assertTrue((result == should_be).all())
+
+    def test_get_coordinates_returns_array_of_correct_shape(self):
+        rndm = np.random.rand(4096, 320)
+        basis = np.linalg.qr(rndm)[0]
+        image = np.random.rand(4096)
+
+        result = op.get_coordinates(image, basis)
+        print(basis.shape)
+        r = np.dot(image, basis[:,0])
+        e = r * basis[:,0]
+        print(e.shape)
+
+
+        self.assertEqual(result.shape, (320,))

@@ -25,16 +25,6 @@ def images_to_vectors(im_set_matrix):
 
     return result
 
-def get_all_training_and_test_images(individuals):
-    training = individuals[0].get_training_images()
-    test = individuals[0].get_test_images()
-
-    for i in range(1, len(individuals)):
-        training = np.concatenate([training, individuals[i].get_training_images()], axis=1)
-        test = np.concatenate([test, individuals[i].get_test_images()], axis=1)
-
-    return (training, test)
-
 def calculate_eigenfaces(training_images, k=-1):
     """Calculates and returns k eigenfaces with the largest eigenvalue of a
     given image set, forming an orthonormal base.
@@ -103,7 +93,7 @@ def get_eigenfaces(images, eigvecs):
             eigenfaces[:,i] += eigvec[j] * images[:,j]
     return eigenfaces
 
-def get_coordinates(image, space):
+def get_coordinates(image, basis):
     """Calculates coordinates of a given image in the given face space.
     The basis must be orthonormal
 
@@ -114,10 +104,29 @@ def get_coordinates(image, space):
     Returns:
         np.array: coordinates
     """
-    size, ims = space.shape
+    ims = basis.shape[1]
+    coordinates_list = []
+    for i in range(ims):
+        mult = np.dot(image, basis[:,i])
+        coordinates_list.append(mult)
+    coordinates = np.array(coordinates_list)
+    return coordinates
+
+def get_projection(image, basis):
+    """Returns the projection of an image on the given face space.
+    The basis of the space must be orthonormal
+
+    Args:
+        image (np.array): image
+        basis (np.array): eigenface vectors spanning a face space
+
+    Returns:
+        np.array: projection of the image
+    """
+    size, ims = basis.shape
     weights = np.zeros((size, ims))
     for i in range(ims):
-        mult = np.dot(image, space[:,i])
-        weights[:,i] = mult * space[:,i]
+        mult = np.dot(image, basis[:,i])
+        weights[:,i] = mult * basis[:,i]
     weights = np.sum(weights, axis=1)
     return weights
