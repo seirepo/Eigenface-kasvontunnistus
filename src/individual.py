@@ -18,6 +18,9 @@ class Individual:
     def get_images(self):
         return self.images
 
+    def get_id(self):
+        return self.id
+
     def train_test_split(self):
         return (self.images[:,:8], self.images[:,8:])
 
