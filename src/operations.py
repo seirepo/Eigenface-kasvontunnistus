@@ -25,16 +25,6 @@ def images_to_vectors(im_set_matrix):
 
     return result
 
-def get_all_training_and_test_images(individuals):
-    training = individuals[0].get_training_images()
-    test = individuals[0].get_test_images()
-
-    for i in range(1, len(individuals)):
-        training = np.concatenate([training, individuals[i].get_training_images()], axis=1)
-        test = np.concatenate([test, individuals[i].get_test_images()], axis=1)
-
-    return (training, test)
-
 def calculate_eigenfaces(training_images, k=-1):
     """Calculates and returns k eigenfaces with the largest eigenvalue of a
     given image set, forming an orthonormal base.
