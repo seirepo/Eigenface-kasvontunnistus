@@ -104,6 +104,16 @@ def get_eigenfaces(images, eigvecs):
     return eigenfaces
 
 def get_coordinates(image, space):
+    """Calculates coordinates of a given image in the given face space.
+    The basis must be orthonormal
+
+    Args:
+        image (np.array): image
+        space (np.array): eigenface vectors spanning a face space
+
+    Returns:
+        np.array: coordinates
+    """
     size, ims = space.shape
     weights = np.zeros((size, ims))
     for i in range(ims):
