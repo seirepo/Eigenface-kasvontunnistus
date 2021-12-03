@@ -15,7 +15,6 @@ class UI:
 
         # left pane
         self.left_pane = ttk.Frame(master=self.root, width=280)
-        #self.main_pane.pack(anchor="sw")
         self.left_pane.grid(row=0, column=0)
         label_people = ttk.Label(master=self.left_pane, text="People")
         label_people.grid(row=0, column=0, columnspan=4)
