@@ -1,4 +1,4 @@
-from tkinter import ttk
+from tkinter import Frame, Scrollbar, ttk
 import tkinter
 from app import App
 from PIL import Image, ImageTk
@@ -13,10 +13,9 @@ class UI:
 
     def start(self):
 
-
         self.left_pane = ttk.Frame(master=self.root, width=280)
-        self.left_pane.pack(anchor="sw")
-        label_people = ttk.Label(master=self.left_pane, text="People")
+        self.left_pane.grid(row=0, column=0, padx=50)
+        label_people = ttk.Label(master=self.left_pane, text="Henkilöt")
         label_people.grid(row=0, column=0, columnspan=4)
 
         self.app.create_individuals()
@@ -42,6 +41,41 @@ class UI:
             command=self.handle_button_click
         )
         button_calc.grid(row=11, column=0, columnspan=4)
+
+        self.middle_canvas = tkinter.Canvas(master=self.root, width=280, height=280)
+        self.middle_canvas.grid(row=0, column=1, sticky="nw")
+
+        self.test_im_frame = ttk.Frame(master=self.middle_canvas, width=280)
+        self.test_im_frame.grid(row=1, column=1, sticky="nw")
+
+        test_label = ttk.Label(master=self.middle_canvas, text="Testikuvat")
+        test_label.grid(row=0, column=0, columnspan=5)
+
+        ppl = self.app.get_individuals()
+        x = 0
+        y = 1
+        for individual in ppl:
+            test_images = individual.get_test_images()
+            id = individual.get_id()
+            for test_image in test_images.T:
+                test = test_image.reshape((64,64))
+                image = np.uint8(test*255)
+                image = ImageTk.PhotoImage(image=Image.fromarray(image))
+                radiob = ttk.Button(
+                    master=self.test_im_frame,
+                    image=image, text=str(id), compound="top"
+                )
+                radiob.image = image
+                radiob.grid(row=x, column=y)
+                y += 1
+                if y % 11 == 0:
+                    y = 1
+                    x += 1
+
+        #vsb = Scrollbar(master=self.middle_canvas, orient="vertical", command=self.middle_canvas.yview)
+        #vsb.grid(row=1, column=2, sticky="ns")
+        #self.middle_canvas.configure(yscrollcommand=vsb.set, yscrollincrement=5)
+        #self.middle_canvas.configure(scrollregion=self.middle_canvas.bbox("all"))
 
     def handle_button_click(self):
         print("lasketaan...")
