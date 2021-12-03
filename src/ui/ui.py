@@ -2,49 +2,50 @@ from tkinter import ttk
 import tkinter
 from app import App
 from PIL import Image, ImageTk
+import numpy as np
 
 class UI:
     def __init__(self, root, app):
         self.root = root
         self.app = app
-        self.canvas = None
-        self.im = []
+        self.left_pane = None
+        self.people = []
 
     def start(self):
-        label = ttk.Label(master=self.root, text="Testikäyttöliittymä")
-        
+
+
+        self.left_pane = ttk.Frame(master=self.root, width=280)
+        self.left_pane.pack(anchor="sw")
+        label_people = ttk.Label(master=self.left_pane, text="People")
+        label_people.grid(row=0, column=0, columnspan=4)
+
+        self.app.create_individuals()
+        ppl = self.app.get_image_of_everyone()
+        x = 1
+        y = 0
+        for pair in ppl:
+            id = pair[0]
+            image = np.uint8(pair[1]*255)
+            image = ImageTk.PhotoImage(image=Image.fromarray(image))
+            self.people.append(image)
+            label = ttk.Label(self.left_pane, image=image, text=str(id), compound="top")
+            label.image = image
+            label.grid(row=x, column=y)
+            x += 1
+            if x % 11 == 0:
+                x = 1
+                y += 1
+
         button_calc = ttk.Button(
-            master=self.root,
+            master=self.left_pane,
             text="laske eigenfacet",
             command=self.handle_button_click
         )
-
-        button_show = ttk.Button(
-            master=self.root,
-            text="näytä kuva",
-            command=self.show_images
-        )
-        
-        self.canvas = tkinter.Canvas(master=self.root, width=300, height=300)
-
-        im = self.app.get_random_image()
-        img = ImageTk.PhotoImage(image=Image.fromarray(im))
-        panel = ttk.Label(self.root, image = img)
-        panel.image = img
-
-        label.grid(row=0, column=0, columnspan=2, padx=5, pady=5)
-        button_calc.grid(row=1, column=0, padx=5, pady=5)
-        button_show.grid(row=1, column=1, padx=5, pady=5)
-        self.canvas.grid(row=2, column=4, padx=5, pady=5)
-        panel.grid(row=2, column=3, padx=5, pady=5)
+        button_calc.grid(row=11, column=0, columnspan=4)
 
     def handle_button_click(self):
         print("lasketaan...")
         self.app.suorita()
 
     def show_images(self):
-        print("näytetään kuva")
-        im = self.app.get_random_image()
-        image = ImageTk.PhotoImage(image=Image.fromarray(im))
-        self.im.append(image)
-        self.canvas.create_image(20, 20, anchor="nw", image=image)
+        pass

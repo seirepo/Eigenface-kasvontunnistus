@@ -55,17 +55,18 @@ class App:
         im = np.uint8(im*255)
         return im
 
-    def get_images_of_people(self):
-        people = np.zeros((40,64,64))
+    def get_image_of_everyone(self):
+        images = []
         i = 0
         for individual in self.individuals:
             im = individual.get_training_images()[:,0].reshape((64,64))
-            people[i,:,:] = im
+            id = individual.get_id()
+            images.append((id, im))
             i += 1
-        return np.uint8(people*255)
+        return images
 
     def suorita(self):
-        self.create_individuals()
+        #self.create_individuals()
         self.calculate()
 
         # kuva joka projisoidaan
