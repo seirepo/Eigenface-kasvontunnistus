@@ -13,10 +13,9 @@ class UI:
 
     def start(self):
 
-        # left pane
         self.left_pane = ttk.Frame(master=self.root, width=280)
-        self.left_pane.grid(row=0, column=0)
-        label_people = ttk.Label(master=self.left_pane, text="People")
+        self.left_pane.grid(row=0, column=0, padx=50)
+        label_people = ttk.Label(master=self.left_pane, text="Henkilöt")
         label_people.grid(row=0, column=0, columnspan=4)
 
         self.app.create_individuals()
