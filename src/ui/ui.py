@@ -48,14 +48,6 @@ class UI:
         test_label.grid(row=0, column=0, columnspan=5)
 
         ppl = self.app.get_individuals()
-        #ind = ppl[0]
-        #ims = ind.get_test_images()
-        #tims = ims[:,0].reshape(64,64)
-        #im = np.uint8(tims*255)
-        #image = ImageTk.PhotoImage(image=Image.fromarray(im))
-        #radiob = ttk.Radiobutton(master=self.middle_pane, image=image, text=str(id), compound="top")
-        #radiob.image = image
-        #radiob.grid(row=1, column=0)
         x = 1
         y = 0
         for individual in ppl:
