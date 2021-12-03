@@ -8,14 +8,14 @@ class UI:
     def __init__(self, root, app):
         self.root = root
         self.app = app
-        self.left_pane = None
+        self.people_frame = None
         self.people = []
 
     def start(self):
 
-        self.left_pane = ttk.Frame(master=self.root, width=280)
-        self.left_pane.grid(row=0, column=0, padx=50)
-        label_people = ttk.Label(master=self.left_pane, text="Henkilöt")
+        self.people_frame = ttk.Frame(master=self.root, width=280)
+        self.people_frame.grid(row=0, column=0, padx=50)
+        label_people = ttk.Label(master=self.people_frame, text="Henkilöt")
         label_people.grid(row=0, column=0, columnspan=4)
 
         self.app.create_individuals()
@@ -27,7 +27,7 @@ class UI:
             image = np.uint8(pair[1]*255)
             image = ImageTk.PhotoImage(image=Image.fromarray(image))
             self.people.append(image)
-            label = ttk.Label(self.left_pane, image=image, text=str(id), compound="top")
+            label = ttk.Label(self.people_frame, image=image, text=str(id), compound="top")
             label.image = image
             label.grid(row=x, column=y)
             x += 1
@@ -36,11 +36,11 @@ class UI:
                 y += 1
 
         button_calc = ttk.Button(
-            master=self.left_pane,
+            master=self.people_frame,
             text="laske eigenfacet",
             command=self.handle_button_click
         )
-        button_calc.grid(row=11, column=0, columnspan=4)
+        button_calc.grid(row=11, column=0, columnspan=4, pady=10)
 
         self.middle_canvas = tkinter.Canvas(master=self.root, width=280, height=280)
         self.middle_canvas.grid(row=0, column=1, sticky="nw")
