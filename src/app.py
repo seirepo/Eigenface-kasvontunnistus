@@ -81,6 +81,9 @@ class App:
             i += 1
         return images
 
+    def project_individuals(self):
+        pass
+
     def suorita(self):
         #self.create_individuals()
         self.calculate()
