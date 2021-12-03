@@ -8,16 +8,16 @@ class UI:
     def __init__(self, root, app):
         self.root = root
         self.app = app
-        self.main_pane = None
+        self.left_pane = None
         self.people = []
 
     def start(self):
 
-
-        self.main_pane = ttk.Frame(master=self.root, width=280)
+        # left pane
+        self.left_pane = ttk.Frame(master=self.root, width=280)
         #self.main_pane.pack(anchor="sw")
-        self.main_pane.grid(row=0, column=0)
-        label_people = ttk.Label(master=self.main_pane, text="People")
+        self.left_pane.grid(row=0, column=0)
+        label_people = ttk.Label(master=self.left_pane, text="People")
         label_people.grid(row=0, column=0, columnspan=4)
 
         self.app.create_individuals()
@@ -29,7 +29,7 @@ class UI:
             image = np.uint8(pair[1]*255)
             image = ImageTk.PhotoImage(image=Image.fromarray(image))
             self.people.append(image)
-            label = ttk.Label(self.main_pane, image=image, text=str(id), compound="top")
+            label = ttk.Label(self.left_pane, image=image, text=str(id), compound="top")
             label.image = image
             label.grid(row=x, column=y)
             x += 1
@@ -38,7 +38,7 @@ class UI:
                 y += 1
 
         button_calc = ttk.Button(
-            master=self.main_pane,
+            master=self.left_pane,
             text="laske eigenfacet",
             command=self.handle_button_click
         )
