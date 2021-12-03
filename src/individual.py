@@ -1,3 +1,6 @@
+import operations as op
+import numpy as np
+
 class Individual:
     """
     Class for one individual and their images as column vectors
@@ -13,6 +16,7 @@ class Individual:
         self.images = images
         self.training_images, self.test_images = self.train_test_split()
         self.id = id
+        self.average_images = self.select_average()
         self.projected_images = None
 
     def get_images(self):
@@ -23,6 +27,19 @@ class Individual:
 
     def train_test_split(self):
         return (self.images[:,:8], self.images[:,8:])
+
+    def select_average(self):
+        if self.training_images.shape[1] < 2:
+            return np.array(self.training_images)
+
+        count = self.training_images.shape[1]
+        averages_list = []
+
+        for i in range(0, count, 2):
+            average = op.get_average_face(self.training_images[:,i:i+2]).flatten()
+            averages_list.append(average)
+        averages = np.array(averages_list).T
+        return averages
 
     def get_training_images(self):
         return self.training_images
