@@ -57,3 +57,45 @@ class TestApp(unittest.TestCase):
 
         self.assertEqual(result.shape, (3, 6))
         self.assertTrue((result == should_be).all())
+
+    def test_app_has_correct_attributes_before_any_operations(self):
+        app = App()
+
+        self.assertEqual(len(app.individuals), 0)
+        self.assertEqual(app.all_images.shape, (4096, 400))
+        self.assertIsNone(app.eigenfaces)
+        self.assertIsNone(app.training_images)
+        self.assertIsNone(app.test_images)
+        self.assertIsNone(app.projected_images)
+
+    def test_app_eigenfaces_are_not_calculated_more_than_once(self):
+        app = App()
+        app.alusta()
+        app.suorita()
+        eigen1 = app.eigenfaces
+        app.suorita()
+        eigen2 = app.eigenfaces
+
+        self.assertTrue((eigen1 == eigen2).all())
+
+    def test_individuals_are_not_created_more_than_once(self):
+        app = App()
+        app.alusta()
+        ind1 = app.individuals
+        app.alusta()
+        app.create_individuals()
+        ind2 = app.individuals
+
+        self.assertEqual(len(ind1), len(ind2))
+
+    def test_app_has_correct_attributes_after_suorita(self):
+        app = App()
+        app.alusta()
+        app.suorita()
+
+        self.assertEqual(len(app.individuals), 40)
+        self.assertEqual(app.all_images.shape, (4096, 400))
+        self.assertEqual(app.eigenfaces.shape, (4096, 320))
+        self.assertEqual(app.training_images.shape, (4096, 320))
+        self.assertEqual(app.test_images.shape, (4096, 80))
+        self.assertEqual(app.projected_images.shape, (320, 160))
