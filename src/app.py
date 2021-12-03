@@ -44,8 +44,21 @@ class App:
         """Collect a set of training and test images, and calculate eigenfaces based on them
         """
         if self.eigenfaces is None:
-            self.training_images, self.test_images = op.get_all_training_and_test_images(self.individuals)
+            self.training_images, self.test_images = self.get_training_test_images()
             self.eigenfaces = op.calculate_eigenfaces(self.training_images, 320)
+
+    def get_training_test_images(self):
+        training = []
+        test = []
+        for individual in self.individuals:
+            tr = individual.get_training_images()
+            ts = individual.get_test_images()
+            training.append(tr)
+            test.append(ts)
+        training_array = np.hstack(training)
+        test_array = np.hstack(test)
+
+        return training_array, test_array
 
     def get_all_images(self):
         return self.all_images
