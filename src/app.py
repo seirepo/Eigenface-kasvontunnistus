@@ -100,33 +100,7 @@ class App:
             self.projected_images = self.project_individuals()
 
     def suorita(self):
-        #self.create_individuals()
         self.calculate()
-
-        # kuva joka projisoidaan
-        test_im = self.training_images[:,0].reshape((4096,1))
-
-        size, ims = self.eigenfaces.shape
-        test_eigenfaces = self.eigenfaces
-
-        test_im = self.training_images[:,74]
-
-        test_im_coord = np.zeros((size,ims))
-
-        for i in range(ims):
-            mult = np.dot(test_im, test_eigenfaces[:,i])
-            test_im_coord[:,i] = mult * test_eigenfaces[:,i]
-
-        #test_im_coord = np.sum(test_im_coord, axis=1)
-        #print(test_im_coord[:10])
-        #test2 = self.project_image(test_im)
-        #print(test2[:10])
-        #print(test_im[:10])
-
-        #plot.imshow(test_im.reshape((64,64)), cmap="Greys_r")
-        #plot.show()
-        #plot.imshow(test_im_coord.reshape((64,64)), cmap="Greys_r")
-        #plot.show()
 
     def project_image(self, im):
         """Project given image to eigenface space
