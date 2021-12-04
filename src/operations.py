@@ -81,6 +81,10 @@ def calculate_eigenfaces(training_images, k=-1):
 
     return result
 
+def euclidean_distance2(im1, im2):
+    if im1.shape[0] != im2.shape[0]:
+        raise ValueError(f"Illegal size of input vectors {im1.shape} and {im2.shape}: {im1.shape[0]} != {im2.shape[0]}")
+    return np.sum((im1 - im2)**2)
 
 def get_average_face(training_images):
     return np.mean(training_images, axis=1).reshape((-1,1))
