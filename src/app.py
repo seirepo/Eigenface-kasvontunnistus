@@ -101,6 +101,27 @@ class App:
         if self.projected_images is None:
             self.projected_images = self.project_individuals()
 
+    def calculate_knn(self, im, k):
+        if im.shape != (4096,1) or im.shape != (4096, 1):
+            raise ValueError(f"Invalid input image shape {im.shape}")
+
+        coordinates = self.project_image(im)
+        distances = self.calculate_distances(coordinates)
+        # projisoi kuva
+        # laske projisoidun kuvan koordinaattien etäisyys kaikkien individualien
+        # projisoitujen kuvien etäisyyksistä ja tallenna ne listaan tupleja (id, etäisyys)
+        # sorttaa tuple-lista toisen elementin mukaan, valitse näistä k
+
+    def calculate_distances(self, im):
+        distances = []
+        for individual in self.individuals:
+            images = individual.get_image_coordinates()
+            id = individual.get_id()
+            for image in images.T:
+                distance = op.euclidean_distance2(image, im)
+                distances.append((id, distance))
+        return distances
+
     def suorita(self):
         self.calculate()
 
