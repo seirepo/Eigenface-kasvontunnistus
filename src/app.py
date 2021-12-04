@@ -94,7 +94,7 @@ class App:
                 proj_im = self.project_image(image)
                 projected.append(proj_im)
                 projected_images.append(proj_im)
-            individual.set_projected_images(np.array(projected).T)
+            individual.set_image_coordinates(np.array(projected).T)
         return np.array(projected_images).T
 
     def init_projected_images(self):

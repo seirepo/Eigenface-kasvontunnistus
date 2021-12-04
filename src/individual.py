@@ -17,7 +17,7 @@ class Individual:
         self.training_images, self.test_images = self.train_test_split()
         self.id = id
         self.average_images = self.select_average()
-        self.projected_images = None
+        self.image_coordinates = None
 
     def get_images(self):
         return self.images
@@ -50,5 +50,5 @@ class Individual:
     def get_average_images(self):
         return self.average_images
 
-    def set_projected_images(self, images):
-        self.projected_images = images
+    def set_image_coordinates(self, images):
+        self.image_coordinates = images
