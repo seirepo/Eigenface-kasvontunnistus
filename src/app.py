@@ -121,11 +121,6 @@ class App:
             near.append(n[1])
         res = ", ".join([str(int) for int in near])
         return res
-        #print(f"\t lähimmät {k}: ", nearest[0], nearest[1])
-        # projisoi kuva
-        # laske projisoidun kuvan koordinaattien etäisyys kaikkien individualien
-        # projisoitujen kuvien etäisyyksistä ja tallenna ne listaan tupleja (etäisyys, id)
-        # sorttaa tuple-lista ekan elementin mukaan, valitse näistä k
 
     def calculate_distances(self, im):
         distances = []
@@ -148,11 +143,6 @@ class App:
             print(f"id: {id}, lähimmät {k}")
             for im in test_ims.T:
                 print(f"\t {self.calculate_knn(im, k)}")
-        #test_individual = self.individuals[15]
-        #test_ims = test_individual.get_test_images()
-        #test_im = test_ims.T[0]
-        #print(f"testikuvan id: {test_individual.get_id()}")
-        #self.calculate_knn(test_im, 5)
 
     def project_image(self, im):
         """Project given image to eigenface space
