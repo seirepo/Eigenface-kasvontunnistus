@@ -14,6 +14,7 @@ class TestOperations(unittest.TestCase):
                                [ 21, 22]])
         self.mat5 = np.array([[1]])
         self.test_matrix = np.array([ self.mat1, self.mat2, self.mat3 ])
+        self.rng = np.random.default_rng(seed=42)
 
     def test_matrix_submatrices_to_columns_returns_matrix_with_correct_size(self):
         result = op.images_to_vectors(self.test_matrix)
@@ -67,9 +68,9 @@ class TestOperations(unittest.TestCase):
         self.assertTrue((result == should_be).all())
 
     def test_get_coordinates_returns_array_of_correct_shape(self):
-        rndm = np.random.rand(4096, 320)
+        rndm = self.rng.random(4096, 320)
         basis = np.linalg.qr(rndm)[0]
-        image = np.random.rand(4096)
+        image = self.rng.random(4096)
 
         result = op.get_coordinates(image, basis)
         print(basis.shape)
@@ -81,10 +82,10 @@ class TestOperations(unittest.TestCase):
         self.assertEqual(result.shape, (320,))
 
     def test_euclidean_distance2_returns_euc_distance_squared(self):
-        r1 = np.random.rand(4096, 1)
-        r2 = np.random.rand(4096,)
-        c1 = np.random.rand(320)
-        c2 = np.random.rand(320)
+        r1 = self.rng.random(4096, 1)
+        r2 = self.rng.random(4096,)
+        c1 = self.rng.random(320)
+        c2 = self.rng.random(320)
         result1 = op.euclidean_distance2(r1, r2)
         result2 = op.euclidean_distance2(c1 ,c2)
         should_be1 = np.linalg.norm((r1-r2))**2
@@ -94,9 +95,9 @@ class TestOperations(unittest.TestCase):
         self.assertAlmostEqual(result2, should_be2, 5)
 
     def test_euclidean_distance2_raises_exception(self):
-        r1 = np.random.rand(320, 1)
-        r2 = np.random.rand(1, 320)
-        r3 = np.random.rand(0)
+        r1 = self.rng.random(320, 1)
+        r2 = self.rng.random(1, 320)
+        r3 = self.rng.random(0)
 
         self.assertRaises(ValueError, op.euclidean_distance2, r1, r2)
         self.assertRaises(ValueError, op.euclidean_distance2, r1, r3)
