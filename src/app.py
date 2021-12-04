@@ -109,8 +109,8 @@ class App:
         distances = self.calculate_distances(coordinates)
         # projisoi kuva
         # laske projisoidun kuvan koordinaattien etäisyys kaikkien individualien
-        # projisoitujen kuvien etäisyyksistä ja tallenna ne listaan tupleja (id, etäisyys)
-        # sorttaa tuple-lista toisen elementin mukaan, valitse näistä k
+        # projisoitujen kuvien etäisyyksistä ja tallenna ne listaan tupleja (etäisyys, id)
+        # sorttaa tuple-lista ekan elementin mukaan, valitse näistä k
 
     def calculate_distances(self, im):
         distances = []
@@ -119,7 +119,7 @@ class App:
             id = individual.get_id()
             for image in images.T:
                 distance = op.euclidean_distance2(image, im)
-                distances.append((id, distance))
+                distances.append((distance, id))
         return distances
 
     def suorita(self):
