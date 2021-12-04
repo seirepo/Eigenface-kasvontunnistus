@@ -76,8 +76,6 @@ class TestOperations(unittest.TestCase):
         print(basis.shape)
         r = np.dot(image, basis[:,0])
         e = r * basis[:,0]
-        print(e.shape)
-
 
         self.assertEqual(result.shape, (320,))
 
