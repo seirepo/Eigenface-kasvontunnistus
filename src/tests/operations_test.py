@@ -83,14 +83,19 @@ class TestOperations(unittest.TestCase):
     def test_euclidean_distance2_returns_euc_distance_squared(self):
         r1 = np.random.rand(4096, 1)
         r2 = np.random.rand(4096,)
-        result = op.euclidean_distance2(r1, r2)
-        should_be = np.linalg.norm((r1-r2))**2
+        c1 = np.random.rand(320)
+        c2 = np.random.rand(320)
+        result1 = op.euclidean_distance2(r1, r2)
+        result2 = op.euclidean_distance2(c1 ,c2)
+        should_be1 = np.linalg.norm((r1-r2))**2
+        should_be2 = np.linalg.norm((c1-c2))**2
 
-        self.assertAlmostEqual(result, should_be, 5)
+        self.assertAlmostEqual(result1, should_be1, 5)
+        self.assertAlmostEqual(result2, should_be2, 5)
 
     def test_euclidean_distance2_raises_exception(self):
-        r1 = np.random.rand(4096, 1)
-        r2 = np.random.rand(1, 4096)
+        r1 = np.random.rand(320, 1)
+        r2 = np.random.rand(1, 320)
         r3 = np.random.rand(0)
 
         self.assertRaises(ValueError, op.euclidean_distance2, r1, r2)
