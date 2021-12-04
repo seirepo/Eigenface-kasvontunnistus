@@ -6,6 +6,7 @@ from app import App
 class TestApp(unittest.TestCase):
     def setUp(self):
         self.app = Mock()
+        self.rng = np.random.default_rng(seed=42)
 
     def test_get_training_images_returns_matrix_correct_shape(self):
         individual = Mock()
@@ -57,6 +58,40 @@ class TestApp(unittest.TestCase):
 
         self.assertEqual(result.shape, (3, 6))
         self.assertTrue((result == should_be).all())
+
+    def test_calculate_distances_returns_list_of_correct_length(self):
+        ind1 = Mock()
+        ind2 = Mock()
+
+        ind1.get_id.return_value = 1
+        ind1.get_image_coordinates.return_value = self.rng.random((320, 4))
+        ind2.get_id.return_value = 2
+        ind2.get_image_coordinates.return_value = self.rng.random((320, 4))
+
+        self.app.individuals = [ind1, ind2]
+        im = self.rng.random((320))
+
+        result = App.calculate_distances(self.app, im)
+        self.assertEqual(len(result), 8)
+
+    def test_calculate_distances_returns_correct_list(self):
+        ind1 = Mock()
+        ind2 = Mock()
+
+        a1 = np.array([[1,2,3],[1,-1,1],[2,0,1]])
+        a2 = np.array([[0,1,0],[1,2,1],[1,0,-2]])
+
+        ind1.get_id.return_value = 1
+        ind1.get_image_coordinates.return_value = a1
+        ind2.get_id.return_value = 2
+        ind2.get_image_coordinates.return_value = a2
+
+        self.app.individuals = [ind1, ind2]
+        im = np.arange(1,4)
+        result = App.calculate_distances(self.app, im)
+        should_be = [(2, 1), (19, 1), (9, 1), (6, 2), (9, 2), (27, 2)]
+
+        self.assertEqual(result, should_be)
 
     def test_app_has_correct_attributes_before_any_operations(self):
         app = App()

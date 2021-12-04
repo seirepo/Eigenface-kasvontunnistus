@@ -52,3 +52,6 @@ class Individual:
 
     def set_image_coordinates(self, images):
         self.image_coordinates = images
+
+    def get_image_coordinates(self):
+        return self.image_coordinates
