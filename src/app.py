@@ -102,11 +102,26 @@ class App:
             self.projected_images = self.project_individuals()
 
     def calculate_knn(self, im, k):
-        if im.shape != (4096,1) or im.shape != (4096, 1):
+        shape = im.shape
+        if len(shape) == 1 and shape[0] != 4096:
+            raise ValueError(f"Invalid input image shape {im.shape}")
+        elif len(shape) == 2 and shape != (4096, 1):
+            raise ValueError(f"Invalid input image shape {im.shape}")
+        elif len(shape) > 2:
             raise ValueError(f"Invalid input image shape {im.shape}")
 
         coordinates = self.project_image(im)
         distances = self.calculate_distances(coordinates)
+        distances.sort()
+        if k >= len(distances):
+            k = len(distances) - 1
+        nearest = distances[:k]
+        near = []
+        for n in nearest:
+            near.append(n[1])
+        res = ", ".join([str(int) for int in near])
+        return res
+        #print(f"\t lähimmät {k}: ", nearest[0], nearest[1])
         # projisoi kuva
         # laske projisoidun kuvan koordinaattien etäisyys kaikkien individualien
         # projisoitujen kuvien etäisyyksistä ja tallenna ne listaan tupleja (etäisyys, id)
@@ -124,6 +139,20 @@ class App:
 
     def suorita(self):
         self.calculate()
+
+        print("ajetaan tunnistusalgoritmi kaikille testikuville")
+        k = 5
+        for individual in self.individuals:
+            test_ims = individual.get_test_images()
+            id = individual.get_id()
+            print(f"id: {id}, lähimmät {k}")
+            for im in test_ims.T:
+                print(f"\t {self.calculate_knn(im, k)}")
+        #test_individual = self.individuals[15]
+        #test_ims = test_individual.get_test_images()
+        #test_im = test_ims.T[0]
+        #print(f"testikuvan id: {test_individual.get_id()}")
+        #self.calculate_knn(test_im, 5)
 
     def project_image(self, im):
         """Project given image to eigenface space
@@ -163,3 +192,7 @@ class App:
         #vals, d = np.linalg.eig(S)
         #ind = vals.argsort()[::-1]
         #print(d.shape)
+
+app = App()
+app.alusta()
+app.suorita()
