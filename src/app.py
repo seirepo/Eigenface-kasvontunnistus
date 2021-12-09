@@ -10,12 +10,12 @@ class App:
 
     def __init__(self):
         self.individuals = []
-        self.data = self.load_data()
-        self.all_images = self.data.data.T
+        self.data = None #self.load_data()
+        #self.all_images = self.data.data.T
         self.eigenfaces = None
-        self.training_images = None
-        self.test_images = None
-        self.projected_images = None
+        #self.training_images = None
+        #self.test_images = None
+        #self.projected_images = None
 
     def load_data(self):
         """load images
@@ -29,7 +29,8 @@ class App:
 
         faces = datasets.fetch_olivetti_faces(data_home=data_path)
 
-        return faces
+        #return faces
+        self.data = faces
 
     def create_individuals(self):
         if len(self.individuals) == 0:
@@ -39,33 +40,51 @@ class App:
                 ims = op.images_to_vectors(images[np.where(images_target==id)])
                 self.individuals.append(Individual(id, ims))
 
-    def alusta(self):
-        if len(self.individuals) == 0:
-            self.create_individuals()
+    #def alusta(self):
+    #    if len(self.individuals) == 0:
+    #        self.create_individuals()
 
-    def calculate(self):
+    def calculate_eigenfaces(self):
         """Collect a set of training and test images, and calculate eigenfaces based on them
         """
         if self.eigenfaces is None:
-            self.training_images, self.test_images = self.get_training_test_images()
-            self.eigenfaces = op.calculate_eigenfaces(self.training_images, 320)
-            self.init_projected_images()
+            #training_images, test_images = self.get_training_test_images()
+            training_images = self.get_training_images()
+            self.eigenfaces = op.calculate_eigenfaces(training_images, 320)
+            #self.init_projected_images()
 
-    def get_training_test_images(self):
+    #def get_training_test_images(self):
+    #    training = []
+    #    test = []
+    #    for individual in self.individuals:
+    #        tr = individual.get_training_images()
+    #        ts = individual.get_test_images()
+    #        training.append(tr)
+    #        test.append(ts)
+    #    training_array = np.hstack(training)
+    #    test_array = np.hstack(test)
+#
+    #    return training_array, test_array
+
+    def get_training_images(self):
         training = []
-        test = []
         for individual in self.individuals:
             tr = individual.get_training_images()
-            ts = individual.get_test_images()
             training.append(tr)
-            test.append(ts)
         training_array = np.hstack(training)
+        return training_array
+
+    def get_test_images(self):
+        test = []
+        for individual in self.individuals:
+            ts = individual.get_test_images()
+            test.append(ts)
         test_array = np.hstack(test)
 
-        return training_array, test_array
+        return test_array
 
-    def get_all_images(self):
-        return self.all_images
+    #def get_all_images(self):
+    #    return self.all_images
 
     def get_individuals(self):
         return self.individuals
@@ -85,7 +104,7 @@ class App:
             i += 1
         return images
 
-    def project_individuals(self):
+    def project_faces(self):
         projected_images = []
         for individual in self.individuals:
             projected = []
@@ -97,9 +116,9 @@ class App:
             individual.set_image_coordinates(np.array(projected).T)
         return np.array(projected_images).T
 
-    def init_projected_images(self):
-        if self.projected_images is None:
-            self.projected_images = self.project_individuals()
+    #def init_projected_images(self):
+    #    if self.projected_images is None:
+    #        self.projected_images = self.project_faces()
 
     def calculate_knn(self, im, k):
         shape = im.shape
@@ -133,7 +152,13 @@ class App:
         return distances
 
     def suorita(self):
-        self.calculate()
+        self.load_data()
+        self.create_individuals()
+        self.calculate_eigenfaces()
+        self.project_faces()
+        #self.classify_faces()
+        self.calculate_knn
+        self.calculate_eigenfaces()
 
         print("ajetaan tunnistusalgoritmi kaikille testikuville")
         k = 5
@@ -155,6 +180,13 @@ class App:
         """
         coordinates = op.get_coordinates(im, self.eigenfaces)
         return coordinates
+
+
+
+
+
+
+
 
     def show_images(self, images):
         """
@@ -183,6 +215,6 @@ class App:
         #ind = vals.argsort()[::-1]
         #print(d.shape)
 
-app = App()
-app.alusta()
-app.suorita()
+#app = App()
+#app.alusta()
+#app.suorita()

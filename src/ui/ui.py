@@ -18,6 +18,7 @@ class UI:
         label_people = ttk.Label(master=self.people_frame, text="Henkilöt")
         label_people.grid(row=0, column=0, columnspan=4)
 
+        self.app.load_data()
         self.app.create_individuals()
         ppl = self.app.get_image_of_everyone()
         x = 1
