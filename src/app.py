@@ -71,7 +71,7 @@ class App:
         images = []
         i = 0
         for individual in self.individuals:
-            im = individual.get_training_images()[:,0].reshape((64,64))
+            im = individual.get_training_images()[:,0]#.reshape((64,64))
             id = individual.get_id()
             images.append((id, im))
             i += 1
