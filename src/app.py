@@ -10,12 +10,8 @@ class App:
 
     def __init__(self):
         self.individuals = []
-        self.data = None #self.load_data()
-        #self.all_images = self.data.data.T
+        self.data = None
         self.eigenfaces = None
-        #self.training_images = None
-        #self.test_images = None
-        #self.projected_images = None
 
     def load_data(self):
         """load images
@@ -29,7 +25,6 @@ class App:
 
         faces = datasets.fetch_olivetti_faces(data_home=data_path)
 
-        #return faces
         self.data = faces
 
     def create_individuals(self):
@@ -40,31 +35,12 @@ class App:
                 ims = op.images_to_vectors(images[np.where(images_target==id)])
                 self.individuals.append(Individual(id, ims))
 
-    #def alusta(self):
-    #    if len(self.individuals) == 0:
-    #        self.create_individuals()
-
     def calculate_eigenfaces(self):
         """Collect a set of training and test images, and calculate eigenfaces based on them
         """
         if self.eigenfaces is None:
-            #training_images, test_images = self.get_training_test_images()
             training_images = self.get_training_images()
             self.eigenfaces = op.calculate_eigenfaces(training_images, 320)
-            #self.init_projected_images()
-
-    #def get_training_test_images(self):
-    #    training = []
-    #    test = []
-    #    for individual in self.individuals:
-    #        tr = individual.get_training_images()
-    #        ts = individual.get_test_images()
-    #        training.append(tr)
-    #        test.append(ts)
-    #    training_array = np.hstack(training)
-    #    test_array = np.hstack(test)
-#
-    #    return training_array, test_array
 
     def get_training_images(self):
         training = []
@@ -82,9 +58,6 @@ class App:
         test_array = np.hstack(test)
 
         return test_array
-
-    #def get_all_images(self):
-    #    return self.all_images
 
     def get_individuals(self):
         return self.individuals
@@ -115,10 +88,6 @@ class App:
                 projected_images.append(proj_im)
             individual.set_image_coordinates(np.array(projected).T)
         return np.array(projected_images).T
-
-    #def init_projected_images(self):
-    #    if self.projected_images is None:
-    #        self.projected_images = self.project_faces()
 
     def calculate_knn(self, im, k):
         shape = im.shape
