@@ -50,8 +50,8 @@ class TestApp(unittest.TestCase):
 
         a1 = np.array([[1,2,3],[1,-1,1],[2,0,1]])
         a2 = np.array([[0,1,0],[1,2,1],[1,0,-2]])
-        ind1.get_average_images.return_value = a1
-        ind2.get_average_images.return_value = a2
+        ind1.get_training_images.return_value = a1
+        ind2.get_training_images.return_value = a2
         self.app.individuals = [ind1, ind2]
         self.app.eigenfaces = np.eye(3)
         self.app.project_image.side_effect = [ a1[:,0], a1[:,1], a1[:,2], a2[:,0], a2[:,1], a2[:,2] ]
