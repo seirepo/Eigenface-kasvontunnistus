@@ -19,25 +19,15 @@ class UI:
         label_people = ttk.Label(master=self.people_frame, text="Henkilöt")
         label_people.grid(row=0, column=0, columnspan=4)
 
-        #self.app.load_data()
-        #self.app.create_individuals()
         self.app.suorita()
         ppl = self.app.get_image_of_everyone()
 
         self.show_faces(ppl)
 
-        #button_calc = ttk.Button(
-        #    master=self.people_frame,
-        #    text="laske eigenfacet",
-        #    command=self.handle_button_click
-        #)
-        #button_calc.grid(row=11, column=0, columnspan=4, pady=10)
-
         self.middle_canvas = tkinter.Canvas(master=self.root, width=280, height=280)
         self.middle_canvas.grid(row=0, column=1, sticky="nw")
 
         self.test_im_frame = ttk.Frame(master=self.middle_canvas)
-        #self.test_im_frame = ttk.Frame(master=self.root, width=280)
         self.test_im_frame.grid(row=0, column=0, sticky="nw")
 
         test_label = ttk.Label(master=self.middle_canvas, text="Testikuvat")
@@ -110,43 +100,6 @@ class UI:
                 if tmp_canvas_col % 17 == 0:
                     tmp_canvas_row += 1
                     tmp_canvas_col = 1
-
-        # toimii mutta liian sekava eikä näytä kaikkia
-        #for ind in ppl[:25]:
-        #    nearest_nbrs = ind.get_nearest_neighbor()
-        #    test_item = nearest_nbrs[0]
-        #    im = test_item[0].reshape((64,64))
-        #    nearest_id = test_item[1]
-        #    im = np.uint8(im*255)
-        #    im = ImageTk.PhotoImage(image=Image.fromarray(im))
-        #    label = ttk.Label(
-        #        master=self.middle_canvas,
-        #        image=im,
-        #        text=str(ind.get_id()),
-        #        compound="top"
-        #    )
-        #    label.image = im
-        #    label.grid(row=r, column=c)
-        #    print("kuva1: ", r, c)
-#
-        #    nearest_im = self.app.get_image_by_id(nearest_id)
-        #    nearest_im = nearest_im.reshape((64,64))
-        #    nearest_im = np.uint8(nearest_im*255)
-        #    nearest_im = ImageTk.PhotoImage(image=Image.fromarray(nearest_im))
-        #    label_nearest = ttk.Label(
-        #        master=self.middle_canvas,
-        #        image=nearest_im,
-        #        text=str(nearest_id),
-        #        compound="top"
-        #    )
-        #    label_nearest.image = nearest_im
-        #    label_nearest.grid(row=r, column=c+1)
-        #    print("kuva2: ", r, c+1)
-#
-        #    r += 1
-        #    if r % 9 == 0:
-        #        r = 1
-        #        c +=4
 
     def image_to_label(self, master, image, text=""):
         im = image.reshape((64,64))
