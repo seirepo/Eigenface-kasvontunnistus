@@ -137,8 +137,8 @@ class App:
         near = []
         for n in nearest:
             near.append(n[1])
-        res = ", ".join([str(int) for int in near])
-        return res
+
+        return near
 
     def calculate_distances(self, im):
         """Calculates distances between the given image coordinates and
@@ -164,8 +164,7 @@ class App:
         self.create_individuals()
         self.calculate_eigenfaces()
         self.project_faces()
-        #self.classify_faces()
-        self.calculate_knn
+        self.classify_faces()
 
         #print("rekonstruoidaan jotkut training setin kasvot:")
         # vaikea tunnistaa: 0, 2, 3, 7, 8, 9, 22, 34, 39
@@ -178,13 +177,30 @@ class App:
         #plot.show()
 
         print("ajetaan tunnistusalgoritmi kaikille testikuville")
-        k = 5
+        k = 4
         for individual in self.individuals:
             test_ims = individual.get_test_images()
             id = individual.get_id()
             print(f"id: {id}, lähimmät {k}")
             for im in test_ims.T:
-               print(f"\t {self.calculate_knn(im, k)}")
+            #   print(f"\t {self.calculate_knn(im, k)}")
+                print(self.calculate_knn(im, k))
+
+
+    def classify_faces(self):
+        k = 3
+        for individual in self.individuals:
+            test_ims = individual.get_test_images()
+            id = individual.get_id()
+            for im in test_ims.T:
+                nearest = self.calculate_knn(im, k)
+                # valitse top useiten esiintyvä nearest listasta
+                # [1, 1, 1] -> 1
+                # [22, 22, 12] -> 22
+                # [39, 8, 4] -> 39
+                # [34, 4, 4, 20] -> 4
+                # [7, 0, 7, 9] -> 7
+                # [39, 39, 4, 4] -> 39, koska 39 on lähin vaikka menee tasan
 
     def project_image(self, im):
         """Project given image to eigenface space
