@@ -89,6 +89,11 @@ class App:
             i += 1
         return images
 
+    def get_image_by_id(self, id):
+        for individual in self.individuals:
+            if individual.get_id() == id:
+                return individual.get_training_images()[:,0]
+
     def project_faces(self):
         """Projects each individuals training images to the eigenface spanned space
         and saves the coordinates in individual attribute
