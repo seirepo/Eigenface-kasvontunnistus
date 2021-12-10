@@ -176,15 +176,15 @@ class App:
         #plot.imshow(sel.reshape((64,64)), cmap="Greys_r")
         #plot.show()
 
-        print("ajetaan tunnistusalgoritmi kaikille testikuville")
-        k = 4
-        for individual in self.individuals:
-            test_ims = individual.get_test_images()
-            id = individual.get_id()
-            print(f"id: {id}, lähimmät {k}")
-            for im in test_ims.T:
+        #print("ajetaan tunnistusalgoritmi kaikille testikuville")
+        #k = 4
+        #for individual in self.individuals:
+            #test_ims = individual.get_test_images()
+            #id = individual.get_id()
+            #print(f"id: {id}, lähimmät {k}")
+            #for im in test_ims.T:
             #   print(f"\t {self.calculate_knn(im, k)}")
-                print(self.calculate_knn(im, k))
+            #   print(self.calculate_knn(im, k))
 
 
     def classify_faces(self):
@@ -194,13 +194,7 @@ class App:
             id = individual.get_id()
             for im in test_ims.T:
                 nearest = self.calculate_knn(im, k)
-                # valitse top useiten esiintyvä nearest listasta
-                # [1, 1, 1] -> 1
-                # [22, 22, 12] -> 22
-                # [39, 8, 4] -> 39
-                # [34, 4, 4, 20] -> 4
-                # [7, 0, 7, 9] -> 7
-                # [39, 39, 4, 4] -> 39, koska 39 on lähin vaikka menee tasan
+                nearest_id = op.get_most_frequent(nearest)
 
     def project_image(self, im):
         """Project given image to eigenface space
