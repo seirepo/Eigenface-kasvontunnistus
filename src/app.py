@@ -99,8 +99,9 @@ class App:
         projected_images = []
         for individual in self.individuals:
             projected = []
-            average_images = individual.get_average_images()
-            for image in average_images.T:
+            #average_images = individual.get_average_images()
+            training_images = individual.get_training_images()
+            for image in training_images.T:
                 proj_im = self.project_image(image)
                 projected.append(proj_im)
                 projected_images.append(proj_im)
