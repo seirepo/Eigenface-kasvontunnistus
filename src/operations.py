@@ -87,6 +87,32 @@ def euclidean_distance2(im1, im2):
         raise ValueError(f"Illegal size of input vectors {im1.shape} and {im2.shape}: {im1.shape[0]} != {im2.shape[0]}")
     return np.sum((im1 - im2)**2)
 
+def get_most_frequent(values):
+    vals, counts = np.unique(values, return_counts=True)
+    result = zip(counts, vals)
+    result = list(result)
+    sorted_res = sorted(result)[::-1]
+    print("alkup lista: ", values)
+    print("järjestetty: ", sorted_res)
+    max_count = sorted_res[0][0]
+    max_pair = sorted_res[0]
+    print("suurin count: ", max_count, "\nsuurin: ", max_pair)
+
+    tie = []
+    for item in sorted_res[1:]:
+        if item[0] == max_count:
+            tie.append(item)
+    print("tasa: ", tie, "\n")
+
+    if len(tie) == 0:
+        return max_pair[1]
+    else:
+        max_index = values.index(max_pair[1])
+        for item in tie:
+            if values.index(item[1]) < max_index:
+                max_pair = item
+    return max_pair[1]
+
 def get_average_face(training_images):
     return np.mean(training_images, axis=1).reshape((-1,1))
 
