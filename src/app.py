@@ -28,6 +28,8 @@ class App:
         self.data = faces
 
     def create_individuals(self):
+        """Create individual objects representing a class for one person
+        """
         if len(self.individuals) == 0:
             images = self.data.images
             images_target = self.data.target
@@ -36,13 +38,18 @@ class App:
                 self.individuals.append(Individual(id, ims))
 
     def calculate_eigenfaces(self):
-        """Collect a set of training and test images, and calculate eigenfaces based on them
+        """Collect a set of training images and calculate eigenfaces based on them
         """
         if self.eigenfaces is None:
             training_images = self.get_training_images()
             self.eigenfaces = op.calculate_eigenfaces(training_images)
 
     def get_training_images(self):
+        """Get all training images from individual objects
+
+        Returns:
+            np.array: training images in an array as column vectors
+        """
         training = []
         for individual in self.individuals:
             tr = individual.get_training_images()
@@ -51,6 +58,11 @@ class App:
         return training_array
 
     def get_test_images(self):
+        """Get all test images from individual objects
+
+        Returns:
+            np.array: test images in an array as column vectors
+        """
         test = []
         for individual in self.individuals:
             ts = individual.get_test_images()
@@ -62,12 +74,12 @@ class App:
     def get_individuals(self):
         return self.individuals
 
-    def get_random_image(self):
-        im = self.all_images[:,19].reshape((64,64))
-        im = np.uint8(im*255)
-        return im
-
     def get_image_of_everyone(self):
+        """Return a list of tuples containing id and first image of each individual
+
+        Returns:
+            list[tuple[int, np.array]]: list of tuples
+        """
         images = []
         i = 0
         for individual in self.individuals:
@@ -78,6 +90,12 @@ class App:
         return images
 
     def project_faces(self):
+        """Projects each individuals training images to the eigenface spanned space
+        and saves the coordinates in individual attribute
+
+        Returns:
+            np.array: an array of projected images as column vectors
+        """
         projected_images = []
         for individual in self.individuals:
             projected = []
@@ -90,6 +108,18 @@ class App:
         return np.array(projected_images).T
 
     def calculate_knn(self, im, k):
+        """Calculate k-nearest neighbors for the given image
+
+        Args:
+            im (np.array): image
+            k (int): number of neighbors
+
+        Raises:
+            ValueError: if the given image shape is incorrect
+
+        Returns:
+            string: result as a string
+        """
         shape = im.shape
         if len(shape) == 1 and shape[0] != 4096:
             raise ValueError(f"Invalid input image shape {im.shape}")
@@ -111,6 +141,15 @@ class App:
         return res
 
     def calculate_distances(self, im):
+        """Calculates distances between the given image coordinates and
+        coordinates of the training images of each individual
+
+        Args:
+            im (np.array): an array of coordinates
+
+        Returns:
+            list[tuple[float, int]]: list containing tuples with distance and id of the corresponding individual
+        """
         distances = []
         for individual in self.individuals:
             images = individual.get_image_coordinates()
