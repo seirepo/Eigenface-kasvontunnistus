@@ -90,14 +90,6 @@ def euclidean_distance2(im1, im2):
 def get_average_face(training_images):
     return np.mean(training_images, axis=1).reshape((-1,1))
 
-def get_eigenfaces(images, eigvecs):
-    eigenfaces = np.zeros(images.shape)
-    for i in range(0, images.shape[1]):
-        eigvec = eigvecs[:,i]
-        for j in range(0, images.shape[1]):
-            eigenfaces[:,i] += eigvec[j] * images[:,j]
-    return eigenfaces
-
 def get_coordinates(image, basis):
     """Calculates coordinates of a given image in the given face space.
     The basis must be orthonormal

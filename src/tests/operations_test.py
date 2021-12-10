@@ -50,15 +50,6 @@ class TestOperations(unittest.TestCase):
         res = op.get_average_face(self.mat1)
         self.assertEqual(res.shape, (2, 1))
 
-    def test_get_eigenfaces(self):
-        eigvecs = np.array([[2,1,1],[3,0,1],[2,3,2]])
-        images = np.array([[1,2,3],[1,5,6],[0,4,2]])
-        result = op.get_eigenfaces(images, eigvecs)
-        should_be = np.array([[14,10,9],[29,19,18],[16,6,8]])
-
-        self.assertEqual(result.shape, (3, 3))
-        self.assertTrue((result == should_be).all())
-
     def test_get_coordinates_in_given_base_returns_correct_coordinates(self):
         im = np.array([3,0,-2])
         space = np.array([[1,0,0],[0,1,0],[0,0,1]])
