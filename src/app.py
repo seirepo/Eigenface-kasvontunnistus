@@ -191,10 +191,12 @@ class App:
         k = 3
         for individual in self.individuals:
             test_ims = individual.get_test_images()
-            id = individual.get_id()
+            res = []
             for im in test_ims.T:
                 nearest = self.calculate_knn(im, k)
                 nearest_id = op.get_most_frequent(nearest)
+                res.append((im, nearest_id, nearest))
+            individual.set_nearest_neighbor(res)
 
     def project_image(self, im):
         """Project given image to eigenface space
