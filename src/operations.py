@@ -56,8 +56,6 @@ def calculate_eigenfaces(training_images, k=-1):
 
     indx = vals.argsort()[::-1]
 
-    eigenfaces = get_eigenfaces(difference_faces, eig_vectors)
-
     if k <= 0:
         eigvals = sorted(vals.tolist())[::-1]
         count = len(eigvals)
@@ -66,18 +64,21 @@ def calculate_eigenfaces(training_images, k=-1):
         for i in range(0,count):
             csum = csum + eigvals[i]
             total_variance = csum / eigsum
-            if total_variance > 0.975:
+            if total_variance > 0.85:
                 k = i
                 break
 
-    selected = eigenfaces[:,indx][:,:k]
+    selected = eig_vectors[:,indx][:,:k]
 
-    scaled = np.interp(selected, (selected.min(), selected.max()), (0, 1))
+    eigenfaces = np.matmul(difference_faces, selected)
+
+    #scaled_eigenfaces = np.interp(eigenfaces, (eigenfaces.min(), eigenfaces.max()), (0, 1))
     #try:
     #    scaled = np.interp(selected, (selected.min(), selected.max()), (0, 1))
     #except ValueError:
     #        print(f"skaalaus ei onnistunut, skaalattava matriisi {selected} on tyhjä")
-    result = np.linalg.qr(scaled)[0]
+    #result = np.linalg.qr(scaled_eigenfaces)[0]
+    result = np.linalg.qr(eigenfaces)[0]
 
     return result
 

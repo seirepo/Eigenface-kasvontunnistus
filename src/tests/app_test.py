@@ -120,4 +120,4 @@ class TestApp(unittest.TestCase):
         app.suorita()
 
         self.assertEqual(len(app.individuals), 40)
-        self.assertEqual(app.eigenfaces.shape, (4096, 320))
+        self.assertEqual(app.eigenfaces.shape[0], 4096)

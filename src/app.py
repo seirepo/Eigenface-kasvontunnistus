@@ -40,7 +40,7 @@ class App:
         """
         if self.eigenfaces is None:
             training_images = self.get_training_images()
-            self.eigenfaces = op.calculate_eigenfaces(training_images, 320)
+            self.eigenfaces = op.calculate_eigenfaces(training_images)
 
     def get_training_images(self):
         training = []
@@ -127,7 +127,16 @@ class App:
         self.project_faces()
         #self.classify_faces()
         self.calculate_knn
-        self.calculate_eigenfaces()
+
+        #print("rekonstruoidaan jotkut training setin kasvot:")
+        # vaikea tunnistaa: 0, 2, 3, 7, 8, 9, 22, 34, 39
+        #sel = self.individuals[9].get_training_images()[:,2]
+        sel = self.individuals[39].get_training_images()[:,2]
+        #plot.imshow(sel.reshape((64,64)), cmap="Greys_r")
+        #plot.show()
+        proj = op.get_projection(sel, self.eigenfaces)
+        #plot.imshow(sel.reshape((64,64)), cmap="Greys_r")
+        #plot.show()
 
         print("ajetaan tunnistusalgoritmi kaikille testikuville")
         k = 5
@@ -136,7 +145,7 @@ class App:
             id = individual.get_id()
             print(f"id: {id}, lähimmät {k}")
             for im in test_ims.T:
-                print(f"\t {self.calculate_knn(im, k)}")
+               print(f"\t {self.calculate_knn(im, k)}")
 
     def project_image(self, im):
         """Project given image to eigenface space
@@ -184,6 +193,6 @@ class App:
         #ind = vals.argsort()[::-1]
         #print(d.shape)
 
-#app = App()
+app = App()
 #app.alusta()
-#app.suorita()
+app.suorita()
