@@ -91,3 +91,18 @@ class TestOperations(unittest.TestCase):
         self.assertRaises(ValueError, op.euclidean_distance2, r1, r2)
         self.assertRaises(ValueError, op.euclidean_distance2, r1, r3)
         self.assertRaises(ValueError, op.euclidean_distance2, r2, r3)
+
+    def test_get_most_frequent_returns_most_frequent_value(self):
+        l1 = [1, 1, 1]
+        l2 = [12, 22, 22]
+        l3 = [39, 8, 4]
+        l4 = [34, 4, 4, 20]
+        l5 = [9, 7, 0, 7]
+        l6 = [39, 4, 39, 4]
+
+        self.assertEqual(op.get_most_frequent(l1), 1)
+        self.assertEqual(op.get_most_frequent(l2), 22)
+        self.assertEqual(op.get_most_frequent(l3), 39)
+        self.assertEqual(op.get_most_frequent(l4), 4)
+        self.assertEqual(op.get_most_frequent(l5), 7)
+        self.assertEqual(op.get_most_frequent(l6), 39)
