@@ -144,12 +144,13 @@ class App:
 
         return near
 
-    def calculate_distances(self, im):
+    def calculate_distances(self, im, p=1):
         """Calculates distances between the given image coordinates and
         coordinates of the training images of each individual
 
         Args:
             im (np.array): an array of coordinates
+            p (int): order of the norm
 
         Returns:
             list[tuple[float, int]]: list containing tuples with distance and id of the corresponding individual
@@ -159,7 +160,8 @@ class App:
             images = individual.get_image_coordinates()
             id = individual.get_id()
             for image in images.T:
-                distance = op.euclidean_distance2(image, im)
+                #distance = op.pnorm(image, im, p)
+                distance = np.linalg.norm((image-im), p)
                 distances.append((distance, id))
         return distances
 
