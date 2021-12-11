@@ -121,3 +121,36 @@ class TestApp(unittest.TestCase):
 
         self.assertEqual(len(app.individuals), 40)
         self.assertEqual(app.eigenfaces.shape[0], 4096)
+
+    def test_get_image_of_everyone_returns_list_of_correct_length(self):
+        app = App()
+        app.load_data()
+        app.create_individuals()
+        count = len(app.individuals)
+        images = app.get_image_of_everyone()
+
+        self.assertEqual(len(images), count)
+
+    def test_get_image_by_id_raises_exception_if_incorrect_id_is_given(self):
+        app = App()
+        app.load_data()
+        app.create_individuals()
+
+        self.assertRaises(ValueError, app.get_image_by_id, -4)
+        self.assertRaises(ValueError, app.get_image_by_id, 9.5)
+        self.assertRaises(ValueError, app.get_image_by_id, len(app.individuals) + 10)
+
+    def test_calculate_knn_raises_exception_with_incorrect_image_input(self):
+        app = App()
+        app.load_data()
+        app.create_individuals()
+        app.calculate_eigenfaces()
+        app.project_faces()
+
+        im1 = self.rng.random((4097))
+        im2 = self.rng.random((4096, 4096))
+        im3 = self.rng.random((1, 2, 3))
+
+        self.assertRaises(ValueError, app.calculate_knn, im1, 3)
+        self.assertRaises(ValueError, app.calculate_knn, im2, 3)
+        self.assertRaises(ValueError, app.calculate_knn, im3, 3)
