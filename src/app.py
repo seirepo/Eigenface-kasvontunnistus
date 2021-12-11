@@ -184,15 +184,28 @@ class App:
         #plot.show()
 
         #print("ajetaan tunnistusalgoritmi kaikille testikuville")
-        #k = 4
-        #for individual in self.individuals:
-            #test_ims = individual.get_test_images()
-            #id = individual.get_id()
+        k = 4
+        for individual in self.individuals:
+            test_ims = individual.get_test_images()
+            id = individual.get_id()
             #print(f"id: {id}, lähimmät {k}")
             #for im in test_ims.T:
-            #   print(f"\t {self.calculate_knn(im, k)}")
-            #   print(self.calculate_knn(im, k))
+               #print(f"\t {self.calculate_knn(im, k)}")
+               #print(self.calculate_knn(im, k))
 
+    def print_results(self):
+        corr = 0
+        inc = 0
+        for ind in self.individuals:
+            nearest = ind.get_nearest_neighbor()
+            id = ind.get_id()
+            id_nearest = nearest[1][1]
+            if id == id_nearest:
+                corr += 1
+            else:
+                print(id, id_nearest)
+                inc += 1
+        print(f"tulos: {corr/(corr+inc) * 100} % oikein, {inc/(corr+inc) * 100} % väärin")
 
     def classify_faces(self):
         k = 3
@@ -205,9 +218,6 @@ class App:
                 res.append((im, nearest_id, nearest))
             individual.set_nearest_neighbor(res)
 
-    def print_results(self):
-        for ind in self.individuals:
-            pass
 
     def project_image(self, im):
         """Project given image to eigenface space
@@ -220,13 +230,6 @@ class App:
         """
         coordinates = op.get_coordinates(im, self.eigenfaces)
         return coordinates
-
-
-
-
-
-
-
 
     def show_images(self, images):
         """
