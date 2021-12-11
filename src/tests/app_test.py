@@ -92,7 +92,7 @@ class TestApp(unittest.TestCase):
         self.app.individuals = [ind1, ind2]
         im = np.arange(1,4)
         result = App.calculate_distances(self.app, im)
-        should_be = [(2, 1), (19, 1), (9, 1), (6, 2), (9, 2), (27, 2)]
+        should_be = [(2.0, 1), (7.0, 1), (5.0, 1), (4.0, 2), (3.0, 2), (7.0, 2)]
 
         self.assertEqual(result, should_be)
 
