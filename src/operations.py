@@ -87,6 +87,9 @@ def euclidean_distance2(im1, im2):
         raise ValueError(f"Illegal size of input vectors {im1.shape} and {im2.shape}: {im1.shape[0]} != {im2.shape[0]}")
     return np.sum((im1 - im2)**2)
 
+def pnorm(im1, im2, p):
+    return np.linalg.norm((im1-im2), p)
+
 def get_most_frequent(values):
     vals, counts = np.unique(values, return_counts=True)
     result = zip(counts, vals)
