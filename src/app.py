@@ -170,6 +170,7 @@ class App:
         self.calculate_eigenfaces()
         self.project_faces()
         self.classify_faces()
+        self.print_results()
 
         #print("rekonstruoidaan jotkut training setin kasvot:")
         # vaikea tunnistaa: 0, 2, 3, 7, 8, 9, 22, 34, 39
@@ -202,6 +203,9 @@ class App:
                 nearest_id = op.get_most_frequent(nearest)
                 res.append((im, nearest_id, nearest))
             individual.set_nearest_neighbor(res)
+
+    def print_results(self):
+        pass
 
     def project_image(self, im):
         """Project given image to eigenface space
