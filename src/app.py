@@ -205,7 +205,8 @@ class App:
             individual.set_nearest_neighbor(res)
 
     def print_results(self):
-        pass
+        for ind in self.individuals:
+            pass
 
     def project_image(self, im):
         """Project given image to eigenface space
