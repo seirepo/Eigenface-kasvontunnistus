@@ -23,3 +23,5 @@ Tietorakenteet ja algoritmit, harjoitustyö 2021
 [Viikkoraportti 4](dokumentaatio/viikkoraportti-4.md)
 
 [Viikkoraportti 5](dokumentaatio/viikkoraportti-5.md)
+
+[Viikkoraportti 6](dokumentaatio/viikkoraportti-6.md)
