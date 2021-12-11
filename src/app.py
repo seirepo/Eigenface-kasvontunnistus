@@ -81,18 +81,17 @@ class App:
             list[tuple[int, np.array]]: list of tuples
         """
         images = []
-        i = 0
         for individual in self.individuals:
             im = individual.get_training_images()[:,0]#.reshape((64,64))
             id = individual.get_id()
             images.append((id, im))
-            i += 1
         return images
 
     def get_image_by_id(self, id):
         for individual in self.individuals:
             if individual.get_id() == id:
                 return individual.get_training_images()[:,0]
+        raise ValueError(f"Image not found with id {id}")
 
     def project_faces(self):
         """Projects each individuals training images to the eigenface spanned space
@@ -145,12 +144,13 @@ class App:
 
         return near
 
-    def calculate_distances(self, im):
+    def calculate_distances(self, im, p=1):
         """Calculates distances between the given image coordinates and
         coordinates of the training images of each individual
 
         Args:
             im (np.array): an array of coordinates
+            p (int): order of the norm
 
         Returns:
             list[tuple[float, int]]: list containing tuples with distance and id of the corresponding individual
@@ -160,7 +160,8 @@ class App:
             images = individual.get_image_coordinates()
             id = individual.get_id()
             for image in images.T:
-                distance = op.euclidean_distance2(image, im)
+                #distance = op.pnorm(image, im, p)
+                distance = np.linalg.norm((image-im), p)
                 distances.append((distance, id))
         return distances
 
@@ -183,15 +184,28 @@ class App:
         #plot.show()
 
         #print("ajetaan tunnistusalgoritmi kaikille testikuville")
-        #k = 4
-        #for individual in self.individuals:
-            #test_ims = individual.get_test_images()
-            #id = individual.get_id()
+        k = 4
+        for individual in self.individuals:
+            test_ims = individual.get_test_images()
+            id = individual.get_id()
             #print(f"id: {id}, lähimmät {k}")
             #for im in test_ims.T:
-            #   print(f"\t {self.calculate_knn(im, k)}")
-            #   print(self.calculate_knn(im, k))
+               #print(f"\t {self.calculate_knn(im, k)}")
+               #print(self.calculate_knn(im, k))
 
+    def print_results(self):
+        corr = 0
+        inc = 0
+        for ind in self.individuals:
+            nearest = ind.get_nearest_neighbor()
+            id = ind.get_id()
+            id_nearest = nearest[1][1]
+            if id == id_nearest:
+                corr += 1
+            else:
+                print(id, id_nearest)
+                inc += 1
+        print(f"tulos: {corr/(corr+inc) * 100} % oikein, {inc/(corr+inc) * 100} % väärin")
 
     def classify_faces(self):
         k = 3
@@ -204,9 +218,6 @@ class App:
                 res.append((im, nearest_id, nearest))
             individual.set_nearest_neighbor(res)
 
-    def print_results(self):
-        for ind in self.individuals:
-            pass
 
     def project_image(self, im):
         """Project given image to eigenface space
@@ -219,13 +230,6 @@ class App:
         """
         coordinates = op.get_coordinates(im, self.eigenfaces)
         return coordinates
-
-
-
-
-
-
-
 
     def show_images(self, images):
         """

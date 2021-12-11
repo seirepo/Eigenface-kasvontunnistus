@@ -34,9 +34,6 @@ class Individual:
     def get_test_images(self):
         return self.test_images
 
-    def get_average_images(self):
-        return self.average_images
-
     def set_image_coordinates(self, images):
         self.image_coordinates = images
 
