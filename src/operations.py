@@ -92,17 +92,13 @@ def get_most_frequent(values):
     result = zip(counts, vals)
     result = list(result)
     sorted_res = sorted(result)[::-1]
-    #print("alkup lista: ", values)
-    #print("järjestetty: ", sorted_res)
     max_count = sorted_res[0][0]
     max_pair = sorted_res[0]
-    #print("suurin count: ", max_count, "\nsuurin: ", max_pair)
 
     tie = []
     for item in sorted_res[1:]:
         if item[0] == max_count:
             tie.append(item)
-    #print("tasa: ", tie, "\n")
 
     if len(tie) == 0:
         return max_pair[1]
