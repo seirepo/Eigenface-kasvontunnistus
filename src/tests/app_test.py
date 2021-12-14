@@ -117,7 +117,7 @@ class TestApp(unittest.TestCase):
 
     def test_app_has_correct_attributes_after_suorita(self):
         app = App()
-        app.suorita()
+        app.classify()
 
         self.assertEqual(len(app.individuals), 40)
         self.assertEqual(app.eigenfaces.shape[0], 4096)

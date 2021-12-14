@@ -19,7 +19,7 @@ class UI:
         label_people = ttk.Label(master=self.people_frame, text="Henkilöt")
         label_people.grid(row=0, column=0, columnspan=4)
 
-        self.app.suorita()
+        #self.app.classify()
         ppl = self.app.get_image_of_everyone()
 
         self.show_faces(ppl)
@@ -116,7 +116,7 @@ class UI:
 
     def handle_button_click(self):
         print("lasketaan...")
-        self.app.suorita()
+        self.app.classify()
 
     def show_images(self):
         pass

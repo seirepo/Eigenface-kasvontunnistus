@@ -145,8 +145,7 @@ class App:
         self.calculate_eigenfaces()
         self.project_faces()
 
-    def suorita(self):
-        self.initialize()
+    def classify(self):
         self.classify_faces(2, 2)
         self.print_results()
 
