@@ -96,14 +96,10 @@ class TestApp(unittest.TestCase):
 
         self.assertEqual(result, should_be)
 
-    def test_app_has_correct_attributes_before_any_operations(self):
+    def test_app_has_correct_attributes_set_before_any_operations(self):
         app = App()
-
-        self.assertEqual(len(app.individuals), 0)
-        self.assertIsNone(app.eigenfaces)
-
-    def test_app_eigenfaces_are_not_calculated_more_than_once(self):
-        pass
+        self.assertFalse(len(app.individuals) == 0)
+        self.assertIsNotNone(app.eigenfaces)
 
     def test_individuals_are_not_created_more_than_once(self):
         app = App()
@@ -151,6 +147,6 @@ class TestApp(unittest.TestCase):
         im2 = self.rng.random((4096, 4096))
         im3 = self.rng.random((1, 2, 3))
 
-        self.assertRaises(ValueError, app.calculate_knn, im1, 3)
-        self.assertRaises(ValueError, app.calculate_knn, im2, 3)
-        self.assertRaises(ValueError, app.calculate_knn, im3, 3)
+        self.assertRaises(ValueError, app.calculate_knn, im1, 3, 1)
+        self.assertRaises(ValueError, app.calculate_knn, im2, 3, 1)
+        self.assertRaises(ValueError, app.calculate_knn, im3, 3, 1)

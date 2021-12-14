@@ -147,7 +147,7 @@ class App:
         self.project_faces()
 
     def classify(self):
-        self.classify_faces(2, 2)
+        self.classify_faces(k=3,p=2)
         self.print_results()
 
         av_face = op.get_average_face(self.get_training_images())
@@ -277,5 +277,5 @@ class App:
         #print(d.shape)
 
 app = App()
-#app.alusta()
 app.classify()
+#app.suorita()
