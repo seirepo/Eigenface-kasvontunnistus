@@ -83,8 +83,8 @@ class App:
             for im in test_ims.T:
                 nearest = self.calculate_knn(im, k, p)
                 nearest_id = op.get_most_frequent(nearest)
-                res.append((im, nearest_id, nearest))
-            individual.set_nearest_neighbor(res)
+                res.append({"im": im, "classification": nearest_id, "other_near_ids": nearest})
+            individual.set_nearest_neighbor(res) # res: List[dict], len(res) = 2
 
     def calculate_knn(self, im, k, p):
         """Calculate k-nearest neighbors for the given image
@@ -189,7 +189,7 @@ class App:
         for ind in self.individuals:
             nearest = ind.get_nearest_neighbor()
             id = ind.get_id()
-            id_nearest = nearest[1][1]
+            id_nearest = nearest[0]["classification"]
             if id == id_nearest:
                 corr += 1
             else:
