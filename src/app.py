@@ -12,6 +12,7 @@ class App:
         self.individuals = []
         self.data = None
         self.eigenfaces = None
+        self.initialize()
 
     def load_data(self):
         """load images
