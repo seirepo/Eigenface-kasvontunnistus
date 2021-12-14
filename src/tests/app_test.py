@@ -92,8 +92,16 @@ class TestApp(unittest.TestCase):
         self.app.individuals = [ind1, ind2]
         im = np.arange(1,4)
         result = App.calculate_distances(self.app, im)
-        should_be = [(2.0, 1), (7.0, 1), (5.0, 1), (4.0, 2), (3.0, 2), (7.0, 2)]
-
+        for r in result:
+            r["coords"] = str(r["coords"])
+        should_be = [
+            {"dist": 2.0, "id": 1, "coords": "[1 1 2]"},
+            {"dist": 7.0, "id": 1, "coords": "[ 2 -1  0]"},
+            {"dist": 5.0, "id": 1, "coords": "[3 1 1]"},
+            {"dist": 4.0, "id": 2, "coords": "[0 1 1]"},
+            {"dist": 3.0, "id": 2, "coords": "[1 2 0]"},
+            {"dist": 7.0, "id": 2, "coords": "[ 0  1 -2]"},
+        ]
         self.assertEqual(result, should_be)
 
     def test_app_has_correct_attributes_set_before_any_operations(self):
@@ -136,17 +144,33 @@ class TestApp(unittest.TestCase):
         self.assertRaises(ValueError, app.get_image_by_id, 9.5)
         self.assertRaises(ValueError, app.get_image_by_id, len(app.individuals) + 10)
 
-    def test_calculate_knn_raises_exception_with_incorrect_image_input(self):
-        app = App()
-        app.load_data()
-        app.create_individuals()
-        app.calculate_eigenfaces()
-        app.project_faces()
+    def test_get_image_by_id_returns_correct_image(self):
+        im1 = self.rng.random((4000, 3))
+        im2 = self.rng.random((4000, 3))
+        im3 = self.rng.random((4000, 3))
+        ind1 = Mock()
+        ind2 = Mock()
+        ind3 = Mock()
+        ind1.get_training_images.return_value = im1
+        ind2.get_training_images.return_value = im2
+        ind3.get_training_images.return_value = im3
+        ind1.get_id.return_value = 1
+        ind2.get_id.return_value = 2
+        ind3.get_id.return_value = 3
+        self.app.individuals = [ind1, ind2, ind3]
+        self.assertTrue((App.get_image_by_id(self.app, 1) == im1[:,0]).all())
+        self.assertTrue((App.get_image_by_id(self.app, 2) == im2[:,0]).all())
+        self.assertTrue((App.get_image_by_id(self.app, 3) == im3[:,0]).all())
 
-        im1 = self.rng.random((4097))
-        im2 = self.rng.random((4096, 4096))
-        im3 = self.rng.random((1, 2, 3))
+    def test_get_nearest_returns_correct_dict(self):
+        lst = [{"id": 1, "dist": 3}, {"id": 1, "dist": 2}, {"id": 2, "dist": 0}]
+        result = App.get_nearest(self.app, lst)
+        self.assertEqual(result, lst[1])
 
-        self.assertRaises(ValueError, app.calculate_knn, im1, 3, 1)
-        self.assertRaises(ValueError, app.calculate_knn, im2, 3, 1)
-        self.assertRaises(ValueError, app.calculate_knn, im3, 3, 1)
+        lst = [{"id": 2, "dist": 3}, {"id": 1, "dist": 2}, {"id": 2, "dist": 0}]
+        result = App.get_nearest(self.app, lst)
+        self.assertEqual(result, lst[2])
+
+        lst = [{"id": 2, "dist": 3}, {"id": 1, "dist": 2}, {"id": 3, "dist": 0}]
+        result = App.get_nearest(self.app, lst)
+        self.assertEqual(result, lst[0])
