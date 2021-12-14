@@ -85,15 +85,15 @@ class App:
                 coordinates = self.project_image(im)
                 distances = self.calculate_distances(coordinates, p)
                 distances = sorted(distances, key=lambda i: i["dist"])
-                nearest = self.calculate_knn(distances, 4)
+                nearest_k = self.calculate_knn(distances, 4)
                 #nearest_id = op.get_most_frequent(nearest) # {"dist": -, "id": -, "coords": -}
-                result = self.helper(nearest)
-                nearest_id = 3
+                result = self.get_nearest(nearest_k)
                 # res.append((im: np.array(4096), nearest_id: int, nearest: lista))
-                res.append({"im": im, "classification": nearest_id, "other_near_ids": nearest})
+                #res.append({"im": im, "classification": nearest_id, "other_near_ids": nearest})
+                res.append(result)
             individual.set_nearest_neighbor(res) # res: List[dict], len(res) = 2
 
-    def helper(self, nearest: list):
+    def get_nearest(self, nearest: list) -> dict:
         nearest_ids = []
         for near in nearest:
             nearest_ids.append(near["id"])
@@ -109,7 +109,7 @@ class App:
                 if class_min_dist is None:
                     class_min_dist = near
                 elif dist < class_min_dist["dist"]:
-                    class_min_dist = dist
+                    class_min_dist = near
         #print("id:llä ", class_min_dist["id"], " pienin etäisyys: ", round(class_min_dist["dist"], 2))
         return class_min_dist
 
