@@ -85,7 +85,7 @@ class App:
                 coordinates = self.project_image(im)
                 distances = self.calculate_distances(coordinates, p)
                 distances = sorted(distances, key=lambda i: i["dist"])
-                nearest_k = self.calculate_knn(distances, 4)
+                nearest_k = self.calculate_knn(distances, k)
                 #nearest_id = op.get_most_frequent(nearest) # {"dist": -, "id": -, "coords": -}
                 result = self.get_nearest(nearest_k)
                 # res.append((im: np.array(4096), nearest_id: int, nearest: lista))
@@ -177,7 +177,7 @@ class App:
         self.project_faces()
 
     def classify(self):
-        self.classify_faces(k=3,p=2)
+        self.classify_faces(k=3,p=1)
         self.print_results()
 
         av_face = op.get_average_face(self.get_training_images())
@@ -226,7 +226,7 @@ class App:
                 wrong.append((id, id_nearest))
                 inc += 1
         print(f"tulos: {corr/(corr+inc) * 100} % oikein, {inc/(corr+inc) * 100} % väärin")
-        print(f"Väärin arvattu:")
+        print(f"Tunnistettu väärin:")
         for w in wrong:
             print(f"{w[0]}: {w[1]}")
 
