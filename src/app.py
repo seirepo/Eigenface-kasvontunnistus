@@ -81,12 +81,17 @@ class App:
             test_ims = individual.get_test_images()
             res = []
             for im in test_ims.T:
-                nearest = self.calculate_knn(im, k, p)
+                #nearest = self.calculate_knn(im, k, p)
+                coordinates = self.project_image(im)
+                distances = self.calculate_distances(coordinates, p)
+                distances = sorted(distances, key=lambda i: i["dist"])
+                nearest = self.calculate_knn(distances, k)
                 nearest_id = op.get_most_frequent(nearest)
+                # res.append((im: np.array(4096), nearest_id: int, nearest: lista))
                 res.append({"im": im, "classification": nearest_id, "other_near_ids": nearest})
             individual.set_nearest_neighbor(res) # res: List[dict], len(res) = 2
 
-    def calculate_knn(self, im, k, p):
+    def calculate_knn(self, distances, k):
         """Calculate k-nearest neighbors for the given image
 
         Args:
@@ -99,23 +104,23 @@ class App:
         Returns:
             string: result as a string
         """
-        shape = im.shape
-        if len(shape) == 1 and shape[0] != 4096:
-            raise ValueError(f"Invalid input image shape {im.shape}")
-        elif len(shape) == 2 and shape != (4096, 1):
-            raise ValueError(f"Invalid input image shape {im.shape}")
-        elif len(shape) > 2:
-            raise ValueError(f"Invalid input image shape {im.shape}")
+        #shape = im.shape
+        #if len(shape) == 1 and shape[0] != 4096:
+        #    raise ValueError(f"Invalid input image shape {im.shape}")
+        #elif len(shape) == 2 and shape != (4096, 1):
+        #    raise ValueError(f"Invalid input image shape {im.shape}")
+        #elif len(shape) > 2:
+        #    raise ValueError(f"Invalid input image shape {im.shape}")
 
-        coordinates = self.project_image(im)
-        distances = self.calculate_distances(coordinates, p)
-        distances.sort()
+        #coordinates = self.project_image(im)
+        #distances = self.calculate_distances(coordinates, p)
+        #distances.sort()
         if k >= len(distances):
             k = len(distances) - 1
         nearest = distances[:k]
         near = []
         for n in nearest:
-            near.append(n[1])
+            near.append(n["id"])
 
         return near
 
@@ -130,15 +135,16 @@ class App:
         Returns:
             list[tuple[float, int]]: list containing tuples with distance and id of the corresponding individual
         """
-        distances = []
+        result = []
         for individual in self.individuals:
             images = individual.get_image_coordinates()
             id = individual.get_id()
             for image in images.T:
                 #distance = op.pnorm(image, im, p)
                 distance = np.linalg.norm((image-im), p)
-                distances.append((distance, id))
-        return distances
+                #distances.append((distance, id))
+                result.append({"dist": distance, "id": id, "coords": image})
+        return result
 
     def initialize(self):
         self.load_data()
