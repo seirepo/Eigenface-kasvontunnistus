@@ -44,17 +44,6 @@ class App:
             training_images = self.get_training_images()
             self.eigenfaces = op.calculate_eigenfaces(training_images)
 
-    def classify_faces(self):
-        k = 3
-        for individual in self.individuals:
-            test_ims = individual.get_test_images()
-            res = []
-            for im in test_ims.T:
-                nearest = self.calculate_knn(im, k)
-                nearest_id = op.get_most_frequent(nearest)
-                res.append((im, nearest_id, nearest))
-            individual.set_nearest_neighbor(res)
-
     def project_faces(self):
         """Projects each individuals training images to the eigenface spanned space
         and saves the coordinates in individual attribute
@@ -86,7 +75,17 @@ class App:
         coordinates = op.get_coordinates(im, self.eigenfaces, average_im)
         return coordinates
 
-    def calculate_knn(self, im, k):
+    def classify_faces(self, k, p=1):
+        for individual in self.individuals:
+            test_ims = individual.get_test_images()
+            res = []
+            for im in test_ims.T:
+                nearest = self.calculate_knn(im, k, p)
+                nearest_id = op.get_most_frequent(nearest)
+                res.append((im, nearest_id, nearest))
+            individual.set_nearest_neighbor(res)
+
+    def calculate_knn(self, im, k, p):
         """Calculate k-nearest neighbors for the given image
 
         Args:
@@ -108,7 +107,7 @@ class App:
             raise ValueError(f"Invalid input image shape {im.shape}")
 
         coordinates = self.project_image(im)
-        distances = self.calculate_distances(coordinates)
+        distances = self.calculate_distances(coordinates, p)
         distances.sort()
         if k >= len(distances):
             k = len(distances) - 1
@@ -140,26 +139,15 @@ class App:
                 distances.append((distance, id))
         return distances
 
-    def print_results(self):
-        corr = 0
-        inc = 0
-        for ind in self.individuals:
-            nearest = ind.get_nearest_neighbor()
-            id = ind.get_id()
-            id_nearest = nearest[1][1]
-            if id == id_nearest:
-                corr += 1
-            else:
-                print(id, id_nearest)
-                inc += 1
-        print(f"tulos: {corr/(corr+inc) * 100} % oikein, {inc/(corr+inc) * 100} % väärin")
-
-    def suorita(self):
+    def initialize(self):
         self.load_data()
         self.create_individuals()
         self.calculate_eigenfaces()
         self.project_faces()
-        self.classify_faces()
+
+    def suorita(self):
+        self.initialize()
+        self.classify_faces(2, 2)
         self.print_results()
 
         av_face = op.get_average_face(self.get_training_images())
@@ -193,6 +181,24 @@ class App:
             #for im in test_ims.T:
                #print(f"\t {self.calculate_knn(im, k)}")
                #print(self.calculate_knn(im, k))
+
+    def print_results(self):
+        corr = 0
+        inc = 0
+        wrong = []
+        for ind in self.individuals:
+            nearest = ind.get_nearest_neighbor()
+            id = ind.get_id()
+            id_nearest = nearest[1][1]
+            if id == id_nearest:
+                corr += 1
+            else:
+                wrong.append((id, id_nearest))
+                inc += 1
+        print(f"tulos: {corr/(corr+inc) * 100} % oikein, {inc/(corr+inc) * 100} % väärin")
+        print(f"Väärin arvattu:")
+        for w in wrong:
+            print(f"{w[0]}: {w[1]}")
 
     def get_training_images(self):
         """Get all training images from individual objects
@@ -270,6 +276,6 @@ class App:
         #ind = vals.argsort()[::-1]
         #print(d.shape)
 
-app = App()
+#app = App()
 #app.alusta()
-app.suorita()
+#app.suorita()
