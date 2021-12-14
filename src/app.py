@@ -86,43 +86,14 @@ class App:
                 distances = self.calculate_distances(coordinates, p)
                 distances = sorted(distances, key=lambda i: i["dist"])
                 nearest = self.calculate_knn(distances, k)
-                nearest_id = op.get_most_frequent(nearest)
+                print(type(nearest), len(nearest), type(nearest[0]))
+                nearest_id = op.get_most_frequent(nearest) # {"dist": -, "id": -, "coords": -}
                 # res.append((im: np.array(4096), nearest_id: int, nearest: lista))
                 res.append({"im": im, "classification": nearest_id, "other_near_ids": nearest})
             individual.set_nearest_neighbor(res) # res: List[dict], len(res) = 2
 
-    def calculate_knn(self, distances, k):
-        """Calculate k-nearest neighbors for the given image
-
-        Args:
-            im (np.array): image
-            k (int): number of neighbors
-
-        Raises:
-            ValueError: if the given image shape is incorrect
-
-        Returns:
-            string: result as a string
-        """
-        #shape = im.shape
-        #if len(shape) == 1 and shape[0] != 4096:
-        #    raise ValueError(f"Invalid input image shape {im.shape}")
-        #elif len(shape) == 2 and shape != (4096, 1):
-        #    raise ValueError(f"Invalid input image shape {im.shape}")
-        #elif len(shape) > 2:
-        #    raise ValueError(f"Invalid input image shape {im.shape}")
-
-        #coordinates = self.project_image(im)
-        #distances = self.calculate_distances(coordinates, p)
-        #distances.sort()
-        if k >= len(distances):
-            k = len(distances) - 1
-        nearest = distances[:k]
-        near = []
-        for n in nearest:
-            near.append(n["id"])
-
-        return near
+    def helper(self, nearest: list):
+        pass
 
     def calculate_distances(self, im, p=1):
         """Calculates distances between the given image coordinates and
@@ -146,6 +117,41 @@ class App:
                 result.append({"dist": distance, "id": id, "coords": image})
         return result
 
+    def calculate_knn(self, distances, k):
+        """Calculate k-nearest neighbors for the given image
+
+        Args:
+            im (np.array): image
+            k (int): number of neighbors
+
+        Raises:
+            ValueError: if the given image shape is incorrect
+
+        Returns:
+            string: result as a string
+        """
+        pass
+        #shape = im.shape
+        #if len(shape) == 1 and shape[0] != 4096:
+        #    raise ValueError(f"Invalid input image shape {im.shape}")
+        #elif len(shape) == 2 and shape != (4096, 1):
+        #    raise ValueError(f"Invalid input image shape {im.shape}")
+        #elif len(shape) > 2:
+        #    raise ValueError(f"Invalid input image shape {im.shape}")
+
+        #coordinates = self.project_image(im)
+        #distances = self.calculate_distances(coordinates, p)
+        #distances.sort()
+        if k >= len(distances):
+            k = len(distances) - 1
+        nearest = distances[:k]
+        #near = nearest
+        #for n in nearest:
+            #near.append(n["id"])
+            #near.append(n)
+        #print("calculate_knn palautusarvon tyyppi: ", type(near), len(near), type(near[0]))
+        return nearest
+
     def initialize(self):
         self.load_data()
         self.create_individuals()
@@ -154,7 +160,7 @@ class App:
 
     def classify(self):
         self.classify_faces(k=3,p=2)
-        self.print_results()
+        #self.print_results()
 
         av_face = op.get_average_face(self.get_training_images())
         #print("rekonstruoidaan jotkut training setin kasvot:")
