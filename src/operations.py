@@ -92,26 +92,51 @@ def pnorm(im1, im2, p):
     return np.linalg.norm((im1-im2), p)
 
 def get_most_frequent(values):
-    vals, counts = np.unique(values, return_counts=True)
+    print("\n------------------\n")
+    ids = []
+    for v in values:
+        ids.append(v["id"])
+    print("id: ", ids)
+    #vals, counts = np.unique(values, return_counts=True)
+    vals, counts = np.unique(ids, return_counts=True)
+    print(vals, counts)
     result = zip(counts, vals)
     result = list(result)
-    sorted_res = sorted(result)[::-1]
+    print(result)
+    #sorted_res = sorted(result)[::-1]
+    sorted_res = sorted(result, key=lambda d: d[0], reverse=True)
+    print(sorted_res)
     max_count = sorted_res[0][0]
     max_pair = sorted_res[0]
 
     tie = []
     for item in sorted_res[1:]:
+        #print("tasa: ", item[0], max_count)
         if item[0] == max_count:
+            #print(f"{item} lisätty tasapeliin")
             tie.append(item)
 
-    if len(tie) == 0:
-        return max_pair[1]
-    else:
-        max_index = values.index(max_pair[1])
-        for item in tie:
-            if values.index(item[1]) < max_index:
-                max_pair = item
-    return max_pair[1]
+    print("tasa ", tie)
+
+    #if len(tie) == 0:
+    #    return max_pair[1]
+    #else:
+    #    max_index = values.index(max_pair[1])
+    #    for item in tie:
+    #        if values.index(item[1]) < max_index:
+    #            max_pair = item
+    #return max_pair[1]
+    print("max pair: ", max_pair)
+    max_index = ids.index(max_pair[1])
+    print("tod.näk.:n indeksi: ", max_index)
+    for item in tie:
+        print("vertailtavan indeksi: ", ids.index(item[1]), " vertailtava: ", item[1])
+        print(f"{ids.index(item[1])} < {max_index}")
+        comp_indx = ids.index(item[1])
+        if comp_indx < max_index:
+            max_pair = item
+            max_index = comp_indx
+    print("todennäkösin: ", max_pair)
 
 def get_average_face(training_images):
     return np.mean(training_images, axis=1)
