@@ -1,3 +1,4 @@
+from matplotlib import image
 import numpy as np
 
 def images_to_vectors(im_set_matrix):
@@ -152,3 +153,6 @@ def get_projection(image, basis):
         weights[:,i] = mult * basis[:,i]
     weights = np.sum(weights, axis=1)
     return weights
+
+def get_projection2(image_coords, basis):
+    return np.dot(basis, image_coords)

@@ -177,11 +177,13 @@ class App:
         # vaikea tunnistaa: 0, 2, 3, 7, 8, 9, 22, 34, 39
         #sel = self.individuals[9].get_training_images()[:,2]
         sel = self.individuals[39].get_training_images()[:,2]
-        #plot.imshow(sel.reshape((64,64)), cmap="Greys_r")
-        #plot.show()
-        proj = op.get_projection(sel, self.eigenfaces)
-        #plot.imshow(sel.reshape((64,64)), cmap="Greys_r")
-        #plot.show()
+        plot.imshow(sel.reshape((64,64)), cmap="Greys_r")
+        plot.show()
+        coords = op.get_coordinates(sel, self.eigenfaces)
+        proj = op.get_projection2(coords, self.eigenfaces)
+        print(proj.shape)
+        plot.imshow(sel.reshape((64,64)), cmap="Greys_r")
+        plot.show()
 
         #print("ajetaan tunnistusalgoritmi kaikille testikuville")
         k = 4
