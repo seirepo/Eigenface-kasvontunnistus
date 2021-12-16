@@ -36,6 +36,9 @@ def calculate_eigenfaces(training_images: np.array, k=-1) -> np.array:
         training_images (np.array): training set images
         k (int): number of eigenfaces to return
 
+    Raises:
+        Exception: if k > image count, not really necessary
+
     Returns:
         np.array: k eigenfaces in an array
     """
@@ -45,15 +48,11 @@ def calculate_eigenfaces(training_images: np.array, k=-1) -> np.array:
     if k > im_count:
         raise Exception(f"Cannot return more eigenfaces than images: {k} > {im_count}")
 
-    #average_face = np.mean(training_images, axis=1).reshape((-1, 1))
     average_face = get_average_face(training_images).reshape((-1, 1))
     difference_faces = np.subtract(training_images, average_face)
 
     ATA = np.matmul(difference_faces.T, difference_faces)
     vals, eig_vectors = np.linalg.eig(ATA)
-
-    #if not (vals > 0).all():
-    #    raise Exception(f"A^TA of the given matrix \n {training_images} \n has eigenvalues <= 0: {vals}")
 
     indx = vals.argsort()[::-1]
 
@@ -73,12 +72,6 @@ def calculate_eigenfaces(training_images: np.array, k=-1) -> np.array:
 
     eigenfaces = np.matmul(difference_faces, selected)
 
-    #scaled_eigenfaces = np.interp(eigenfaces, (eigenfaces.min(), eigenfaces.max()), (0, 1))
-    #try:
-    #    scaled = np.interp(selected, (selected.min(), selected.max()), (0, 1))
-    #except ValueError:
-    #        print(f"skaalaus ei onnistunut, skaalattava matriisi {selected} on tyhjä")
-    #result = np.linalg.qr(scaled_eigenfaces)[0]
     result = np.linalg.qr(eigenfaces)[0]
 
     return result
