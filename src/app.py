@@ -76,7 +76,7 @@ class App:
         coordinates = op.get_coordinates(im, self.eigenfaces, average_im)
         return coordinates
 
-    def classify_faces(self, k, p=1):
+    def classify_faces(self, k, p):
         for individual in self.individuals:
             test_ims = individual.get_test_images()
             res = []
@@ -85,7 +85,8 @@ class App:
                 coordinates = self.project_image(im)
                 distances = self.calculate_distances(coordinates, p)
                 distances = sorted(distances, key=lambda i: i["dist"])
-                nearest_k = self.calculate_knn(distances, k)
+                #nearest_k = self.calculate_knn(distances, k)
+                nearest_k = distances[:k]
                 #nearest_id = op.get_most_frequent(nearest) # {"dist": -, "id": -, "coords": -}
                 result = self.get_nearest(nearest_k)
                 # res.append((im: np.array(4096), nearest_id: int, nearest: lista))
@@ -135,41 +136,6 @@ class App:
                 #distances.append((distance, id))
                 result.append({"dist": distance, "id": id, "coords": image})
         return result
-
-    def calculate_knn(self, distances, k):
-        """Calculate k-nearest neighbors for the given image
-
-        Args:
-            im (np.array): image
-            k (int): number of neighbors
-
-        Raises:
-            ValueError: if the given image shape is incorrect
-
-        Returns:
-            string: result as a string
-        """
-        pass
-        #shape = im.shape
-        #if len(shape) == 1 and shape[0] != 4096:
-        #    raise ValueError(f"Invalid input image shape {im.shape}")
-        #elif len(shape) == 2 and shape != (4096, 1):
-        #    raise ValueError(f"Invalid input image shape {im.shape}")
-        #elif len(shape) > 2:
-        #    raise ValueError(f"Invalid input image shape {im.shape}")
-
-        #coordinates = self.project_image(im)
-        #distances = self.calculate_distances(coordinates, p)
-        #distances.sort()
-        if k >= len(distances):
-            k = len(distances) - 1
-        nearest = distances[:k]
-        #near = nearest
-        #for n in nearest:
-            #near.append(n["id"])
-            #near.append(n)
-        #print("calculate_knn palautusarvon tyyppi: ", type(near), len(near), type(near[0]))
-        return nearest
 
     def initialize(self):
         self.load_data()
