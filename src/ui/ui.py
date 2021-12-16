@@ -13,30 +13,50 @@ class UI:
         self.people = []
 
     def start(self):
-        self.people_frame = tkinter.Frame(master=self.root)#, width=280)
+        self.people_frame = tkinter.Frame(master=self.root, width=280)#, height=280)
         self.people_frame.grid(row=0, column=0, padx=30, sticky="nw")
+        self.people_frame.configure(background='blue')
 
-        self.button_frame = tkinter.Frame(master=self.root)
-        self.button_frame.grid(sticky="nw")
+        ppl = self.app.get_image_of_everyone()
+        self.show_faces(ppl)
+
+        self.button_frame = tkinter.Frame(master=self.people_frame)#, width=150, height=150)
+        self.button_frame.grid(column=1, columnspan=5, sticky="nw")
+        self.button_frame.configure(background='red')
 
         label_people = tkinter.Label(master=self.people_frame, text="Henkilöt")
         label_people.grid(row=0, column=0, columnspan=4)
 
         self.app.classify()
-        ppl = self.app.get_image_of_everyone()
 
-        self.show_faces(ppl)
+
+        vk = StringVar(self.button_frame, 1)
+        values_k = {
+            "Radiobutton1" : 1,
+            "Radiobutton2" : 2,
+            "Radiobutton3" : 3,
+            "Radiobutton4" : 4,
+        }
+
+        for (text, value) in values_k.items():
+            Radiobutton(
+                self.button_frame, text = text,
+                variable = vk, value = value
+            ).pack()
 
         button_classify = tkinter.Button(
-            master=self.people_frame,
+            master=self.button_frame, #self.people_frame,
             text="Classify",
             #command=lambda: self.handle_button_click(ppl)
             command=self.handle_button_click
         )
-        button_classify.grid(row=12, column=0, columnspan=4, pady=10)
+        #button_classify.grid(row=12, column=0, columnspan=4, pady=10)
+        #button_classify.grid(pady=10)
+        button_classify.pack()
 
         self.middle_canvas = tkinter.Canvas(master=self.root, width=280, height=280)
         self.middle_canvas.grid(row=0, column=1, sticky="nw")
+        self.middle_canvas.configure(background='green')
 
         self.test_im_frame = tkinter.Frame(master=self.middle_canvas)
         self.test_im_frame.grid(row=0, column=0, sticky="nw")
@@ -132,4 +152,3 @@ class UI:
     def handle_button_click(self):
         print("luokitellaan...")
         self.app.classify()
-        print("done")
