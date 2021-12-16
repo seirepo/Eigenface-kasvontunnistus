@@ -15,10 +15,7 @@ class App:
         self.initialize()
 
     def load_data(self):
-        """load images
-
-        Returns:
-            sklearn.utils.Bunch: bunch that contains images, image array and target
+        """Load data from scikit learn datasets
         """
         abspath = os.path.abspath(__file__)
         path = Path(abspath)
@@ -45,9 +42,9 @@ class App:
             training_images = self.get_training_images()
             self.eigenfaces = op.calculate_eigenfaces(training_images)
 
-    def project_faces(self):
-        """Projects each individuals training images to the eigenface spanned space
-        and saves the coordinates in individual attribute
+    def project_faces(self) -> np.array:
+        """Projects each individuals training images to the eigenface 
+        spanned space and saves the coordinates in individual attribute
 
         Returns:
             np.array: an array of projected images as column vectors
@@ -63,8 +60,8 @@ class App:
             individual.set_image_coordinates(np.array(projected).T)
         return np.array(projected_images).T
 
-    def project_image(self, im):
-        """Project given image to eigenface space
+    def project_image(self, im) -> np.array:
+        """Project given image to eigenface space to get the coordinates
 
         Args:
             im (np.array): image to be projected
@@ -77,6 +74,13 @@ class App:
         return coordinates
 
     def classify_faces(self, k, p):
+        """Classify test images of each individual and save the results to
+        each individual
+
+        Args:
+            k (int): number of neighbors
+            p (int): degree of the norm
+        """
         for individual in self.individuals:
             test_ims = individual.get_test_images()
             res = []
@@ -84,12 +88,21 @@ class App:
                 coordinates = self.project_image(im)
                 distances = self.calculate_distances(coordinates, p)
                 distances = sorted(distances, key=lambda i: i["dist"])
-                nearest_k = distances[:k]
+                nearest_k = distances[:k] # distances[0] keys: 'dist', 'id', 'coords'
                 result = self.get_nearest(nearest_k)
                 res.append({"test_im": im, "nearest_id": result["id"], "nearest_im_crds": result["coords"]})
             individual.set_nearest_neighbor(res)
 
     def get_nearest(self, nearest: list) -> dict:
+        """Finish the classificaiton: finds the id and image
+        coordinates of the most common class
+
+        Args:
+            nearest (list): data of the k nearest neighbors
+
+        Returns:
+            dict: with keys 'dist', 'id', 'coords'
+        """
         nearest_ids = []
         for near in nearest:
             nearest_ids.append(near["id"])
@@ -106,7 +119,7 @@ class App:
                     class_min_dist = near
         return class_min_dist
 
-    def calculate_distances(self, im, p=1):
+    def calculate_distances(self, im, p) -> list:
         """Calculates distances between the given image coordinates and
         coordinates of the training images of each individual
 
@@ -115,7 +128,7 @@ class App:
             p (int): order of the norm
 
         Returns:
-            list[tuple[float, int]]: list containing tuples with distance and id of the corresponding individual
+            list: list of dicts with key values 'dist', 'id', 'coords'
         """
         result = []
         for individual in self.individuals:
@@ -127,12 +140,16 @@ class App:
         return result
 
     def initialize(self):
+        """Initialize the app
+        """
         self.load_data()
         self.create_individuals()
         self.calculate_eigenfaces()
         self.project_faces()
 
     def classify(self):
+        """Classifies the test images
+        """
         self.classify_faces(k=3,p=3)
         self.print_results()
 
@@ -159,6 +176,8 @@ class App:
         #self.show_images(self.eigenfaces[:,:15])
 
     def print_results(self):
+        """Prints the result and id's with incorrect classification
+        """
         corr = 0
         inc = 0
         wrong = []
@@ -176,14 +195,27 @@ class App:
         for w in wrong:
             print(f"{w[0]}: {w[1]}")
 
-    def get_projected_image(self, crds):
+    def get_projected_image(self, crds) -> np.array:
+        """Return the image reconstructed from the given coordinates
+
+        Args:
+            crds (np.array): image coordinates as an array
+
+        Returns:
+            np.array: the resulting image
+        """
         average = self.get_average_face()
         return op.get_projection(crds, self.eigenfaces, average)
 
-    def get_average_face(self):
+    def get_average_face(self) -> np.array:
+        """Return the average face calculated from the training images
+
+        Returns:
+            np.array: average face
+        """
         return op.get_average_face(self.get_training_images())
 
-    def get_training_images(self):
+    def get_training_images(self) -> np.array:
         """Get all training images from individual objects
 
         Returns:
@@ -196,7 +228,7 @@ class App:
         training_array = np.hstack(training)
         return training_array
 
-    def get_test_images(self):
+    def get_test_images(self) -> np.array:
         """Get all test images from individual objects
 
         Returns:
@@ -210,14 +242,14 @@ class App:
 
         return test_array
 
-    def get_individuals(self):
+    def get_individuals(self) -> list:
         return self.individuals
 
     def get_image_of_everyone(self):
         """Return a list of tuples containing id and first image of each individual
 
         Returns:
-            list[tuple[int, np.array]]: list of tuples
+            list[tuple]: list of tuples
         """
         images = []
         for individual in self.individuals:

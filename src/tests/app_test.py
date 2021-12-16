@@ -74,7 +74,7 @@ class TestApp(unittest.TestCase):
         self.app.individuals = [ind1, ind2]
         im = self.rng.random((320))
 
-        result = App.calculate_distances(self.app, im)
+        result = App.calculate_distances(self.app, im, 1)
         self.assertEqual(len(result), 8)
 
     def test_calculate_distances_returns_correct_list(self):
@@ -91,7 +91,7 @@ class TestApp(unittest.TestCase):
 
         self.app.individuals = [ind1, ind2]
         im = np.arange(1,4)
-        result = App.calculate_distances(self.app, im)
+        result = App.calculate_distances(self.app, im, 1)
         for r in result:
             r["coords"] = str(r["coords"])
         should_be = [
