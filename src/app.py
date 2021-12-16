@@ -276,6 +276,6 @@ class App:
         #ind = vals.argsort()[::-1]
         #print(d.shape)
 
-#app = App()
+app = App()
 #app.alusta()
-#app.suorita()
+app.classify()
