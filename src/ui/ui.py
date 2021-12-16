@@ -60,7 +60,7 @@ class UI:
         button_classify = tkinter.Button(
             master=self.button_frame, #self.people_frame,
             text="Classify",
-            command=lambda: self.handle_button_click(vk.get(), vnorm.get())
+            command=lambda: self.handle_button_click(int(vk.get()), int(vnorm.get()))
         )
         #button_classify.grid(row=12, column=0, columnspan=4, pady=10)
         button_classify.grid(pady=10)
@@ -76,7 +76,6 @@ class UI:
         test_label.grid(row=0, column=0, columnspan=16)
 
         ppl = self.app.get_individuals()
-
         self.show_test_images(ppl)
 
     def show_faces(self, ppl):
@@ -162,6 +161,7 @@ class UI:
 
     def handle_button_click(self, k, p):
         print("luokitellaan...")
-        self.app.classify()
-        print(f"k: {k}, p: {p}")
+        print(f"valitut parametrit\nk ({type(k)}): {k}, p ({type(p)}): {p}")
+        self.app.classify(k, p)
+        self.show_test_images(self.app.get_individuals())
         print("done")

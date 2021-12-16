@@ -147,10 +147,11 @@ class App:
         self.calculate_eigenfaces()
         self.project_faces()
 
-    def classify(self):
+    def classify(self, k=1, p=1):
         """Classifies the test images
         """
-        self.classify_faces(k=3,p=3)
+        self.classify_faces(k,p)
+        print(f"k = {k}, p = {p}")
         self.print_results()
 
         av_face = op.get_average_face(self.get_training_images())
