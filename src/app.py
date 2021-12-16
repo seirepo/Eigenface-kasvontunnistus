@@ -179,22 +179,30 @@ class App:
     def print_results(self):
         """Prints the result and id's with incorrect classification
         """
+        count = len(self.get_test_images().T)
         corr = 0
         inc = 0
         wrong = []
         for ind in self.individuals:
             nearest = ind.get_nearest_neighbor()
             id = ind.get_id()
-            id_nearest = nearest[0]["nearest_id"]
-            if id == id_nearest:
-                corr += 1
-            else:
-                wrong.append((id, id_nearest))
-                inc += 1
-        print(f"tulos: {corr/(corr+inc) * 100} % oikein, {inc/(corr+inc) * 100} % väärin")
+            for near in nearest:
+                corr_tmp = 0
+                inc_tmp = 0
+                id_nearest = near["nearest_id"]
+                if id == id_nearest:
+                    corr_tmp += 1
+                else:
+                    wrong.append((id, id_nearest))
+                    inc_tmp += 1
+                corr += corr_tmp
+                inc += inc_tmp
+        print(f"oikein: {corr}, väärin: {inc}, kuvia yhteensä: {count}")
+        print(f"tulos: {corr/count * 100} % oikein, {inc/count * 100} % väärin")
         print(f"Tunnistettu väärin:")
         for w in wrong:
             print(f"{w[0]}: {w[1]}")
+        print(wrong)
 
     def get_projected_image(self, crds: np.array) -> np.array:
         """Return the image reconstructed from the given coordinates
