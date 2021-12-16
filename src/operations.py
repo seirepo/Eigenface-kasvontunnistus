@@ -83,12 +83,6 @@ def calculate_eigenfaces(training_images: np.array, k=-1) -> np.array:
 
     return result
 
-# not used
-def euclidean_distance2(im1, im2):
-    if im1.shape[0] != im2.shape[0]:
-        raise ValueError(f"Illegal size of input vectors {im1.shape} and {im2.shape}: {im1.shape[0]} != {im2.shape[0]}")
-    return np.sum((im1 - im2)**2)
-
 def pnorm(im1: np.array, im2: np.array, p: int):
     return np.linalg.norm((im1-im2), p)
 
@@ -171,29 +165,6 @@ def get_coordinates(image: np.array, basis: np.array, average_im: np.array):
         coordinates_list.append(mult)
     coordinates = np.array(coordinates_list)
     return coordinates
-
-def get_projection2(image_crds, basis, av_face):
-    """Returns the projection of an image on the given face space.
-    The basis of the space must be orthonormal
-
-    Args:
-        image (np.array): image
-        basis (np.array): eigenface vectors spanning a face space
-
-    Returns:
-        np.array: projection of the image
-    """
-    vecs = basis.shape[1]
-    if len(image_crds.shape) > 1 and image_crds.shape[1] != 1:
-        raise ValueError(
-            f"coordinate array has wrong size: {image_crds.shape}")
-    if image_crds.shape[0] != vecs:
-        raise ValueError(
-            f"basis and coordinates do not match: {image_crds.shape} != {vecs}")
-    result = av_face
-    for i in range(vecs):
-        result = result + image_crds[i] * basis[:,i]
-    return result
 
 def get_projection(image_crds: np.array, basis: np.array, av_face: np.array) -> np.array:
     """Returns the image contstructed from the given coordinates

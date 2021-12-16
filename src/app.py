@@ -258,12 +258,6 @@ class App:
             images.append((id, im))
         return images
 
-    def get_image_by_id(self, id):
-        for individual in self.individuals:
-            if individual.get_id() == id:
-                return individual.get_training_images()[:,0]
-        raise ValueError(f"Image not found with id {id}")
-
     def show_images(self, images):
         """
         Function to plot images

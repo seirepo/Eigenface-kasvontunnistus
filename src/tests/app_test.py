@@ -135,33 +135,6 @@ class TestApp(unittest.TestCase):
 
         self.assertEqual(len(images), count)
 
-    def test_get_image_by_id_raises_exception_if_incorrect_id_is_given(self):
-        app = App()
-        app.load_data()
-        app.create_individuals()
-
-        self.assertRaises(ValueError, app.get_image_by_id, -4)
-        self.assertRaises(ValueError, app.get_image_by_id, 9.5)
-        self.assertRaises(ValueError, app.get_image_by_id, len(app.individuals) + 10)
-
-    def test_get_image_by_id_returns_correct_image(self):
-        im1 = self.rng.random((4000, 3))
-        im2 = self.rng.random((4000, 3))
-        im3 = self.rng.random((4000, 3))
-        ind1 = Mock()
-        ind2 = Mock()
-        ind3 = Mock()
-        ind1.get_training_images.return_value = im1
-        ind2.get_training_images.return_value = im2
-        ind3.get_training_images.return_value = im3
-        ind1.get_id.return_value = 1
-        ind2.get_id.return_value = 2
-        ind3.get_id.return_value = 3
-        self.app.individuals = [ind1, ind2, ind3]
-        self.assertTrue((App.get_image_by_id(self.app, 1) == im1[:,0]).all())
-        self.assertTrue((App.get_image_by_id(self.app, 2) == im2[:,0]).all())
-        self.assertTrue((App.get_image_by_id(self.app, 3) == im3[:,0]).all())
-
     def test_get_nearest_returns_correct_dict(self):
         lst = [{"id": 1, "dist": 3}, {"id": 1, "dist": 2}, {"id": 2, "dist": 0}]
         result = App.get_nearest(self.app, lst)
