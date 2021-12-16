@@ -46,7 +46,7 @@ def calculate_eigenfaces(training_images, k=-1):
         raise Exception(f"Cannot return more eigenfaces than images: {k} > {im_count}")
 
     #average_face = np.mean(training_images, axis=1).reshape((-1, 1))
-    average_face = get_average_face(training_images)
+    average_face = get_average_face(training_images).reshape((-1, 1))
     difference_faces = np.subtract(training_images, average_face)
 
     ATA = np.matmul(difference_faces.T, difference_faces)
@@ -65,7 +65,7 @@ def calculate_eigenfaces(training_images, k=-1):
         for i in range(0,count):
             csum = csum + eigvals[i]
             total_variance = csum / eigsum
-            if total_variance > 0.85:
+            if total_variance > 0.95:
                 k = i
                 break
 
@@ -114,9 +114,9 @@ def get_most_frequent(values):
     return max_pair[1]
 
 def get_average_face(training_images):
-    return np.mean(training_images, axis=1).reshape((-1,1))
+    return np.mean(training_images, axis=1)
 
-def get_coordinates(image, basis):
+def get_coordinates(image, basis, average_im):
     """Calculates coordinates of a given image in the given face space.
     The basis must be orthonormal
 
@@ -127,15 +127,16 @@ def get_coordinates(image, basis):
     Returns:
         np.array: coordinates
     """
+    image_diff = image - average_im
     ims = basis.shape[1]
     coordinates_list = []
     for i in range(ims):
-        mult = np.dot(image, basis[:,i])
+        mult = np.dot(image_diff, basis[:,i])
         coordinates_list.append(mult)
     coordinates = np.array(coordinates_list)
     return coordinates
 
-def get_projection(image, basis):
+def get_projection(image_crds, basis, av_face):
     """Returns the projection of an image on the given face space.
     The basis of the space must be orthonormal
 
@@ -146,13 +147,26 @@ def get_projection(image, basis):
     Returns:
         np.array: projection of the image
     """
-    size, ims = basis.shape
-    weights = np.zeros((size, ims))
-    for i in range(ims):
-        mult = np.dot(image, basis[:,i])
-        weights[:,i] = mult * basis[:,i]
-    weights = np.sum(weights, axis=1)
-    return weights
+    vecs = basis.shape[1]
+    if len(image_crds.shape) > 1 and image_crds.shape[1] != 1:
+        raise ValueError(
+            f"coordinate array has wrong size: {image_crds.shape}")
+    if image_crds.shape[0] != vecs:
+        raise ValueError(
+            f"basis and coordinates do not match: {image_crds.shape} != {vecs}")
 
-def get_projection2(image_coords, basis):
-    return np.dot(basis, image_coords)
+    #result = []
+    #for i in range(vecs):
+    #    col = image_crds[i]*basis[:,i]
+    #    result.append(col)
+    #result_image = np.vstack(result).T
+    #result_image = np.sum(result_image, axis=1)
+    #return result_image + av_face
+    result = av_face
+    for i in range(vecs):
+        result = result + image_crds[i] * basis[:,i]
+    return result
+
+def get_projection2(image_crds, basis, av_face):
+    result = np.dot(basis, image_crds)
+    return result + av_face

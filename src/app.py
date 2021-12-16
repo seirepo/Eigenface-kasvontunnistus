@@ -173,17 +173,27 @@ class App:
         self.classify_faces()
         self.print_results()
 
+        av_face = op.get_average_face(self.get_training_images())
         #print("rekonstruoidaan jotkut training setin kasvot:")
         # vaikea tunnistaa: 0, 2, 3, 7, 8, 9, 22, 34, 39
-        #sel = self.individuals[9].get_training_images()[:,2]
-        sel = self.individuals[39].get_training_images()[:,2]
+        sel = self.individuals[9].get_training_images()[:,2]
+        #sel = self.individuals[39].get_training_images()[:,2]
+        #sel = self.individuals[22].get_test_images()[:,0]
+        print("eigenfaces: ", self.eigenfaces.shape)
         plot.imshow(sel.reshape((64,64)), cmap="Greys_r")
         plot.show()
-        coords = op.get_coordinates(sel, self.eigenfaces)
-        proj = op.get_projection2(coords, self.eigenfaces)
-        print(proj.shape)
-        plot.imshow(sel.reshape((64,64)), cmap="Greys_r")
+        coords = op.get_coordinates(sel, self.eigenfaces, av_face)
+        proj = op.get_projection(coords, self.eigenfaces, av_face)
+        proj2 = op.get_projection2(coords, self.eigenfaces, av_face)
+        plot.imshow(proj.reshape((64,64)), cmap="Greys_r")
         plot.show()
+        plot.imshow(proj2.reshape((64,64)), cmap="Greys_r")
+        plot.show()
+        print("ero: ", sum(abs(proj - proj2) < 0.0001))
+
+        #self.show_images(np.vstack([sel, proj, difference]).T)
+
+        #self.show_images(self.eigenfaces[:,:15])
 
         #print("ajetaan tunnistusalgoritmi kaikille testikuville")
         k = 4
@@ -230,7 +240,8 @@ class App:
         Returns:
             np.array: coordinates in eigenface space
         """
-        coordinates = op.get_coordinates(im, self.eigenfaces)
+        average_im = op.get_average_face(self.get_training_images())#.flatten()
+        coordinates = op.get_coordinates(im, self.eigenfaces, average_im)
         return coordinates
 
     def show_images(self, images):
