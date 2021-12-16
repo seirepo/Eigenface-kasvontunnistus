@@ -25,8 +25,6 @@ class UI:
         label_people = tkinter.Label(master=self.people_frame, text="Henkilöt")
         label_people.grid(row=0, column=0, columnspan=4)
 
-        self.app.classify()
-
         label_nbrs = tkinter.Label(master=self.button_frame, text="neighbors:")
         label_pnorm = tkinter.Label(master=self.button_frame, text="order of the norm:")
         label_nbrs.grid()
@@ -60,8 +58,9 @@ class UI:
         )
         button_classify.grid(pady=10)
 
-        self.label_results = tkinter.Label(master=self.button_frame, text="")
-        self.label_results.grid()
+        results = self.app.classify()
+        self.label_results = tkinter.Label(master=self.button_frame, text=results)
+        self.label_results.grid(columnspan=4)
 
         self.middle_canvas = tkinter.Canvas(master=self.root, width=280, height=280)
         self.middle_canvas.grid(row=0, column=1, sticky="nw")
@@ -146,7 +145,7 @@ class UI:
     def handle_button_click(self, k, p):
         print("luokitellaan...")
         print(f"valitut parametrit\nk ({type(k)}): {k}, p ({type(p)}): {p}")
-        self.app.classify(k, p)
+        results = self.app.classify(k, p)
         self.show_test_images(self.app.get_individuals())
-        self.label_results.configure(text=f"k = {k}, p = {p} :-)")
+        self.label_results.configure(text=results)
         print("done")

@@ -155,8 +155,9 @@ class App:
         """
         self.classify_faces(k,p)
         print(f"k = {k}, p = {p}")
-        self.print_results()
-
+        #self.print_results()
+        results = self.get_results()
+        return results
         #av_face = op.get_average_face(self.get_training_images())
         #print("rekonstruoidaan jotkut training setin kasvot:")
         # vaikea tunnistaa: 0, 2, 3, 7, 8, 9, 22, 34, 39
@@ -179,7 +180,7 @@ class App:
 
         #self.show_images(self.eigenfaces[:,:15])
 
-    def print_results(self):
+    def get_results(self):
         """Prints the result and id's with incorrect classification
         """
         count = len(self.get_test_images().T)
@@ -200,12 +201,11 @@ class App:
                     inc_tmp += 1
                 corr += corr_tmp
                 inc += inc_tmp
-        print(f"oikein: {corr}, väärin: {inc}, kuvia yhteensä: {count}")
-        print(f"tulos: {corr/count * 100} % oikein, {inc/count * 100} % väärin")
-        print("Tunnistettu väärin:")
-        for fail in failed:
-            print(f"{fail[0]}: {fail[1]}")
-        print(failed)
+        correct = round(corr/count*100, 2)
+        failed = round(inc/count*100, 2)
+        result = f"results:\n{correct} % correct, {failed} % failed"
+        #print(result)
+        return result
 
     def get_projected_image(self, crds: np.array) -> np.array:
         """Return the image reconstructed from the given coordinates
