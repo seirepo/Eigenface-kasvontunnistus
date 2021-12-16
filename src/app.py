@@ -231,6 +231,13 @@ class App:
         for w in wrong:
             print(f"{w[0]}: {w[1]}")
 
+    def get_projected_image(self, crds):
+        average = self.get_average_face()
+        return op.get_projection(crds, self.eigenfaces, average)
+
+    def get_average_face(self):
+        return op.get_average_face(self.get_training_images())
+
     def get_training_images(self):
         """Get all training images from individual objects
 
