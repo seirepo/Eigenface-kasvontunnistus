@@ -136,7 +136,7 @@ def get_coordinates(image, basis, average_im):
     coordinates = np.array(coordinates_list)
     return coordinates
 
-def get_projection(image_crds, basis, av_face):
+def get_projection2(image_crds, basis, av_face):
     """Returns the projection of an image on the given face space.
     The basis of the space must be orthonormal
 
@@ -154,19 +154,11 @@ def get_projection(image_crds, basis, av_face):
     if image_crds.shape[0] != vecs:
         raise ValueError(
             f"basis and coordinates do not match: {image_crds.shape} != {vecs}")
-
-    #result = []
-    #for i in range(vecs):
-    #    col = image_crds[i]*basis[:,i]
-    #    result.append(col)
-    #result_image = np.vstack(result).T
-    #result_image = np.sum(result_image, axis=1)
-    #return result_image + av_face
     result = av_face
     for i in range(vecs):
         result = result + image_crds[i] * basis[:,i]
     return result
 
-def get_projection2(image_crds, basis, av_face):
+def get_projection(image_crds, basis, av_face):
     result = np.dot(basis, image_crds)
     return result + av_face
