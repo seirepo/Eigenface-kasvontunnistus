@@ -19,7 +19,7 @@ class UI:
         label_people = ttk.Label(master=self.people_frame, text="Henkilöt")
         label_people.grid(row=0, column=0, columnspan=4)
 
-        #self.app.classify()
+        self.app.classify()
         ppl = self.app.get_image_of_everyone()
 
         self.show_faces(ppl)
@@ -66,22 +66,26 @@ class UI:
             nearest_nbrs = ind.get_nearest_neighbor()
             row = 0
             col = 0
-            for neighbor in nearest_nbrs:
+            for item in nearest_nbrs:
+                #print(item.keys())
                 #print("käsittelyssä ", ind.get_id(), ": ", neighbor[1], neighbor[2])
-                im = neighbor[0].reshape((64,64))
-                nearest_id = neighbor[1]
-                im = np.uint8(im*255)
-                im = ImageTk.PhotoImage(image=Image.fromarray(im))
+                test_im = item["test_im"]
+                test_im = test_im.reshape((64,64))
+                test_im = np.uint8(test_im*255)
+                test_im = ImageTk.PhotoImage(image=Image.fromarray(test_im))
                 txt = "input: " + str(ind.get_id())
                 label = ttk.Label(
                     master=tmp_canvas,
-                    image=im,
+                    image=test_im,
                     text=txt,
                     compound="top"
                 )
-                label.image = im
+                label.image = test_im
                 label.grid(row=row, column=col, padx=5)
-                nearest_im = self.app.get_image_by_id(nearest_id)
+
+                nearest_id = item["nearest_id"]
+                nearest_crds = item["nearest_im_crds"]
+                nearest_im = self.app.get_projected_image(nearest_crds)
                 nearest_im = nearest_im.reshape((64,64))
                 nearest_im = np.uint8(nearest_im*255)
                 nearest_im = ImageTk.PhotoImage(image=Image.fromarray(nearest_im))
