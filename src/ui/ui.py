@@ -140,19 +140,6 @@ class UI:
                     tmp_canvas_row += 1
                     tmp_canvas_col = 1
 
-    def image_to_label(self, master, image, text=""):
-        im = image.reshape((64,64))
-        im = np.uint8(im*255)
-        im = ImageTk.PhotoImage(image=Image.fromarray(im))
-        label = tkinter.Label(
-            master=master,
-            image=im,
-            text=text,
-            compound="top"
-        )
-        label.image = image
-        return label
-
     def handle_button_click(self, k, p):
         print("luokitellaan...")
         print(f"valitut parametrit\nk ({type(k)}): {k}, p ({type(p)}): {p}")
