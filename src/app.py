@@ -90,7 +90,8 @@ class App:
                 result = self.get_nearest(nearest_k)
                 # res.append((im: np.array(4096), nearest_id: int, nearest: lista))
                 #res.append({"im": im, "classification": nearest_id, "other_near_ids": nearest})
-                res.append(result)
+                #res.append(result)
+                res.append({"test_im": im, "nearest_id": result["id"], "nearest_im_crds": result["coords"]})
             individual.set_nearest_neighbor(res) # res: List[dict], len(res) = 2
 
     def get_nearest(self, nearest: list) -> dict:
@@ -177,7 +178,7 @@ class App:
         self.project_faces()
 
     def classify(self):
-        self.classify_faces(k=3,p=1)
+        self.classify_faces(k=3,p=2)
         self.print_results()
 
         av_face = op.get_average_face(self.get_training_images())
@@ -219,7 +220,7 @@ class App:
         for ind in self.individuals:
             nearest = ind.get_nearest_neighbor()
             id = ind.get_id()
-            id_nearest = nearest[0]["id"]
+            id_nearest = nearest[0]["nearest_id"]
             if id == id_nearest:
                 corr += 1
             else:
@@ -306,6 +307,6 @@ class App:
         #ind = vals.argsort()[::-1]
         #print(d.shape)
 
-app = App()
-app.classify()
+#app = App()
+#app.classify()
 #app.suorita()
