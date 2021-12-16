@@ -17,7 +17,7 @@ class Individual:
         self.training_images, self.test_images = self.train_test_split()
         self.id = id
         self.image_coordinates = None
-        self.nearest_neighbor = []
+        self.nearest_neighbor = dict()
 
     def get_images(self):
         return self.images
