@@ -67,7 +67,7 @@ class UI:
             row = 0
             col = 0
             for neighbor in nearest_nbrs:
-                print("käsittelyssä ", ind.get_id(), ": ", neighbor[1], neighbor[2])
+                #print("käsittelyssä ", ind.get_id(), ": ", neighbor[1], neighbor[2])
                 im = neighbor[0].reshape((64,64))
                 nearest_id = neighbor[1]
                 im = np.uint8(im*255)
