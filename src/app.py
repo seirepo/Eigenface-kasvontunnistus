@@ -144,7 +144,7 @@ class App:
         self.project_faces()
 
     def classify(self):
-        self.classify_faces(k=3,p=2)
+        self.classify_faces(k=3,p=3)
         self.print_results()
 
         av_face = op.get_average_face(self.get_training_images())
@@ -170,7 +170,6 @@ class App:
         #self.show_images(self.eigenfaces[:,:15])
 
         #print("ajetaan tunnistusalgoritmi kaikille testikuville")
-        k = 4
         for individual in self.individuals:
             test_ims = individual.get_test_images()
             id = individual.get_id()
