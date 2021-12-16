@@ -1,4 +1,3 @@
-from matplotlib import image
 import numpy as np
 
 def images_to_vectors(im_set_matrix: np.array) -> np.array:
@@ -51,8 +50,8 @@ def calculate_eigenfaces(training_images: np.array, k=-1) -> np.array:
     average_face = get_average_face(training_images).reshape((-1, 1))
     difference_faces = np.subtract(training_images, average_face)
 
-    ATA = np.matmul(difference_faces.T, difference_faces)
-    vals, eig_vectors = np.linalg.eig(ATA)
+    ata = np.matmul(difference_faces.T, difference_faces)
+    vals, eig_vectors = np.linalg.eig(ata)
 
     indx = vals.argsort()[::-1]
 
@@ -76,8 +75,8 @@ def calculate_eigenfaces(training_images: np.array, k=-1) -> np.array:
 
     return result
 
-def pnorm(im1: np.array, im2: np.array, p: int):
-    return np.linalg.norm((im1-im2), p)
+def pnorm(im1: np.array, im2: np.array, order: int):
+    return np.linalg.norm((im1-im2), order)
 
 def get_most_frequent(values: list) -> int:
     """Returns the most frequent value from the given list. If no value
