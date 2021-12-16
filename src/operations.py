@@ -92,8 +92,8 @@ def pnorm(im1, im2, p):
     return np.linalg.norm((im1-im2), p)
 
 def get_most_frequent(values):
-    print("\n------------------\n")
-    print("alkuperäinen lista: ", values)
+    #print("\n------------------\n")
+    #print("alkuperäinen lista: ", values)
     #ids = []
     #for v in values:
     #    ids.append(v["id"])
@@ -101,13 +101,13 @@ def get_most_frequent(values):
     ids = values
     #vals, counts = np.unique(values, return_counts=True)
     vals, counts = np.unique(ids, return_counts=True)
-    print(vals, counts)
+    #print(vals, counts)
     result = zip(counts, vals)
     result = list(result)
-    print(result)
+    #print(result)
     #sorted_res = sorted(result)[::-1]
     sorted_res = sorted(result, key=lambda d: d[0], reverse=True)
-    print(sorted_res)
+    #print(sorted_res)
     max_count = sorted_res[0][0]
     max_pair = sorted_res[0]
 
@@ -118,23 +118,23 @@ def get_most_frequent(values):
             #print(f"{item} lisätty tasapeliin")
             tie.append(item)
 
-    print("tasa ", tie)
+    #print("tasa ", tie)
     if len(tie) == 0:
-        print("palautetaan ", max_pair[1])
+        #print("palautetaan ", max_pair[1])
         return max_pair[1]
     else:
-        print("max pair: ", max_pair)
+        #print("max pair: ", max_pair)
         max_index = ids.index(max_pair[1])
-        print("tod.näk.:n indeksi: ", max_index)
+        #print("tod.näk.:n indeksi: ", max_index)
         for item in tie:
-            print("vertailtavan indeksi: ", ids.index(item[1]), " vertailtava: ", item[1])
-            print(f"{ids.index(item[1])} < {max_index}")
+            #print("vertailtavan indeksi: ", ids.index(item[1]), " vertailtava: ", item[1])
+            #print(f"{ids.index(item[1])} < {max_index}")
             comp_indx = ids.index(item[1])
             if comp_indx < max_index:
                 max_pair = item
                 max_index = comp_indx
-        print("palautetaan ", max_pair[1])
-        print("\n------------------\n")
+        #print("palautetaan ", max_pair[1])
+        #print("\n------------------\n")
         return max_pair[1]
 
 def get_average_face(training_images):
