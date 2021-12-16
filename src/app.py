@@ -219,7 +219,7 @@ class App:
         for ind in self.individuals:
             nearest = ind.get_nearest_neighbor()
             id = ind.get_id()
-            id_nearest = nearest[0]["classification"]
+            id_nearest = nearest[0]["id"]
             if id == id_nearest:
                 corr += 1
             else:
