@@ -85,15 +85,33 @@ class App:
                 coordinates = self.project_image(im)
                 distances = self.calculate_distances(coordinates, p)
                 distances = sorted(distances, key=lambda i: i["dist"])
-                nearest = self.calculate_knn(distances, k)
-                print(type(nearest), len(nearest), type(nearest[0]))
-                nearest_id = op.get_most_frequent(nearest) # {"dist": -, "id": -, "coords": -}
+                nearest = self.calculate_knn(distances, 4)
+                #nearest_id = op.get_most_frequent(nearest) # {"dist": -, "id": -, "coords": -}
+                result = self.helper(nearest)
+                nearest_id = 3
                 # res.append((im: np.array(4096), nearest_id: int, nearest: lista))
                 res.append({"im": im, "classification": nearest_id, "other_near_ids": nearest})
             individual.set_nearest_neighbor(res) # res: List[dict], len(res) = 2
 
     def helper(self, nearest: list):
-        pass
+        nearest_ids = []
+        for near in nearest:
+            nearest_ids.append(near["id"])
+
+        nearest_id = op.get_most_frequent(nearest_ids)
+        #print(f"the nearest class was {nearest_id}")
+
+        class_min_dist = None
+        for near in nearest:
+            #print(near["id"], round(near["dist"],4))
+            if near["id"] == nearest_id:
+                dist = near["dist"]
+                if class_min_dist is None:
+                    class_min_dist = near
+                elif dist < class_min_dist["dist"]:
+                    class_min_dist = dist
+        #print("id:llä ", class_min_dist["id"], " pienin etäisyys: ", round(class_min_dist["dist"], 2))
+        return class_min_dist
 
     def calculate_distances(self, im, p=1):
         """Calculates distances between the given image coordinates and
@@ -160,7 +178,7 @@ class App:
 
     def classify(self):
         self.classify_faces(k=3,p=2)
-        #self.print_results()
+        self.print_results()
 
         av_face = op.get_average_face(self.get_training_images())
         #print("rekonstruoidaan jotkut training setin kasvot:")
