@@ -45,7 +45,6 @@ class UI:
                 self.button_frame, text = text,
                 variable = vk, value = value
             ).grid(row=0, column=value)
-            print("value: ", value)
 
         label_pnorm.grid()
         for (text, value) in values_k.items():
@@ -53,14 +52,12 @@ class UI:
                 self.button_frame, text = text,
                 variable = vnorm, value = value
             ).grid(row=1, column=value)
-            print("value: ", value)
 
         button_classify = tkinter.Button(
             master=self.button_frame, #self.people_frame,
             text="Classify",
             command=lambda: self.handle_button_click(int(vk.get()), int(vnorm.get()))
         )
-        #button_classify.grid(row=12, column=0, columnspan=4, pady=10)
         button_classify.grid(pady=10)
 
         self.middle_canvas = tkinter.Canvas(master=self.root, width=280, height=280)
@@ -105,8 +102,6 @@ class UI:
             row = 0
             col = 0
             for item in nearest_nbrs:
-                #print(item.keys())
-                #print("käsittelyssä ", ind.get_id(), ": ", neighbor[1], neighbor[2])
                 test_im = item["test_im"]
                 test_im = test_im.reshape((64,64))
                 test_im = np.uint8(test_im*255)
