@@ -1,7 +1,7 @@
 from matplotlib import image
 import numpy as np
 
-def images_to_vectors(im_set_matrix):
+def images_to_vectors(im_set_matrix: np.array) -> np.array:
     """
     If the image set is given as a matrix containing k images as nxm matrices,
     this function returns a 2-dimensional (nxm)xk-matrix containing the images
@@ -26,7 +26,7 @@ def images_to_vectors(im_set_matrix):
 
     return result
 
-def calculate_eigenfaces(training_images, k=-1):
+def calculate_eigenfaces(training_images: np.array, k=-1) -> np.array:
     """Calculates and returns k eigenfaces with the largest eigenvalue of a
     given image set, forming an orthonormal base.
     If k is not given, then the number of eigenfaces needed to represent
@@ -83,15 +83,26 @@ def calculate_eigenfaces(training_images, k=-1):
 
     return result
 
+# not used
 def euclidean_distance2(im1, im2):
     if im1.shape[0] != im2.shape[0]:
         raise ValueError(f"Illegal size of input vectors {im1.shape} and {im2.shape}: {im1.shape[0]} != {im2.shape[0]}")
     return np.sum((im1 - im2)**2)
 
-def pnorm(im1, im2, p):
+def pnorm(im1: np.array, im2: np.array, p: int):
     return np.linalg.norm((im1-im2), p)
 
-def get_most_frequent(values):
+def get_most_frequent(values: list) -> int:
+    """Returns the most frequent value from the given list. If no value
+    is more frequent than te others, the first value from the original list
+    is returned.
+
+    Args:
+        values (list): list of values
+
+    Returns:
+        int: the most frequent value
+    """
     #print("\n------------------\n")
     #print("alkuperäinen lista: ", values)
     #ids = []
@@ -140,13 +151,14 @@ def get_most_frequent(values):
 def get_average_face(training_images):
     return np.mean(training_images, axis=1)
 
-def get_coordinates(image, basis, average_im):
+def get_coordinates(image: np.array, basis: np.array, average_im: np.array):
     """Calculates coordinates of a given image in the given face space.
     The basis must be orthonormal
 
     Args:
         image (np.array): image
         space (np.array): eigenface vectors spanning a face space
+        average_im (np.array): average image
 
     Returns:
         np.array: coordinates
@@ -183,6 +195,17 @@ def get_projection2(image_crds, basis, av_face):
         result = result + image_crds[i] * basis[:,i]
     return result
 
-def get_projection(image_crds, basis, av_face):
+def get_projection(image_crds: np.array, basis: np.array, av_face: np.array) -> np.array:
+    """Returns the image contstructed from the given coordinates
+
+    Args:
+        image_crds (np.array): image coordinates
+        basis (np.array): basis
+        av_face (np.array): average image
+
+    Returns:
+        np.array: image formed by the linear combination of image_crds
+        and basis vectors
+    """
     result = np.dot(basis, image_crds)
     return result + av_face
