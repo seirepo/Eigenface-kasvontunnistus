@@ -60,6 +60,9 @@ class UI:
         )
         button_classify.grid(pady=10)
 
+        self.label_results = tkinter.Label(master=self.button_frame, text="")
+        self.label_results.grid()
+
         self.middle_canvas = tkinter.Canvas(master=self.root, width=280, height=280)
         self.middle_canvas.grid(row=0, column=1, sticky="nw")
 
@@ -145,4 +148,5 @@ class UI:
         print(f"valitut parametrit\nk ({type(k)}): {k}, p ({type(p)}): {p}")
         self.app.classify(k, p)
         self.show_test_images(self.app.get_individuals())
+        self.label_results.configure(text=f"k = {k}, p = {p} :-)")
         print("done")
