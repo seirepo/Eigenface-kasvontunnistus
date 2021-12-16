@@ -60,7 +60,7 @@ class App:
             individual.set_image_coordinates(np.array(projected).T)
         return np.array(projected_images).T
 
-    def project_image(self, im) -> np.array:
+    def project_image(self, im: np.array) -> np.array:
         """Project given image to eigenface space to get the coordinates
 
         Args:
@@ -73,7 +73,7 @@ class App:
         coordinates = op.get_coordinates(im, self.eigenfaces, average_im)
         return coordinates
 
-    def classify_faces(self, k, p):
+    def classify_faces(self, k: int, p: int):
         """Classify test images of each individual and save the results to
         each individual
 
@@ -119,7 +119,7 @@ class App:
                     class_min_dist = near
         return class_min_dist
 
-    def calculate_distances(self, im, p) -> list:
+    def calculate_distances(self, im: np.array, p: int) -> list:
         """Calculates distances between the given image coordinates and
         coordinates of the training images of each individual
 
@@ -195,7 +195,7 @@ class App:
         for w in wrong:
             print(f"{w[0]}: {w[1]}")
 
-    def get_projected_image(self, crds) -> np.array:
+    def get_projected_image(self, crds: np.array) -> np.array:
         """Return the image reconstructed from the given coordinates
 
         Args:
@@ -258,7 +258,7 @@ class App:
             images.append((id, im))
         return images
 
-    def show_images(self, images):
+    def show_images(self, images: np.array):
         """
         Function to plot images
         """
