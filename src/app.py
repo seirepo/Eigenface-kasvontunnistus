@@ -186,17 +186,17 @@ class App:
         sel = self.individuals[9].get_training_images()[:,2]
         #sel = self.individuals[39].get_training_images()[:,2]
         #sel = self.individuals[22].get_test_images()[:,0]
-        print("eigenfaces: ", self.eigenfaces.shape)
-        plot.imshow(sel.reshape((64,64)), cmap="Greys_r")
-        plot.show()
-        coords = op.get_coordinates(sel, self.eigenfaces, av_face)
-        proj = op.get_projection(coords, self.eigenfaces, av_face)
-        proj2 = op.get_projection2(coords, self.eigenfaces, av_face)
-        plot.imshow(proj.reshape((64,64)), cmap="Greys_r")
-        plot.show()
-        plot.imshow(proj2.reshape((64,64)), cmap="Greys_r")
-        plot.show()
-        print("ero: ", sum(abs(proj - proj2) < 0.0001))
+        #print("eigenfaces: ", self.eigenfaces.shape)
+        #plot.imshow(sel.reshape((64,64)), cmap="Greys_r")
+        #plot.show()
+        #coords = op.get_coordinates(sel, self.eigenfaces, av_face)
+        #proj = op.get_projection(coords, self.eigenfaces, av_face)
+        #proj2 = op.get_projection2(coords, self.eigenfaces, av_face)
+        #plot.imshow(proj.reshape((64,64)), cmap="Greys_r")
+        #plot.show()
+        #plot.imshow(proj2.reshape((64,64)), cmap="Greys_r")
+        #plot.show()
+        #print("ero: ", sum(abs(proj - proj2) < 0.0001))
 
         #self.show_images(np.vstack([sel, proj, difference]).T)
 
