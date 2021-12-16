@@ -138,6 +138,8 @@ class UI:
                     compound="top"
                 )
                 label_nearest.image = nearest_im
+                if nearest_id != ind.get_id():
+                    label_nearest.configure(background='red')
                 label_nearest.grid(row=row, column=col+1)
                 row += 1
                 col = 0
