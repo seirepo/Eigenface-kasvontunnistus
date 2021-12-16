@@ -15,14 +15,12 @@ class UI:
     def start(self):
         self.people_frame = tkinter.Frame(master=self.root, width=280)#, height=280)
         self.people_frame.grid(row=0, column=0, padx=30, sticky="nw")
-        self.people_frame.configure(background='blue')
 
         ppl = self.app.get_image_of_everyone()
         self.show_faces(ppl)
 
         self.button_frame = tkinter.Frame(master=self.people_frame)#, width=150, height=150)
         self.button_frame.grid(column=1, columnspan=5, sticky="nw")
-        self.button_frame.configure(background='red')
 
         label_people = tkinter.Label(master=self.people_frame, text="Henkilöt")
         label_people.grid(row=0, column=0, columnspan=4)
@@ -67,7 +65,6 @@ class UI:
 
         self.middle_canvas = tkinter.Canvas(master=self.root, width=280, height=280)
         self.middle_canvas.grid(row=0, column=1, sticky="nw")
-        self.middle_canvas.configure(background='green')
 
         self.test_im_frame = tkinter.Frame(master=self.middle_canvas)
         self.test_im_frame.grid(row=0, column=0, sticky="nw")
