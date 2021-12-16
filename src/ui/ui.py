@@ -29,20 +29,23 @@ class UI:
 
         self.app.classify()
 
-
+        label_nbrs = tkinter.Label(master=self.button_frame, text="k:")
+        label_nbrs.grid()
         vk = StringVar(self.button_frame, 1)
         values_k = {
-            "Radiobutton1" : 1,
-            "Radiobutton2" : 2,
-            "Radiobutton3" : 3,
-            "Radiobutton4" : 4,
+            "1" : 1,
+            "2" : 2,
+            "3" : 3,
+            "4" : 4,
+            "5" : 5,
         }
 
         for (text, value) in values_k.items():
             Radiobutton(
                 self.button_frame, text = text,
                 variable = vk, value = value
-            ).pack()
+            ).grid(row=0, column=value)
+            print("value: ", value)
 
         button_classify = tkinter.Button(
             master=self.button_frame, #self.people_frame,
@@ -52,7 +55,7 @@ class UI:
         )
         #button_classify.grid(row=12, column=0, columnspan=4, pady=10)
         #button_classify.grid(pady=10)
-        button_classify.pack()
+        #button_classify.pack()
 
         self.middle_canvas = tkinter.Canvas(master=self.root, width=280, height=280)
         self.middle_canvas.grid(row=0, column=1, sticky="nw")
