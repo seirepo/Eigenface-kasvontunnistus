@@ -29,9 +29,11 @@ class UI:
 
         self.app.classify()
 
-        label_nbrs = tkinter.Label(master=self.button_frame, text="k:")
+        label_nbrs = tkinter.Label(master=self.button_frame, text="neighbors:")
+        label_pnorm = tkinter.Label(master=self.button_frame, text="order of the norm:")
         label_nbrs.grid()
         vk = StringVar(self.button_frame, 1)
+        vnorm = StringVar(self.button_frame, 1)
         values_k = {
             "1" : 1,
             "2" : 2,
@@ -47,15 +49,21 @@ class UI:
             ).grid(row=0, column=value)
             print("value: ", value)
 
+        label_pnorm.grid()
+        for (text, value) in values_k.items():
+            Radiobutton(
+                self.button_frame, text = text,
+                variable = vnorm, value = value
+            ).grid(row=1, column=value)
+            print("value: ", value)
+
         button_classify = tkinter.Button(
             master=self.button_frame, #self.people_frame,
             text="Classify",
-            #command=lambda: self.handle_button_click(ppl)
-            command=self.handle_button_click
+            command=lambda: self.handle_button_click(vk.get(), vnorm.get())
         )
         #button_classify.grid(row=12, column=0, columnspan=4, pady=10)
-        #button_classify.grid(pady=10)
-        #button_classify.pack()
+        button_classify.grid(pady=10)
 
         self.middle_canvas = tkinter.Canvas(master=self.root, width=280, height=280)
         self.middle_canvas.grid(row=0, column=1, sticky="nw")
@@ -152,6 +160,8 @@ class UI:
         label.image = image
         return label
 
-    def handle_button_click(self):
+    def handle_button_click(self, k, p):
         print("luokitellaan...")
         self.app.classify()
+        print(f"k: {k}, p: {p}")
+        print("done")
