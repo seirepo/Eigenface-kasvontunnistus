@@ -51,12 +51,12 @@ class UI:
                 variable = vnorm, value = value
             ).grid(row=1, column=value)
 
-        button_classify = tkinter.Button(
+        self.button_classify = tkinter.Button(
             master=self.button_frame, #self.people_frame,
             text="Classify",
             command=lambda: self.handle_button_click(int(vk.get()), int(vnorm.get()))
         )
-        button_classify.grid(pady=10)
+        self.button_classify.grid(pady=10)
 
         results = self.app.classify()
         self.label_results = tkinter.Label(master=self.button_frame, text=results)
@@ -143,9 +143,9 @@ class UI:
                     tmp_canvas_col = 1
 
     def handle_button_click(self, k, p):
-        print("luokitellaan...")
-        print(f"valitut parametrit\nk ({type(k)}): {k}, p ({type(p)}): {p}")
+        #print("luokitellaan...")
+        #print(f"valitut parametrit\nk ({type(k)}): {k}, p ({type(p)}): {p}")
         results = self.app.classify(k, p)
         self.show_test_images(self.app.get_individuals())
         self.label_results.configure(text=results)
-        print("done")
+        #print("done")

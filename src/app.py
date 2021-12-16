@@ -88,7 +88,7 @@ class App:
                 coordinates = self.project_image(image)
                 distances = self.calculate_distances(coordinates, ord)
                 distances = sorted(distances, key=lambda i: i["dist"])
-                nearest_k = distances[:k] # distances[0] keys: 'dist', 'id', 'coords'
+                nearest_k = distances[:k]
                 result = self.get_nearest(nearest_k)
                 res.append({
                     "test_im": image,
@@ -154,31 +154,8 @@ class App:
         """Classifies the test images
         """
         self.classify_faces(k,p)
-        print(f"k = {k}, p = {p}")
-        #self.print_results()
         results = self.get_results()
         return results
-        #av_face = op.get_average_face(self.get_training_images())
-        #print("rekonstruoidaan jotkut training setin kasvot:")
-        # vaikea tunnistaa: 0, 2, 3, 7, 8, 9, 22, 34, 39
-        #sel = self.individuals[9].get_training_images()[:,2]
-        #sel = self.individuals[39].get_training_images()[:,2]
-        #sel = self.individuals[22].get_test_images()[:,0]
-        #print("eigenfaces: ", self.eigenfaces.shape)
-        #plot.imshow(sel.reshape((64,64)), cmap="Greys_r")
-        #plot.show()
-        #coords = op.get_coordinates(sel, self.eigenfaces, av_face)
-        #proj = op.get_projection(coords, self.eigenfaces, av_face)
-        #proj2 = op.get_projection2(coords, self.eigenfaces, av_face)
-        #plot.imshow(proj.reshape((64,64)), cmap="Greys_r")
-        #plot.show()
-        #plot.imshow(proj2.reshape((64,64)), cmap="Greys_r")
-        #plot.show()
-        #print("ero: ", sum(abs(proj - proj2) < 0.0001))
-
-        #self.show_images(np.vstack([sel, proj, difference]).T)
-
-        #self.show_images(self.eigenfaces[:,:15])
 
     def get_results(self):
         """Prints the result and id's with incorrect classification
@@ -204,7 +181,6 @@ class App:
         correct = round(corr/count*100, 2)
         failed = round(inc/count*100, 2)
         result = f"results:\n{correct} % correct, {failed} % failed"
-        #print(result)
         return result
 
     def get_projected_image(self, crds: np.array) -> np.array:
@@ -287,7 +263,3 @@ class App:
 
         fig.tight_layout()
         plot.show()
-
-#app = App()
-#app.classify()
-#app.suorita()
