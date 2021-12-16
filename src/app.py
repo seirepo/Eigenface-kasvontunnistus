@@ -76,23 +76,18 @@ class App:
         coordinates = op.get_coordinates(im, self.eigenfaces, average_im)
         return coordinates
 
-    def classify_faces(self, k, p=1):
+    def classify_faces(self, k, p):
         for individual in self.individuals:
             test_ims = individual.get_test_images()
             res = []
             for im in test_ims.T:
-                #nearest = self.calculate_knn(im, k, p)
                 coordinates = self.project_image(im)
                 distances = self.calculate_distances(coordinates, p)
                 distances = sorted(distances, key=lambda i: i["dist"])
-                nearest_k = self.calculate_knn(distances, k)
-                #nearest_id = op.get_most_frequent(nearest) # {"dist": -, "id": -, "coords": -}
+                nearest_k = distances[:k]
                 result = self.get_nearest(nearest_k)
-                # res.append((im: np.array(4096), nearest_id: int, nearest: lista))
-                #res.append({"im": im, "classification": nearest_id, "other_near_ids": nearest})
-                #res.append(result)
                 res.append({"test_im": im, "nearest_id": result["id"], "nearest_im_crds": result["coords"]})
-            individual.set_nearest_neighbor(res) # res: List[dict], len(res) = 2
+            individual.set_nearest_neighbor(res)
 
     def get_nearest(self, nearest: list) -> dict:
         nearest_ids = []
@@ -100,18 +95,15 @@ class App:
             nearest_ids.append(near["id"])
 
         nearest_id = op.get_most_frequent(nearest_ids)
-        #print(f"the nearest class was {nearest_id}")
 
         class_min_dist = None
         for near in nearest:
-            #print(near["id"], round(near["dist"],4))
             if near["id"] == nearest_id:
                 dist = near["dist"]
                 if class_min_dist is None:
                     class_min_dist = near
                 elif dist < class_min_dist["dist"]:
                     class_min_dist = near
-        #print("id:llä ", class_min_dist["id"], " pienin etäisyys: ", round(class_min_dist["dist"], 2))
         return class_min_dist
 
     def calculate_distances(self, im, p=1):
@@ -130,46 +122,9 @@ class App:
             images = individual.get_image_coordinates()
             id = individual.get_id()
             for image in images.T:
-                #distance = op.pnorm(image, im, p)
                 distance = np.linalg.norm((image-im), p)
-                #distances.append((distance, id))
                 result.append({"dist": distance, "id": id, "coords": image})
         return result
-
-    def calculate_knn(self, distances, k):
-        """Calculate k-nearest neighbors for the given image
-
-        Args:
-            im (np.array): image
-            k (int): number of neighbors
-
-        Raises:
-            ValueError: if the given image shape is incorrect
-
-        Returns:
-            string: result as a string
-        """
-        pass
-        #shape = im.shape
-        #if len(shape) == 1 and shape[0] != 4096:
-        #    raise ValueError(f"Invalid input image shape {im.shape}")
-        #elif len(shape) == 2 and shape != (4096, 1):
-        #    raise ValueError(f"Invalid input image shape {im.shape}")
-        #elif len(shape) > 2:
-        #    raise ValueError(f"Invalid input image shape {im.shape}")
-
-        #coordinates = self.project_image(im)
-        #distances = self.calculate_distances(coordinates, p)
-        #distances.sort()
-        if k >= len(distances):
-            k = len(distances) - 1
-        nearest = distances[:k]
-        #near = nearest
-        #for n in nearest:
-            #near.append(n["id"])
-            #near.append(n)
-        #print("calculate_knn palautusarvon tyyppi: ", type(near), len(near), type(near[0]))
-        return nearest
 
     def initialize(self):
         self.load_data()
@@ -178,7 +133,7 @@ class App:
         self.project_faces()
 
     def classify(self):
-        self.classify_faces(k=3,p=2)
+        self.classify_faces(k=3,p=3)
         self.print_results()
 
         av_face = op.get_average_face(self.get_training_images())
@@ -202,16 +157,6 @@ class App:
         #self.show_images(np.vstack([sel, proj, difference]).T)
 
         #self.show_images(self.eigenfaces[:,:15])
-
-        #print("ajetaan tunnistusalgoritmi kaikille testikuville")
-        k = 4
-        for individual in self.individuals:
-            test_ims = individual.get_test_images()
-            id = individual.get_id()
-            #print(f"id: {id}, lähimmät {k}")
-            #for im in test_ims.T:
-               #print(f"\t {self.calculate_knn(im, k)}")
-               #print(self.calculate_knn(im, k))
 
     def print_results(self):
         corr = 0
@@ -276,7 +221,7 @@ class App:
         """
         images = []
         for individual in self.individuals:
-            im = individual.get_training_images()[:,0]#.reshape((64,64))
+            im = individual.get_training_images()[:,0]
             id = individual.get_id()
             images.append((id, im))
         return images
@@ -304,15 +249,6 @@ class App:
 
         fig.tight_layout()
         plot.show()
-
-    def calculate_eigfaces_using_cov_mat(self, training_images, average_face):
-        pass
-        # calculate eigenfaces using covariance matrix
-        #A = np.subtract(training_images, average_face)
-        #S = np.cov(A)
-        #vals, d = np.linalg.eig(S)
-        #ind = vals.argsort()[::-1]
-        #print(d.shape)
 
 #app = App()
 #app.classify()
