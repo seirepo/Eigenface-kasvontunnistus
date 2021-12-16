@@ -44,6 +44,17 @@ class App:
             training_images = self.get_training_images()
             self.eigenfaces = op.calculate_eigenfaces(training_images)
 
+    def classify_faces(self):
+        k = 3
+        for individual in self.individuals:
+            test_ims = individual.get_test_images()
+            res = []
+            for im in test_ims.T:
+                nearest = self.calculate_knn(im, k)
+                nearest_id = op.get_most_frequent(nearest)
+                res.append((im, nearest_id, nearest))
+            individual.set_nearest_neighbor(res)
+
     def project_faces(self):
         """Projects each individuals training images to the eigenface spanned space
         and saves the coordinates in individual attribute
@@ -61,6 +72,19 @@ class App:
                 projected_images.append(proj_im)
             individual.set_image_coordinates(np.array(projected).T)
         return np.array(projected_images).T
+
+    def project_image(self, im):
+        """Project given image to eigenface space
+
+        Args:
+            im (np.array): image to be projected
+
+        Returns:
+            np.array: coordinates in eigenface space
+        """
+        average_im = op.get_average_face(self.get_training_images())
+        coordinates = op.get_coordinates(im, self.eigenfaces, average_im)
+        return coordinates
 
     def calculate_knn(self, im, k):
         """Calculate k-nearest neighbors for the given image
@@ -129,30 +153,6 @@ class App:
                 print(id, id_nearest)
                 inc += 1
         print(f"tulos: {corr/(corr+inc) * 100} % oikein, {inc/(corr+inc) * 100} % väärin")
-
-    def classify_faces(self):
-        k = 3
-        for individual in self.individuals:
-            test_ims = individual.get_test_images()
-            res = []
-            for im in test_ims.T:
-                nearest = self.calculate_knn(im, k)
-                nearest_id = op.get_most_frequent(nearest)
-                res.append((im, nearest_id, nearest))
-            individual.set_nearest_neighbor(res)
-
-    def project_image(self, im):
-        """Project given image to eigenface space
-
-        Args:
-            im (np.array): image to be projected
-
-        Returns:
-            np.array: coordinates in eigenface space
-        """
-        average_im = op.get_average_face(self.get_training_images())#.flatten()
-        coordinates = op.get_coordinates(im, self.eigenfaces, average_im)
-        return coordinates
 
     def suorita(self):
         self.load_data()
