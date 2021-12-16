@@ -44,55 +44,6 @@ class App:
             training_images = self.get_training_images()
             self.eigenfaces = op.calculate_eigenfaces(training_images)
 
-    def get_training_images(self):
-        """Get all training images from individual objects
-
-        Returns:
-            np.array: training images in an array as column vectors
-        """
-        training = []
-        for individual in self.individuals:
-            tr = individual.get_training_images()
-            training.append(tr)
-        training_array = np.hstack(training)
-        return training_array
-
-    def get_test_images(self):
-        """Get all test images from individual objects
-
-        Returns:
-            np.array: test images in an array as column vectors
-        """
-        test = []
-        for individual in self.individuals:
-            ts = individual.get_test_images()
-            test.append(ts)
-        test_array = np.hstack(test)
-
-        return test_array
-
-    def get_individuals(self):
-        return self.individuals
-
-    def get_image_of_everyone(self):
-        """Return a list of tuples containing id and first image of each individual
-
-        Returns:
-            list[tuple[int, np.array]]: list of tuples
-        """
-        images = []
-        for individual in self.individuals:
-            im = individual.get_training_images()[:,0]#.reshape((64,64))
-            id = individual.get_id()
-            images.append((id, im))
-        return images
-
-    def get_image_by_id(self, id):
-        for individual in self.individuals:
-            if individual.get_id() == id:
-                return individual.get_training_images()[:,0]
-        raise ValueError(f"Image not found with id {id}")
-
     def project_faces(self):
         """Projects each individuals training images to the eigenface spanned space
         and saves the coordinates in individual attribute
@@ -165,6 +116,44 @@ class App:
                 distances.append((distance, id))
         return distances
 
+    def print_results(self):
+        corr = 0
+        inc = 0
+        for ind in self.individuals:
+            nearest = ind.get_nearest_neighbor()
+            id = ind.get_id()
+            id_nearest = nearest[1][1]
+            if id == id_nearest:
+                corr += 1
+            else:
+                print(id, id_nearest)
+                inc += 1
+        print(f"tulos: {corr/(corr+inc) * 100} % oikein, {inc/(corr+inc) * 100} % väärin")
+
+    def classify_faces(self):
+        k = 3
+        for individual in self.individuals:
+            test_ims = individual.get_test_images()
+            res = []
+            for im in test_ims.T:
+                nearest = self.calculate_knn(im, k)
+                nearest_id = op.get_most_frequent(nearest)
+                res.append((im, nearest_id, nearest))
+            individual.set_nearest_neighbor(res)
+
+    def project_image(self, im):
+        """Project given image to eigenface space
+
+        Args:
+            im (np.array): image to be projected
+
+        Returns:
+            np.array: coordinates in eigenface space
+        """
+        average_im = op.get_average_face(self.get_training_images())#.flatten()
+        coordinates = op.get_coordinates(im, self.eigenfaces, average_im)
+        return coordinates
+
     def suorita(self):
         self.load_data()
         self.create_individuals()
@@ -205,44 +194,54 @@ class App:
                #print(f"\t {self.calculate_knn(im, k)}")
                #print(self.calculate_knn(im, k))
 
-    def print_results(self):
-        corr = 0
-        inc = 0
-        for ind in self.individuals:
-            nearest = ind.get_nearest_neighbor()
-            id = ind.get_id()
-            id_nearest = nearest[1][1]
-            if id == id_nearest:
-                corr += 1
-            else:
-                print(id, id_nearest)
-                inc += 1
-        print(f"tulos: {corr/(corr+inc) * 100} % oikein, {inc/(corr+inc) * 100} % väärin")
-
-    def classify_faces(self):
-        k = 3
-        for individual in self.individuals:
-            test_ims = individual.get_test_images()
-            res = []
-            for im in test_ims.T:
-                nearest = self.calculate_knn(im, k)
-                nearest_id = op.get_most_frequent(nearest)
-                res.append((im, nearest_id, nearest))
-            individual.set_nearest_neighbor(res)
-
-
-    def project_image(self, im):
-        """Project given image to eigenface space
-
-        Args:
-            im (np.array): image to be projected
+    def get_training_images(self):
+        """Get all training images from individual objects
 
         Returns:
-            np.array: coordinates in eigenface space
+            np.array: training images in an array as column vectors
         """
-        average_im = op.get_average_face(self.get_training_images())#.flatten()
-        coordinates = op.get_coordinates(im, self.eigenfaces, average_im)
-        return coordinates
+        training = []
+        for individual in self.individuals:
+            tr = individual.get_training_images()
+            training.append(tr)
+        training_array = np.hstack(training)
+        return training_array
+
+    def get_test_images(self):
+        """Get all test images from individual objects
+
+        Returns:
+            np.array: test images in an array as column vectors
+        """
+        test = []
+        for individual in self.individuals:
+            ts = individual.get_test_images()
+            test.append(ts)
+        test_array = np.hstack(test)
+
+        return test_array
+
+    def get_individuals(self):
+        return self.individuals
+
+    def get_image_of_everyone(self):
+        """Return a list of tuples containing id and first image of each individual
+
+        Returns:
+            list[tuple[int, np.array]]: list of tuples
+        """
+        images = []
+        for individual in self.individuals:
+            im = individual.get_training_images()[:,0]#.reshape((64,64))
+            id = individual.get_id()
+            images.append((id, im))
+        return images
+
+    def get_image_by_id(self, id):
+        for individual in self.individuals:
+            if individual.get_id() == id:
+                return individual.get_training_images()[:,0]
+        raise ValueError(f"Image not found with id {id}")
 
     def show_images(self, images):
         """
