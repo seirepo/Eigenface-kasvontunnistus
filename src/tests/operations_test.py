@@ -48,12 +48,13 @@ class TestOperations(unittest.TestCase):
 
     def test_get_average_face_returns_average_correctly(self):
         res = op.get_average_face(self.mat1)
-        self.assertEqual(res.shape, (2, 1))
+        self.assertEqual(res.shape, (2,))
 
     def test_get_coordinates_in_given_base_returns_correct_coordinates(self):
         im = np.array([3,0,-2])
         space = np.array([[1,0,0],[0,1,0],[0,0,1]])
-        result = op.get_coordinates(im, space)
+        av = np.zeros(im.shape)
+        result = op.get_coordinates(im, space, av)
         should_be = np.array([3,0,-2])
 
         self.assertTrue((result == should_be).all())
@@ -62,8 +63,9 @@ class TestOperations(unittest.TestCase):
         rndm = self.rng.random((4096, 320))
         basis = np.linalg.qr(rndm)[0]
         image = self.rng.random((4096))
+        av = np.zeros(image.shape)
 
-        result = op.get_coordinates(image, basis)
+        result = op.get_coordinates(image, basis, av)
         print(basis.shape)
         r = np.dot(image, basis[:,0])
         e = r * basis[:,0]
