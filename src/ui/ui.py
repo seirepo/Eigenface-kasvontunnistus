@@ -1,4 +1,4 @@
-from tkinter import Frame, Scrollbar, ttk
+from tkinter import Frame, Radiobutton, StringVar
 import tkinter
 
 from app import App
@@ -13,10 +13,13 @@ class UI:
         self.people = []
 
     def start(self):
-        self.people_frame = ttk.Frame(master=self.root)#, width=280)
+        self.people_frame = tkinter.Frame(master=self.root)#, width=280)
         self.people_frame.grid(row=0, column=0, padx=30, sticky="nw")
 
-        label_people = ttk.Label(master=self.people_frame, text="Henkilöt")
+        self.button_frame = tkinter.Frame(master=self.root)
+        self.button_frame.grid(sticky="nw")
+
+        label_people = tkinter.Label(master=self.people_frame, text="Henkilöt")
         label_people.grid(row=0, column=0, columnspan=4)
 
         self.app.classify()
@@ -24,13 +27,21 @@ class UI:
 
         self.show_faces(ppl)
 
+        button_classify = tkinter.Button(
+            master=self.people_frame,
+            text="Classify",
+            #command=lambda: self.handle_button_click(ppl)
+            command=self.handle_button_click
+        )
+        button_classify.grid(row=12, column=0, columnspan=4, pady=10)
+
         self.middle_canvas = tkinter.Canvas(master=self.root, width=280, height=280)
         self.middle_canvas.grid(row=0, column=1, sticky="nw")
 
-        self.test_im_frame = ttk.Frame(master=self.middle_canvas)
+        self.test_im_frame = tkinter.Frame(master=self.middle_canvas)
         self.test_im_frame.grid(row=0, column=0, sticky="nw")
 
-        test_label = ttk.Label(master=self.middle_canvas, text="Testikuvat")
+        test_label = tkinter.Label(master=self.middle_canvas, text="Testikuvat")
         test_label.grid(row=0, column=0, columnspan=16)
 
         ppl = self.app.get_individuals()
@@ -45,7 +56,7 @@ class UI:
             image = np.uint8(pair[1]*255).reshape((64,64))
             image = ImageTk.PhotoImage(image=Image.fromarray(image))
             self.people.append(image)
-            label = ttk.Label(
+            label = tkinter.Label(
                 self.people_frame,
                 image=image, text=str(id),
                 compound="top"
@@ -74,7 +85,7 @@ class UI:
                 test_im = np.uint8(test_im*255)
                 test_im = ImageTk.PhotoImage(image=Image.fromarray(test_im))
                 txt = "input: " + str(ind.get_id())
-                label = ttk.Label(
+                label = tkinter.Label(
                     master=tmp_canvas,
                     image=test_im,
                     text=txt,
@@ -90,7 +101,7 @@ class UI:
                 nearest_im = np.uint8(nearest_im*255)
                 nearest_im = ImageTk.PhotoImage(image=Image.fromarray(nearest_im))
                 txt1 = "classified: " + str(nearest_id)
-                label_nearest = ttk.Label(
+                label_nearest = tkinter.Label(
                     master=tmp_canvas,
                     image=nearest_im,
                     text=txt1,
@@ -109,7 +120,7 @@ class UI:
         im = image.reshape((64,64))
         im = np.uint8(im*255)
         im = ImageTk.PhotoImage(image=Image.fromarray(im))
-        label = ttk.Label(
+        label = tkinter.Label(
             master=master,
             image=im,
             text=text,
@@ -119,8 +130,6 @@ class UI:
         return label
 
     def handle_button_click(self):
-        print("lasketaan...")
+        print("luokitellaan...")
         self.app.classify()
-
-    def show_images(self):
-        pass
+        print("done")
